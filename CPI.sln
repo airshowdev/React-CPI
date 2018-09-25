@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27825.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPI.Server", "CPI.Server\CPI.Server.csproj", "{E50C9FAD-B10A-4ECB-99B7-3407840E239C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPI", "CPI.Server\CPI.Server.csproj", "{E50C9FAD-B10A-4ECB-99B7-3407840E239C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPI.Client", "CPI.Client\CPI.Client.csproj", "{967B2272-0071-45E8-A1E6-99296BEA17AF}"
 EndProject
