@@ -1,5 +1,5 @@
 {
-  "name": "CPI",
+  "name": "CPI.Client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

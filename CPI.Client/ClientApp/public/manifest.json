@@ -1,6 +1,6 @@
 {
-  "short_name": "CPI",
-  "name": "CPI",
+  "short_name": "CPI.Client",
+  "name": "CPI.Client",
   "icons": [
     {
       "src": "favicon.ico",
