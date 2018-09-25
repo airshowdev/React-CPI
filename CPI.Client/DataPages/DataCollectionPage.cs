@@ -5,17 +5,13 @@ using System.Threading.Tasks;
 
 namespace CPI.Client
 {
-    public interface IPage
-    {
-        
-    }
 
-    public class DataCollectionPage : IPage
+    public class DataCollectionPage
     {
         const string Template = "DataCollectionPage";
         public DataCollectionPage()
         {
-
+            
         }
     }
 

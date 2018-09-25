@@ -17,7 +17,7 @@ namespace CPI.Client.Controllers
     {
         public string Index()
         {
-            return "Worked";
+            return "Try adding /AllProjects to your URL to get a list of all projects";
         }
 
         [HttpGet("[action]")]

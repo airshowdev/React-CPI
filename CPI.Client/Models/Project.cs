@@ -18,29 +18,42 @@ namespace CPI.Client.Models
             return JsonConvert.DeserializeObject<Project>(Json);
         }
 
-        [BsonId]
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        [BsonId][JsonIgnore]
         public ObjectId ID { get; set; }
 
+        [JsonProperty("Creator")]
         public string Creator { get; set; }
-
+        [JsonProperty("MajCom")]
         public string MajCom { get; } = "AFGSC";
-
+        [JsonProperty("Base")]
         public string Base { get; set; }
 
-        public Template Template { get; set; }
+        [JsonProperty("Template")]
+        public string Template { get; set; }
 
+        [JsonProperty("Champion")]
         public string Champion { get; set; }
 
+        [JsonProperty("Mentor")]
         public string Mentor { get; set; }
 
+        [JsonProperty("TeamLead")]
         public string TeamLead { get; set; }
 
+        [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; }
 
+        [JsonProperty("Unit")]
         public string Unit { get; set; }
 
+        [JsonProperty("Date")]
         public long Date { get; set; }
 
-        public IList<IPage> Pages { get; set; }
+        //public DataCollectionPage DataCollectionPage { get; set; }
     }
 }
