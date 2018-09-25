@@ -11507,11 +11507,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\CPI.Server.csproj",
+      "projectUniqueName": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI\\CPI.Server.csproj",
       "projectName": "CPI.Server",
-      "projectPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\CPI.Server.csproj",
+      "projectPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI\\CPI.Server.csproj",
       "packagesPath": "C:\\Users\\ed boy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\obj\\",
+      "outputPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
