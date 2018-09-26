@@ -6,6 +6,7 @@
 #Specified files
 
 CPI.Client/connectionString.txt
+.vs/CPI/v15/.suo
 
 # User-specific files
 *.suo
