@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Text;
 
+using Newtonsoft.Json;
+
 namespace CPI.Client.Controllers
 {
 
@@ -24,17 +26,15 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public string Test()
         {
+            ServicePointManager.ServerCertificateValidationCallback += (send, certificate, chain, sslPolicyErrors) => { return true; };
             WebClient client = new WebClient();
 
-            client.Encoding = Encoding.ASCII;
+            string dataString = JsonConvert.SerializeObject(
+                new { json = new Project() }
+                );
 
-            byte[] data = Encoding.ASCII.GetBytes("json="+(new Project()).ToJson());
+            return client.UploadString("https://localhost:51989/api/Project/CreateProject", dataString);
 
-            byte[] response = client.UploadData("https://localhost:44319/api/Project/CreateProject", "PUT", data);
-
-            string responseString = Encoding.UTF8.GetString(response);
-
-            return responseString;
         }
 
         /*[HttpGet("[action]")]
@@ -58,7 +58,7 @@ namespace CPI.Client.Controllers
         }*/
 
         [HttpGet("[action]")]
-        public IEnumerable<Project> AllProjectsAsync()
+        public async Task<IEnumerable<Project>> AllProjectsAsync()
         {
             try
             {
@@ -66,17 +66,9 @@ namespace CPI.Client.Controllers
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                Task<IAsyncCursor<Project>> enumerableTask = null;
+                IAsyncCursor<Project> cursor = await projects.FindAsync(_ => true);
 
-                enumerableTask = projects.FindAsync(_ => true);
-
-                enumerableTask.Wait();
-
-                IAsyncCursor<Project> cursor = enumerableTask.Result;
-
-                IList<Project> projectList = cursor.ToList<Project>();
-
-                return projectList;
+                return await cursor.ToListAsync<Project>();
             }
             catch (Exception E)
             {
@@ -109,7 +101,7 @@ namespace CPI.Client.Controllers
         */
 
         [HttpPost("[action]")]
-        public Project GetProjectAsync(string id)
+        public async Task<Project> GetProjectAsync(string id)
         {
             try
             {
@@ -123,15 +115,14 @@ namespace CPI.Client.Controllers
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
-                enumerableTask = projects.FindAsync(filter);
+                //enumerableTask = projects.FindAsync(filter);
 
-                enumerableTask.Wait();
+                //enumerableTask.Wait();
 
                 IAsyncCursor<Project> cursor = enumerableTask.Result;
 
-                IList<Project> projectList = cursor.ToList<Project>();
 
-                return projectList[0];
+                return await cursor.FirstAsync<Project>();
             }
             catch (Exception E)
             {
@@ -140,9 +131,10 @@ namespace CPI.Client.Controllers
             }
         }
 
-        [HttpPut("[action]")]
-        public void CreateProject(string json)
+        [HttpPost("[action]")]
+        public string CreateProject(string json)
         {
+
             try
             {
                 Project newProject = Project.FromJson(json);
@@ -150,7 +142,7 @@ namespace CPI.Client.Controllers
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                projects.InsertOneAsync(newProject);
+                return projects.InsertOneAsync(newProject).Id.ToString();
             }
             catch (Exception E)
             {
