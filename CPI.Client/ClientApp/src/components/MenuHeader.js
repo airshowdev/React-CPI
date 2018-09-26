@@ -66,7 +66,7 @@ export class MenuHeader extends Component {
 
                                     <form className="usa-search usa-search-small ">
                                         <div role="search">
-                                            <label className="usa-sr-only" for="basic-search-field-small">Search small</label>
+                                            <label className="usa-sr-only" htmlFor="basic-search-field-small">Search small</label>
                                                 <input id="basic-search-field-small" type="search" name="search"/>
                                                     <button type="submit">
                                                         <span className="usa-sr-only">Search</span>
