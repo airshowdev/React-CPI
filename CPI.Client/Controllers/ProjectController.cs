@@ -20,7 +20,7 @@ namespace CPI.Client.Controllers
             return "Try adding /AllProjects to your URL to get a list of all projects";
         }
 
-        [HttpGet("[action]")]
+        /*[HttpGet("[action]")]
         public IEnumerable<Project> AllProjects()
         {
             try
@@ -38,9 +38,37 @@ namespace CPI.Client.Controllers
                 Console.WriteLine(E.ToString() + E.StackTrace);
                 throw;
             }
-}
+        }*/
 
         [HttpGet("[action]")]
+        public IEnumerable<Project> AllProjectsAsync()
+        {
+            try
+            {
+                MongoConnection connection = new MongoConnection(GetConnectionString());
+                connection.ConnectDatabase("CPI_Database");
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                Task<IAsyncCursor<Project>> enumerableTask = null;
+
+                enumerableTask = projects.FindAsync(_ => true);
+
+                enumerableTask.Wait();
+
+                IAsyncCursor<Project> cursor = enumerableTask.Result;
+
+                IList<Project> projectList = cursor.ToList<Project>();
+
+                return projectList;
+            }
+            catch (Exception E)
+            {
+                Console.WriteLine(E.ToString() + E.StackTrace);
+                throw;
+            }
+        }
+
+        /*[HttpGet("[action]")]
         public Project GetProject(string id)
         {
             try
@@ -60,7 +88,38 @@ namespace CPI.Client.Controllers
                 Console.WriteLine(E.ToString() + E.StackTrace);
                 throw;
             }
-}
+        }
+        */
+
+        [HttpGet("[action]")]
+        public Project GetProjectAsync(string id)
+        {
+            try
+            {
+
+                ObjectId ID = new ObjectId(id);
+                MongoConnection connection = new MongoConnection(GetConnectionString());
+                connection.ConnectDatabase("CPI_Database");
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                Task<IAsyncCursor<Project>> enumerableTask = null;
+
+                enumerableTask = projects.FindAsync(x => x.ID == ID);
+
+                enumerableTask.Wait();
+
+                IAsyncCursor<Project> cursor = enumerableTask.Result;
+
+                IList<Project> projectList = cursor.ToList<Project>();
+
+                return projectList[0];
+            }
+            catch (Exception E)
+            {
+                Console.WriteLine(E.ToString() + E.StackTrace);
+                throw;
+            }
+        }
 
         [HttpPost("[action]")]
         public void CreateProject(string json)
