@@ -66,9 +66,7 @@ namespace CPI.Client.Controllers
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                IAsyncCursor<Project> cursor = await projects.FindAsync(_ => true);
-
-                return await cursor.ToListAsync<Project>();
+                return await (await projects.FindAsync(_ => true)).ToListAsync<Project>();
             }
             catch (Exception E)
             {
@@ -132,7 +130,7 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
-        public string CreateProject(string json)
+        public async Task<string> CreateProject(string json)
         {
 
             try
