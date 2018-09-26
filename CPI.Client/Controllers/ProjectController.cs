@@ -22,9 +22,19 @@ namespace CPI.Client.Controllers
             return "Try adding /AllProjects to your URL to get a list of all projects";
         }
         [HttpGet("[action]")]
-        public void Test()
+        public string Test()
         {
-            
+            WebClient client = new WebClient();
+
+            client.Encoding = Encoding.ASCII;
+
+            byte[] data = Encoding.ASCII.GetBytes("json="+(new Project()).ToJson());
+
+            byte[] response = client.UploadData("https://localhost:44319/api/Project/CreateProject", "PUT", data);
+
+            string responseString = Encoding.UTF8.GetString(response);
+
+            return responseString;
         }
 
         /*[HttpGet("[action]")]
@@ -152,7 +162,13 @@ namespace CPI.Client.Controllers
         [HttpPatch("[action]")]
         public void SaveProject(string json)
         {
-            
+
+        }
+
+        [HttpPost("[action]")]
+        public bool Authenticate(string username, string passwordHash)
+        {
+            return false;
         }
         private string GetConnectionString()
         {
