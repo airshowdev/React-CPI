@@ -7,6 +7,8 @@ using System.IO;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Threading.Tasks;
+using System.Net;
+using System.Text;
 
 namespace CPI.Client.Controllers
 {
@@ -18,6 +20,11 @@ namespace CPI.Client.Controllers
         public string Index()
         {
             return "Try adding /AllProjects to your URL to get a list of all projects";
+        }
+        [HttpGet("[action]")]
+        public void Test()
+        {
+            
         }
 
         /*[HttpGet("[action]")]
@@ -91,7 +98,7 @@ namespace CPI.Client.Controllers
         }
         */
 
-        [HttpGet("[action]")]
+        [HttpPost("[action]")]
         public Project GetProjectAsync(string id)
         {
             try
@@ -104,7 +111,9 @@ namespace CPI.Client.Controllers
 
                 Task<IAsyncCursor<Project>> enumerableTask = null;
 
-                enumerableTask = projects.FindAsync(x => x.ID == ID);
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
+
+                enumerableTask = projects.FindAsync(filter);
 
                 enumerableTask.Wait();
 
@@ -121,7 +130,7 @@ namespace CPI.Client.Controllers
             }
         }
 
-        [HttpPost("[action]")]
+        [HttpPut("[action]")]
         public void CreateProject(string json)
         {
             try

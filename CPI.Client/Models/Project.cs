@@ -23,7 +23,7 @@ namespace CPI.Client.Models
             return JsonConvert.SerializeObject(this);
         }
 
-        [BsonId][JsonIgnore]
+        [BsonId]
         public ObjectId ID { get; set; }
 
         [JsonProperty("Creator")]
