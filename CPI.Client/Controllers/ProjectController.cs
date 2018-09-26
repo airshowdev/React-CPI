@@ -14,11 +14,10 @@ using Newtonsoft.Json;
 
 namespace CPI.Client.Controllers
 {
-
-
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
+        string connectionString = String.Empty;
         public string Index()
         {
             return "Try adding /AllProjects to your URL to get a list of all projects";
@@ -60,9 +59,10 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Project>> AllProjectsAsync()
         {
+            GetConnectionString();
             try
             {
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection(connectionString);
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -101,11 +101,12 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<Project> GetProjectAsync(string id)
         {
+            GetConnectionString();
             try
             {
 
                 ObjectId ID = new ObjectId(id);
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection(connectionString);
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -128,11 +129,12 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<string> CreateProject(string json)
         {
-
+            Console.WriteLine(json);
+            GetConnectionString();
             try
             {
                 Project newProject = Project.FromJson(json);
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection(connectionString);
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -156,13 +158,17 @@ namespace CPI.Client.Controllers
         {
             return false;
         }
-        private string GetConnectionString()
+        private void GetConnectionString()
         {
-            using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
-            using (TextReader tr = new StreamReader(stream))
+            if (connectionString.Equals(String.Empty))
             {
-                return tr.ReadLine();
+                using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
+                using (TextReader tr = new StreamReader(stream))
+                {
+                    connectionString = tr.ReadLine();
+                }
             }
+           
         }
 
 
