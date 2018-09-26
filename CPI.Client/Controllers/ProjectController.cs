@@ -113,10 +113,6 @@ namespace CPI.Client.Controllers
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
-                //enumerableTask = projects.FindAsync(filter);
-
-                //enumerableTask.Wait();
-
                 IAsyncCursor<Project> cursor = enumerableTask.Result;
 
 
