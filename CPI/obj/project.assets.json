@@ -11501,23 +11501,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ed boy\\.nuget\\packages\\": {},
+    "C:\\Users\\K.Garcia\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\CPI.Server.csproj",
+      "projectUniqueName": "C:\\Users\\K.Garcia\\Desktop\\CPI\\React-CPI\\CPI\\CPI.Server.csproj",
       "projectName": "CPI.Server",
-      "projectPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\CPI.Server.csproj",
-      "packagesPath": "C:\\Users\\ed boy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ed boy\\source\\repos\\React-CPI\\CPI.Server\\obj\\",
+      "projectPath": "C:\\Users\\K.Garcia\\Desktop\\CPI\\React-CPI\\CPI\\CPI.Server.csproj",
+      "packagesPath": "C:\\Users\\K.Garcia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\K.Garcia\\Desktop\\CPI\\React-CPI\\CPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\ed boy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\K.Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
