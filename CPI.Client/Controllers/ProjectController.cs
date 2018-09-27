@@ -127,9 +127,22 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<string> CreateProject(string json)
+        public async Task<string> CreateProject()
         {
-            Console.WriteLine(json);
+            string json = string.Empty;
+            using (Stream st = Request.Body)
+            {
+                using (StreamReader sr = new StreamReader(st))
+                {
+                    json = sr.ReadToEnd();
+                }
+            }
+
+                string path = @"C:\Users\K.Garcia\Desktop\test.txt";
+            TextWriter tw = new StreamWriter(path);
+            tw.WriteLine(json);
+            tw.Close();
+
             GetConnectionString();
             try
             {

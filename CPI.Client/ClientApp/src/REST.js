@@ -9,8 +9,22 @@
 
 export function Post(data, controller, action) {
     console.log('yeet?');
-    var request = new XMLHttpRequest();
-    request.open('POST', 'http://localhost:50285/' + controller + '/' + action, true);
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.send(data);
+    return fetch('api/' + controller + '/' + action, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        redirect: "follow",
+        referrer: "no-referrer",
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json());
+
+}
+
+export function Get(contoller, data) {
+    //return fetch('api/' +)
 }

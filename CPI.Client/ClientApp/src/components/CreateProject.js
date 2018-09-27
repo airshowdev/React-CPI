@@ -5,7 +5,6 @@ import { Post } from '../REST';
 
 function clickCreate() {
         var data = {
-            json: {
                 Creator: "Gabriel Stines",
                 MajCom: "AFGSC",
                 Base: "Offutt",
@@ -16,7 +15,7 @@ function clickCreate() {
                 Evaluators: ["Mr. Zachary"],
                 Unit: "595 SCS",
                 Date: 0
-            }
+            
     };
         Post(data, 'Project', 'CreateProject');
     }
@@ -41,7 +40,7 @@ export class CreateProject extends Component {
                         <option value="value3">Base C</option>
                     </select>
 
-                    <button className="usa-button" onClick={clickCreate()}>Create Project</button>
+                    <button className="usa-button" onClick={clickCreate}>Create Project</button>
             </fieldset>
             </form>
             );
