@@ -5,17 +5,30 @@ import { Post } from '../REST';
 
 function clickCreate() {
         var data = {
-                Creator: "Gabriel Stines",
-                MajCom: "AFGSC",
-                Base: "Offutt",
-                Template: "NVA",
-                Champion: "Garcia",
-                Mentor: "SSgt Munjas",
-                TeamLead: "A1C Hall",
-                Evaluators: ["Mr. Zachary"],
-                Unit: "595 SCS",
-                Date: 0
-            
+                //Creator: "Gabriel Stines",
+                //MajCom: "AFGSC",
+                //Base: "Offutt",
+                //Template: "NVA",
+                //Champion: "Garcia",
+                //Mentor: "SSgt Munjas",
+                //TeamLead: "A1C Hall",
+                //Evaluators: ["Mr. Zachary"],
+                //Unit: "595 SCS",
+                //Date: 0 
+
+            Name: "CPI",
+            Creator: "Gabriel Stines",
+            MajCom: "AFGSC",
+            Base: "Offutt",
+            Template: "NVA",
+            Champion: "Garcia",
+            Mentor: "SSgt Munjas",
+            TeamLead: "A1C Hall",
+            Evaluators: ["Mr. Zachary", "BMW", "FIAT", "FORD"],
+            Unit: "595 SCS",
+            Date: 0   
+
+
     };
         Post(data, 'Project', 'CreateProject');
     }

@@ -138,11 +138,6 @@ namespace CPI.Client.Controllers
                 }
             }
 
-                string path = @"C:\Users\K.Garcia\Desktop\test.txt";
-            TextWriter tw = new StreamWriter(path);
-            tw.WriteLine(json);
-            tw.Close();
-
             GetConnectionString();
             try
             {

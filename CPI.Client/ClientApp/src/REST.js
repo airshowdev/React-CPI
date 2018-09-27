@@ -25,6 +25,3 @@ export function Post(data, controller, action) {
 
 }
 
-export function Get(contoller, data) {
-    //return fetch('api/' +)
-}
