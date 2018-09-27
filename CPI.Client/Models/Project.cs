@@ -23,8 +23,22 @@ namespace CPI.Client.Models
             return JsonConvert.SerializeObject(this);
         }
 
+        public Stub ToStub()
+        {
+            return new Stub()
+            {
+                ID = ID.ToString(),
+                Name = Name,
+                Creator = Creator,
+                Unit = Unit
+            };
+        }
+
         [BsonId]
         public ObjectId ID { get; set; } = new ObjectId();
+
+        [JsonProperty("Name")]
+        public string Name { get; set; } = "";
 
         [JsonProperty("Creator")]
         public string Creator { get; set; } = "";

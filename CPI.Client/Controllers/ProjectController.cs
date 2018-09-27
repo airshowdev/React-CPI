@@ -67,7 +67,7 @@ namespace CPI.Client.Controllers
 
 
         [HttpGet("[action]")]
-        public async Task<IEnumerable<Project>> AllProjectsAsync()
+        public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
             try
             {
@@ -75,7 +75,16 @@ namespace CPI.Client.Controllers
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                return await (await projects.FindAsync(_ => true)).ToListAsync();
+                IList<Project> returnProjects = await (await projects.FindAsync(_ => true)).ToListAsync();
+
+                IList<Stub> stubs = new List<Stub>();
+
+                 foreach (Project proj in returnProjects)
+                {
+                    stubs.Add(proj.ToStub());
+                }
+
+                return stubs;
             }
             catch (Exception E)
             {
