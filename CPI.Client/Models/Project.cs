@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
@@ -48,7 +44,7 @@ namespace CPI.Client.Models
         public string Base { get; set; } = "";
 
         [JsonProperty("Template")]
-        public string Template { get; set; } = "";
+        public ITemplate<IElement> Template { get; set; } = null;
 
         [JsonProperty("Champion")]
         public string Champion { get; set; } = "";
@@ -67,7 +63,5 @@ namespace CPI.Client.Models
 
         [JsonProperty("Date")]
         public long Date { get; set; } = 0;
-
-        //public DataCollectionPage DataCollectionPage { get; set; }
     }
 }

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using CPI.Client.Models;
 using System.IO;
-using MongoDB.Driver;
-using MongoDB.Bson;
 using System.Threading.Tasks;
 using System.Net;
-using System.Text;
+using System.Net.Http;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http;
-using System.Linq.Expressions;
+
+using MongoDB.Driver;
+using MongoDB.Bson;
+
+using Microsoft.AspNetCore.Mvc;
+
+using CPI.Client.Models;
 
 namespace CPI.Client.Controllers
 {
@@ -22,16 +22,9 @@ namespace CPI.Client.Controllers
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
-        public string Index()
-        {
-            return "Try adding /AllProjects to your URL to get a list of all projects";
-        }
-
-
         [HttpGet("[action]")]
-        public async Task<string> Test(string function, string ID, string json)
+        public async Task<string> Test(string function="getAll", string ID="", string json="")
         {
-
             string Host = "https://" + HttpContext.Request.Host;
 
             ServicePointManager.ServerCertificateValidationCallback += (send, certificate, chain, sslPolicyErrors) => { return true; };
