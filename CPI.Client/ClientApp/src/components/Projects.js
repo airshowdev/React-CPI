@@ -1,49 +1,39 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
+import { withRouter } from "react-router-dom";
+import  PropTypes  from 'prop-types';
+
+
+
 
 
 export class Projects extends Component {
+    
+    static contextTypes = {
+        router: PropTypes.object
+    }
     displayName = Projects.name
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
         this.state = { project: [], loading: true };
-
-
         fetch('api/Project/AllProjectsAsync')
             .then(response => response.json())
             .then(data => {
                 this.setState({ project: data, loading: false });
             });
     }
-
-    static renderProjectData(project) {
+    renderProjectsTable(project) {
         return (
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Creator</th>
-                        <th>Unit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {project.map(project =>
-                        <tr key={project.ID}>
-                            <td>{project.ID}</td>
-                            <td>{project.Name}</td>
-                            <td>{project.Creator}</td>
-                            <td>{project.Unit}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <form className="usa-forms">
+                {project.map(project =>
+                    <button ref="button" onClick={() => this.context.router.history.push('/Project/?id=' + project.ID)}>{project.ID}    {project.Name}    {project.Creator}    {project.Unit}</button>
+                )}
+            </form>
         );
     }
-
     render() {
-        let contents = this.state.loading ? <p><em>Loading...</em></p> : Projects.renderProjectsTable(this.state.project);
+        let contents = this.state.loading ? <p><em>Loading...</em></p> : this.renderProjectsTable(this.state.project);
 
         return (
             <div>

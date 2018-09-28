@@ -38,7 +38,7 @@ export class CreateProject extends Component {
 
     render() {
         return (
-            <form className="usa-form">
+            <form className="usa-form" >
             <fieldset>
                 <legend>Create Project</legend>
 

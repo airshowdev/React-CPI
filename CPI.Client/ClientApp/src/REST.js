@@ -22,6 +22,5 @@ export function Post(data, controller, action) {
         body: JSON.stringify(data)
     })
         .then(response => response.json());
-
 }
 

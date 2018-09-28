@@ -94,27 +94,11 @@ namespace CPI.Client.Controllers
         }
 
 
-        [HttpPost("[action]")]
-        public async Task<Project> GetProjectAsync()
+        [HttpGet("[action]")]
+        public async Task<Project> GetProjectAsync(string id)
         {
             try
             {
-                string id = "";
-                string json = "";
-
-                using (Stream stream = Request.Body)
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    json = sr.ReadLine();
-                }
-
-                json = json.Replace("{", "");
-                json = json.Replace("}", "");
-                json = json.Replace("\"", "");
-
-                id = json.Split(":")[1].Trim();
-
-                ObjectId ID = new ObjectId(id);
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -146,13 +130,11 @@ namespace CPI.Client.Controllers
                     json = sr.ReadToEnd();
                 }
 
+                
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
-                ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
-
                 Project newProject = Project.FromJson(json);
-
-                newProject.ID = ID;
+            
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
