@@ -1,0 +1,60 @@
+﻿[
+  {
+    "_id": "",
+    "Name": "",
+    "MajCom": "",
+    "Base": "",
+    "Creator": "",
+    "Unit": "",
+    "Evaluators": [ "" ],
+    "TeamLead": "",
+    "Mentor": "",
+    "DataCollection": {
+      "Datapoints": [
+        {
+
+        }
+      ],
+      "Average": 123,
+      "Percentage": 123,
+      "Standard":  123
+    },
+    "Champion": {
+      "Deficiency": "",
+      "Expectation": "",
+      "Recommendation": "",
+      "Goal": 123,
+      "Response": {
+        "Concur": "I [do, don't, won't work hard]"
+      }
+    },
+    "TeamLeadMeeting": {
+      "MembersIdentified": [
+        "",
+        "",
+        ""
+      ],
+      "SIPOC": {
+        "Suppliers": [
+          ""
+        ],
+        "Inputs": [
+          ""
+        ],
+        "Process": [
+          ""
+        ],
+        "Outputs": [
+          ""
+        ],
+        "Customers": [
+          ""
+        ]
+      },
+      "DateRange": {
+        "begin": "",
+        "end": ""
+      }
+    }
+  }
+]
