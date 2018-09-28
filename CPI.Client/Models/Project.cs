@@ -44,7 +44,7 @@ namespace CPI.Client.Models
         public string Base { get; set; } = "";
 
         [JsonProperty("Template")]
-        public ITemplate<IElement> Template { get; set; } = null;
+        public ITemplate<IElement> BaselineData { get; set; } = null;
 
         [JsonProperty("Champion")]
         public string Champion { get; set; } = "";
