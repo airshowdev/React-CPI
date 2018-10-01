@@ -43,8 +43,11 @@ namespace CPI.Client.Models
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new List<string>();
 
-        [JsonProperty("TeamLead")]
-        public string TeamLead { get; set; }
+        [JsonProperty("TeamLeads")]
+        public IList<string> TeamLeads { get; set; } = new List<string>();
+
+        [JsonProperty("Facilitators")]
+        public IList<string> Facilitators { get; set; } = new List<string>();
 
         [JsonProperty("Mentor")]
         public string Mentor { get; set; }
@@ -60,10 +63,42 @@ namespace CPI.Client.Models
 
         [JsonProperty("DraftCharter")]
         public DraftCharter DraftCharter { get; set; }
+
+        [JsonProperty("RootCauses")]
+
+        public RootCause RootCauses { get; set; }
+
+        [JsonProperty("DesiredEffects")]
+        public DesiredEffects DesiredEffects { get; set; }
+
+        [JsonProperty("DateRange")]
+
+        public DateRange Dates { get; set; }
+    }
+
+    public partial class DesiredEffects
+    {
+        [JsonProperty("Productivity")]
+        public string Productivity { get; set; }
+
+        [JsonProperty("EquipAvail")]
+        public string EquipAvail { get; set; }
+
+        [JsonProperty("Agility")]
+        public string Agility { get; set; }
+
+        [JsonProperty("SafeOps")]
+        public string SafeOps { get; set; }
+
+        [JsonProperty("Efficiency")]
+        public string Efficiency { get; set; }
     }
 
     public partial class Champion
     {
+        [JsonProperty("Name")]
+        public string Name { get; set; }
+
         [JsonProperty("Deficiency")]
         public string Deficiency { get; set; }
 
@@ -98,6 +133,8 @@ namespace CPI.Client.Models
         [JsonProperty("ChampSig")]
         public ChampSig ChampSig { get; set; }
     }
+
+    
 
     public partial class TeamLeadMeeting
     {

@@ -23,8 +23,9 @@ namespace CPI.Client.Controllers
     public class ProjectController : Controller
     {
         [HttpGet("[action]")]
-        public async Task<string> Test(string function="getAll", string ID="", string json="")
+        public async Task<string> Test(string function = "getAll", string ID = "", string json = "")
         {
+
             string Host = "https://" + HttpContext.Request.Host;
 
             ServicePointManager.ServerCertificateValidationCallback += (send, certificate, chain, sslPolicyErrors) => { return true; };
@@ -72,7 +73,7 @@ namespace CPI.Client.Controllers
 
                 IList<Stub> stubs = new List<Stub>();
 
-                 foreach (Project proj in returnProjects)
+                foreach (Project proj in returnProjects)
                 {
                     stubs.Add(proj.ToStub());
                 }
@@ -81,33 +82,16 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Console.WriteLine(E.ToString() + E.StackTrace);
                 throw;
             }
         }
 
 
-        [HttpPost("[action]")]
-        public async Task<Project> GetProjectAsync()
+        [HttpGet("[action]")]
+        public async Task<Project> GetProjectAsync(string id)
         {
             try
             {
-                string id = "";
-                string json = "";
-
-                using (Stream stream = Request.Body)
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    json = sr.ReadLine();
-                }
-
-                json = json.Replace("{", "");
-                json = json.Replace("}", "");
-                json = json.Replace("\"", "");
-
-                id = json.Split(":")[1].Trim();
-
-                ObjectId ID = new ObjectId(id);
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -145,14 +129,14 @@ namespace CPI.Client.Controllers
 
                 Project newProject = Project.FromJson(json);
 
-                newProject.ID = ID;
+                newProject.Id = ID;
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
                 await projects.InsertOneAsync(newProject);
 
-                return newProject.ID.ToString();
+                return newProject.Id.ToString();
             }
             catch (Exception E)
             {
@@ -161,8 +145,8 @@ namespace CPI.Client.Controllers
             }
         }
 
-        [HttpPatch("[action]")]
-        public async Task<ReplaceOneResult> UpdateProject()
+        [HttpPost("[action]")]
+        public async Task<long> UpdateProject()
         {
 
             string json = "";
@@ -178,18 +162,88 @@ namespace CPI.Client.Controllers
             ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
 
             Project updateProject = Project.FromJson(json);
-            updateProject.ID = ID;
+            updateProject.Id = ID;
             MongoConnection connection = new MongoConnection(GetConnectionString());
             connection.ConnectDatabase("CPI_Database");
             IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-            return await projects.ReplaceOneAsync(x => x.ID == updateProject.ID, updateProject);
+            ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.Id == updateProject.Id, updateProject);
+
+            return result.ModifiedCount;
         }
 
         [HttpPost("[action]")]
         public bool Authenticate(string username, string passwordHash)
         {
             return false;
+        }
+
+        [HttpGet("[action]")]
+        private async Task<object> GetPage(string id, string page)
+        {
+
+            if (page == null || id == null)
+            {
+                return null;
+            }
+            Project project = await GetProjectAsync(id);
+
+
+            switch (page.ToUpper())
+            {
+                case "DATACOLLECTION":
+                    return project.DataCollection;
+                case "CHAMPMEET":
+                    return project.Champion;
+                case "TEAMLEADMEET":
+                    return project.TeamLeadMeeting;
+                case "DRAFTCHARTER":
+                    return new
+                    {
+                        project.Dates,
+                        project.Name,
+                        project.Unit,
+                        project.Base,
+                        project.Creator,
+                        project.Champion,
+                        project.TeamLeads,
+                        project.Facilitators,
+                        project.Mentor,
+                        project.TeamLeadMeeting,
+                        project.DesiredEffects,
+                        project.DraftCharter
+                    };
+                case "CAUSEANDCOUNTERS":
+                    return project.RootCauses;
+                default:
+                    return null;
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<object> DraftCharter(string id)
+        {
+            return await GetPage(id, "DraftCharter");
+        }
+        [HttpGet("[action]")]
+        public async Task<object> DataCollection(string id)
+        {
+            return await GetPage(id, "DataCollection");
+        }
+        [HttpGet("[action]")]
+        public async Task<object> ChampMeet(string id)
+        {
+            return await GetPage(id, "ChampMeet");
+        }
+        [HttpGet("[action]")]
+        public async Task<object> TeamLeadMeet(string id)
+        {
+            return await GetPage(id, "TeamLeadMeet");
+        }
+        [HttpGet("[action]")]
+        public async Task<object> CauseAndCounters(string id)
+        {
+            return await GetPage(id, "CauseAndCounters");
         }
         private string GetConnectionString()
         {

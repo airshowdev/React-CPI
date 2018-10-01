@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using MongoDB.Bson;
+
+using log4net;
 
 namespace CPI
 {
@@ -11,11 +12,11 @@ namespace CPI
     {
 
         MongoClient client;
-        public IMongoDatabase Database { get; private set; }
+        IMongoDatabase Database { get; set; }
 
         private MongoConnection()
         {
-
+          
         }
 
         public MongoConnection(string connectionString)
