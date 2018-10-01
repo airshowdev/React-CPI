@@ -97,6 +97,8 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<Project> GetProjectAsync(string id)
         {
+
+            Console.WriteLine(id);
             try
             {
                 MongoConnection connection = new MongoConnection(GetConnectionString());

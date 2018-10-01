@@ -26,9 +26,27 @@ export class Projects extends Component {
     renderProjectsTable(project) {
         return (
             <form className="usa-forms">
-                {project.map(project =>
-                    <button ref="button" onClick={() => this.context.router.history.push('/Project/?id=' + project.ID)}>{project.ID}    {project.Name}    {project.Creator}    {project.Unit}</button>
-                )}
+                    <table>
+                        <caption></caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Project ID</th>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">Creator Name</th>
+                                <th scope="col">Associated Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {project.map(project =>
+                            <tr key={project.ID} onClick={() => this.context.router.history.push('/Project?id=' + project.ID)}>
+                                <th scope="row">{project.ID}</th>
+                                <td>{project.Name}</td>
+                                <td>{project.Creator}</td>
+                                <td>{project.Unit}</td>
+                            </tr>
+                            )}
+                        </tbody>
+                    </table>
             </form>
         );
     }
@@ -37,8 +55,8 @@ export class Projects extends Component {
 
         return (
             <div>
-                <h1>Pulling Project Data</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1>Existing Projects</h1>
+                <p></p>
                 {contents}
             </div>
         );

@@ -16,16 +16,20 @@ function clickCreate() {
                 //Unit: "595 SCS",
                 //Date: 0 
 
-            Name: "CPI",
-            Creator: "Gabriel Stines",
+            Name: this.props.refs.ProjectName.value,
+            Creator: this.props.refs.CreatorFirst.value + " " + this.props.CreatorLast.value,
             MajCom: "AFGSC",
-            Base: "Offutt",
+            Base: this.props.refs.Base.value,
             Template: "NVA",
             Champion: "Garcia",
             Mentor: "SSgt Munjas",
             TeamLead: "A1C Hall",
-            Evaluators: ["Mr. Zachary", "BMW", "FIAT", "FORD"],
-            Unit: "595 SCS",
+            Evaluators: [
+                {},
+                {},
+                {}
+            ],
+            Unit: this.props.refs.Unit.value,
             Date: 0   
 
 
@@ -43,15 +47,24 @@ export class CreateProject extends Component {
                 <legend>Create Project</legend>
 
                     <label htmlFor="ProjectName">Project Name</label>
-                    <input id="ProjectName" name="ProjectName" type="text" required aria-required="true" />
+                    <input id="ProjectName" ref="ProjectName" name="ProjectName" type="text" required aria-required="true" />
+
+                    <label htmlFor="CreatorFirst">First Name</label>
+                    <input id="CreatorFirst" ref="CreatorFirst" name="CreatorFirst" type="text" required aria-required="true" />
+
+                    <label htmlFor="CreatorLast">Last Name</label>
+                    <input id="CreatorLast" ref="CreatorLast" name="CreatorLast" type="text" required aria-required="true" />
 
                     <label htmlFor="options">Select Base</label>
-                    <select name="options" id="options">
+                    <select ref="Base "name="options" id="options">
                         <option value>- Select -</option>
                         <option value="value1">Base A</option>
                         <option value="value2">Base B</option>
                         <option value="value3">Base C</option>
                     </select>
+
+                    <label htmlFor="Unit">Unit</label>
+                    <input id="Unit" ref="Unit" name="Unit" type="text" required aria-required="true" />
 
                     <button className="usa-button" onClick={clickCreate}>Create Project</button>
             </fieldset>

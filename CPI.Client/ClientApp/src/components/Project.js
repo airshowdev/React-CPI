@@ -47,16 +47,14 @@ export class Project extends Component {
         const values = querystring.parse(this.props.location.search);
         const id = values.id;
 
-       //const { id } = this.props.match.params;
-
-        fetch('api/Project/GetProjectAsync/id?='+ id)
+        console.log(id);
+        
+        fetch('api/Project/GetProjectAsync?id=' + id)
             .then(response => response.json())
             .then(data => {
                 this.setState({ project: data, loading: false });
-                console.log("WVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWVWV" + data.toString())
             });
     }
-
 
 
     render() {
@@ -64,8 +62,8 @@ export class Project extends Component {
 
         return (
             <div>
-                <h1>Pulling Project Data</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1>{this.state.project.Name}</h1>
+                <p></p>
                 {contents}
             </div>
         );
