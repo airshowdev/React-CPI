@@ -1,10 +1,6 @@
 ﻿export default class REST {
     Post = function (data, controller, action) {
         console.log(data + controller + action);
-        //var request = new XMLHttpRequest();
-        //request.open('POST', 'http://localhost:50285/' + controller + '/' + action, true);
-        //request.setRequestHeader('Content-Type', 'application/json', charset = UTF = 8);
-        //request.send(data);
     };
     Get = function (json, controller, action) {
         
@@ -12,5 +8,19 @@
 }
 
 export function Post(data, controller, action) {
-    console.log(data + controller + action);
+    console.log('yeet?');
+    return fetch('api/' + controller + '/' + action, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        redirect: "follow",
+        referrer: "no-referrer",
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json());
 }
+
