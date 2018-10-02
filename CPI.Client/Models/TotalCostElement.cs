@@ -11,9 +11,10 @@ namespace CPI.Client.Models
 
         public float MaterialCost { get; set; }
 
-        public float TotalCost => MaterialCost + LaborCost + OtherCost;
         public float LaborCost { get; set; }
 
         public float OtherCost { get; set; }
+
+        public float TotalCost => MaterialCost + LaborCost + OtherCost;
     }
 }

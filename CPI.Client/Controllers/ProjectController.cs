@@ -14,6 +14,8 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
 
 using CPI.Client.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CPI.Client.Controllers
 {
@@ -63,6 +65,9 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
+            
+
+
             try
             {
                 MongoConnection connection = new MongoConnection(GetConnectionString());
@@ -82,6 +87,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
+                Log4NetLogger.Error(E.ToString());
                 throw;
             }
         }
@@ -104,7 +110,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Console.WriteLine(E.ToString() + E.StackTrace);
+                Log4NetLogger.Error(E.ToString());
                 throw;
             }
         }
@@ -125,11 +131,8 @@ namespace CPI.Client.Controllers
 
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
-                ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
-
                 Project newProject = Project.FromJson(json);
 
-                newProject.Id = ID;
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -140,7 +143,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Console.WriteLine(E.ToString() + E.StackTrace);
+                Log4NetLogger.Error(E.ToString());
                 throw;
             }
         }
@@ -149,74 +152,84 @@ namespace CPI.Client.Controllers
         public async Task<long> UpdateProject()
         {
 
-            string json = "";
-
-            using (Stream stream = Request.Body)
-            using (StreamReader sr = new StreamReader(stream))
+            try
             {
-                json = sr.ReadToEnd();
+                string json = "";
+
+                using (Stream stream = Request.Body)
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    json = sr.ReadToEnd();
+                }
+
+                JObject project = (JObject)JsonConvert.DeserializeObject(json);
+
+                ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
+
+                Project updateProject = Project.FromJson(json);
+                updateProject.Id = ID;
+                MongoConnection connection = new MongoConnection(GetConnectionString());
+                connection.ConnectDatabase("CPI_Database");
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.Id == updateProject.Id, updateProject);
+
+                return result.ModifiedCount;
             }
-
-            JObject project = (JObject)JsonConvert.DeserializeObject(json);
-
-            ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
-
-            Project updateProject = Project.FromJson(json);
-            updateProject.Id = ID;
-            MongoConnection connection = new MongoConnection(GetConnectionString());
-            connection.ConnectDatabase("CPI_Database");
-            IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
-
-            ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.Id == updateProject.Id, updateProject);
-
-            return result.ModifiedCount;
-        }
-
-        [HttpPost("[action]")]
-        public bool Authenticate(string username, string passwordHash)
-        {
-            return false;
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E.ToString());
+                throw;
+            }
         }
 
         [HttpGet("[action]")]
         private async Task<object> GetPage(string id, string page)
         {
-
-            if (page == null || id == null)
+            try
             {
-                return null;
-            }
-            Project project = await GetProjectAsync(id);
 
-
-            switch (page.ToUpper())
-            {
-                case "DATACOLLECTION":
-                    return project.DataCollection;
-                case "CHAMPMEET":
-                    return project.Champion;
-                case "TEAMLEADMEET":
-                    return project.TeamLeadMeeting;
-                case "DRAFTCHARTER":
-                    return new
-                    {
-                        project.Dates,
-                        project.Name,
-                        project.Unit,
-                        project.Base,
-                        project.Creator,
-                        project.Champion,
-                        project.TeamLeads,
-                        project.Facilitators,
-                        project.Mentor,
-                        project.TeamLeadMeeting,
-                        project.DesiredEffects,
-                        project.DraftCharter
-                    };
-                case "CAUSEANDCOUNTERS":
-                    return project.RootCauses;
-                default:
+                if (page == null || id == null)
+                {
                     return null;
+                }
+                Project project = await GetProjectAsync(id);
+
+
+                switch (page.ToUpper())
+                {
+                    case "DATACOLLECTION":
+                        return project.DataCollection;
+                    case "CHAMPMEET":
+                        return project.Champion;
+                    case "TEAMLEADMEET":
+                        return project.TeamLeadMeeting;
+                    case "DRAFTCHARTER":
+                        return new
+                        {
+                            project.Dates,
+                            project.Name,
+                            project.Unit,
+                            project.Base,
+                            project.Creator,
+                            project.Champion,
+                            project.TeamLeads,
+                            project.Facilitators,
+                            project.Mentor,
+                            project.TeamLeadMeeting,
+                            project.DesiredEffects,
+                            project.DraftCharter
+                        };
+                    case "CAUSEANDCOUNTERS":
+                        return project.RootCauses;
+                    default:
+                        return null;
+                }
+            }
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E.ToString());
+                throw;
             }
         }
 
@@ -245,6 +258,63 @@ namespace CPI.Client.Controllers
         {
             return await GetPage(id, "CauseAndCounters");
         }
+
+        [HttpPost("[action]")]
+        public async Task<bool> Authenticate()
+        {
+
+            try
+            {
+                JObject authToken;
+
+                string tokenJson = "";
+
+                using (Stream body = Request.Body)
+                using (StreamReader reader = new StreamReader(body))
+                {
+                    tokenJson = reader.ReadToEnd();
+                }
+
+                authToken = (JObject)JsonConvert.DeserializeObject(tokenJson);
+
+
+                string username = authToken.GetValue("username").ToString();
+                string pass = authToken.GetValue("password").ToString();
+
+                User authUser = await GetUserDetails(username);
+
+                string hash = HashWithSalt(pass, username);
+
+                return hash == authUser.Password;
+            }
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E.ToString());
+                return false;
+            }
+        }
+
+        private async Task<User> GetUserDetails(string username)
+        {
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(GetConnectionString());
+                connection.ConnectDatabase("CPI_Database");
+                IMongoCollection<User> users = connection.GetCollection<User>("User");
+
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq("Username", username);
+
+                IAsyncCursor<User> cursor = await users.FindAsync<User>(filter);
+
+                return await cursor.FirstAsync();
+            }
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E.ToString());
+                throw;
+            }
+        }
         private string GetConnectionString()
         {
             using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
@@ -252,6 +322,16 @@ namespace CPI.Client.Controllers
             {
                 return tr.ReadLine();
             }
+        }
+
+        private string HashWithSalt(string pass, string username)
+        {
+            HashAlgorithm algo = new SHA512Managed();
+
+            byte[] bytes = Encoding.ASCII.GetBytes(pass + username);
+
+
+            return Convert.ToBase64String(algo.ComputeHash(bytes));
         }
 
 

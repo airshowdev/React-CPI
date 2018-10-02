@@ -16,7 +16,7 @@ namespace CPI.Client
     {
         public static void Main(string[] args)
         {
-            
+            Log4NetLogger.Create();
             CreateWebHostBuilder(args).Build().Run();
             
         }
