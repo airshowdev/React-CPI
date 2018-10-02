@@ -5,6 +5,7 @@ import { MenuHeader } from './components/MenuHeader';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
 import { Project } from './components/Project';
+import { ProjectOverview } from './components/ProjectOverview';
 
 
 export default class App extends Component {
@@ -29,8 +30,8 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
+            <Route exact path='ProjectOverview' component={ProjectOverview}/>
             <Route exact path="/Project" component={Project} />
-            <Route exact path='/Project/:id' component={Project} />
       </Layout>
     );
   }

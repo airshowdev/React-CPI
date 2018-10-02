@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CPI.Client.Models;
+using Newtonsoft.Json;
 
 namespace CPI.Client.Models.DataPages
 {
     public class NVA : ITemplate<NVAElement>
     {
+        [JsonProperty("Elements")]
         public Dictionary<string, NVAElement> Elements { get; set; }
 
+        [JsonProperty("Nva")]
         public bool Nva = true;
 
         public float CalculateAverage()

@@ -53,7 +53,7 @@ namespace CPI.Client.Models
         public string Mentor { get; set; }
 
         [JsonProperty("DataCollection")]
-        public ITemplate<IElement> DataCollection { get; set; }
+        public ITemplate<IElement> DataCollection { get; set; } = null;
 
         [JsonProperty("Champion")]
         public Champion Champion { get; set; }

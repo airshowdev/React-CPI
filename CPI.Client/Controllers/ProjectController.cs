@@ -125,11 +125,10 @@ namespace CPI.Client.Controllers
 
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
-                ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
+                
 
                 Project newProject = Project.FromJson(json);
-
-                newProject.Id = ID;
+                
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
