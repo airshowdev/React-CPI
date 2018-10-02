@@ -3,12 +3,7 @@ import './css/uswds.css';
 import { withRouter } from "react-router-dom";
 import  PropTypes  from 'prop-types';
 
-
-
-
-
-export class Projects extends Component {
-    
+export class Projects extends Component {  
     static contextTypes = {
         router: PropTypes.object
     }
@@ -37,14 +32,14 @@ export class Projects extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {project.map(project =>
+                        {project.map(project =>(
                             <tr key={project.ID} onClick={() => this.context.router.history.push('/Project?id=' + project.ID)}>
                                 <th scope="row">{project.ID}</th>
                                 <td>{project.Name}</td>
                                 <td>{project.Creator}</td>
                                 <td>{project.Unit}</td>
                             </tr>
-                            )}
+                            ))}
                         </tbody>
                     </table>
             </form>

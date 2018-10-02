@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using CPI.Client.Models;
+using Newtonsoft.Json;
 
 namespace CPI.Client.Models.DataPages
 {
     public class OnTime : ITemplate<OnTimeElement>
     {
+        [JsonProperty("Elements")]
         public Dictionary<string,OnTimeElement> Elements { get; set; }
 
         public float CalculateAverage()

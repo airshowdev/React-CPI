@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using CPI.Client;
 
-public interface ITemplate<T>
+public interface ITemplate<IElement>
 {
-     Dictionary<string, T> Elements { get; set; }
+     Dictionary<string, IElement> Elements { get; set; }
 
      float CalculateAverage();
 
