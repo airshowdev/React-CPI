@@ -65,7 +65,7 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
-            
+
 
 
             try
@@ -87,7 +87,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -98,6 +98,11 @@ namespace CPI.Client.Controllers
         {
             try
             {
+
+                if (id == null)
+                {
+                    throw new ArgumentNullException("ID", "String id cannot be null");
+                }
                 MongoConnection connection = new MongoConnection(GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -110,7 +115,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -143,7 +148,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -178,7 +183,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -188,8 +193,12 @@ namespace CPI.Client.Controllers
         {
             try
             {
+                if (page == null)
+                {
+                    Log4NetLogger.Warn("Parameter (string) Page is null. ArumentNullException Possible");
+                }
 
-                if (page == null || id == null)
+                if (id == null)
                 {
                     return null;
                 }
@@ -228,7 +237,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -287,10 +296,20 @@ namespace CPI.Client.Controllers
 
                 return hash == authUser.Password;
             }
+            catch (OutOfMemoryException memEx)
+            {
+                Log4NetLogger.Error(memEx);
+                return false;
+            }
+            catch (IOException ioEx)
+            {
+                Log4NetLogger.Error(ioEx);
+                return false;
+            }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
-                return false;
+                Log4NetLogger.Fatal(E);
+                throw;
             }
         }
 
@@ -311,8 +330,8 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E.ToString());
-                throw;
+                Log4NetLogger.Error(E);
+                return null;
             }
         }
         private string GetConnectionString()
@@ -326,12 +345,25 @@ namespace CPI.Client.Controllers
 
         private string HashWithSalt(string pass, string username)
         {
-            HashAlgorithm algo = new SHA512Managed();
+            try
+            {
+                HashAlgorithm algo = new SHA512Managed();
 
-            byte[] bytes = Encoding.ASCII.GetBytes(pass + username);
+                byte[] bytes = Encoding.ASCII.GetBytes(pass + username);
 
 
-            return Convert.ToBase64String(algo.ComputeHash(bytes));
+                return Convert.ToBase64String(algo.ComputeHash(bytes));
+            }
+            catch (ArgumentNullException nullEx)
+            {
+                Log4NetLogger.Error(nullEx);
+                return "";
+            }
+            catch (EncoderFallbackException encodingEx)
+            {
+                Log4NetLogger.Error(encodingEx);
+                return "";
+            }
         }
 
 

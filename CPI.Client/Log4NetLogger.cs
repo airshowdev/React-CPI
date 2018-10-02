@@ -8,7 +8,7 @@ using System.IO;
 public class Log4NetLogger
 {
 
-    static ILog log = null;
+    private static ILog log = null;
     public static void Create()
     {
         XmlDocument doc = new XmlDocument();
@@ -18,23 +18,38 @@ public class Log4NetLogger
 
         log = LogManager.GetLogger(repo.Name, "log");
 
-        log4net.GlobalContext.Properties["LogFileName"] = "CPI.log";
+        GlobalContext.Properties["LogFileName"] = "CPI.log";
     }
 
     public static void Debug(string toWrite)
     {
-        log.Debug(toWrite);
+        log.Debug(toWrite + '\n');
     }public static void Warn(string toWrite)
     {
-        log.Warn(toWrite);
+        log.Warn(toWrite + '\n');
     }public static void Error(string toWrite)
     {
-        log.Error(toWrite);
+        log.Error(toWrite + '\n');
     }public static void Info(string toWrite)
     {
-        log.Info(toWrite);
+        log.Info(toWrite + '\n');
     }public static void Fatal(string toWrite)
     {
-        log.Fatal(toWrite);
+        log.Fatal(toWrite + '\n');
+    }public static void Debug(Exception Ex)
+    {
+        log.Debug(Ex.ToString()+ '\n');
+    }public static void Warn(Exception Ex)
+    {
+        log.Warn(Ex.ToString() + '\n');
+    }public static void Error(Exception Ex)
+    {
+        log.Error(Ex.ToString() + '\n');
+    }public static void Info(Exception Ex)
+    {
+        log.Info(Ex.ToString() + '\n');
+    }public static void Fatal(Exception Ex)
+    {
+        log.Fatal(Ex.ToString() + '\n');
     }
 }
