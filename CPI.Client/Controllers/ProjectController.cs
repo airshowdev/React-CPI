@@ -317,8 +317,6 @@ namespace CPI.Client.Controllers
 
                 authToken = (JObject)JsonConvert.DeserializeObject(tokenJson);
 
-                Log4NetLogger.Info($"Authentication json = {authToken}");
-
 
                 string username = authToken.GetValue("username").ToString();
                 string pass = authToken.GetValue("password").ToString();
@@ -327,7 +325,9 @@ namespace CPI.Client.Controllers
 
                 string hash = HashWithSalt(pass, username);
 
-                bool authenticated = hash == authUser.Password;
+                bool authenticated = hash == authUser.PasswordHash;
+
+                Models.User.CurrentUser = (authenticated) ? authUser : null;
 
                 Log4NetLogger.Info($"Authentication attempt by {username} was {(authenticated ? "successful":"unsuccessful")}.");
 
