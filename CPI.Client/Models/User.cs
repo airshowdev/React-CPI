@@ -19,8 +19,12 @@ namespace CPI.Client.Models
         [JsonProperty("Username")]
         public string Username { get; set; } = "";
 
-        [JsonProperty("Password")]
-        public string Password { get; set; } = "";
+        [JsonProperty("PasswordHash")]
+        public string PasswordHash { get; set; } = "";
+
+        public IList<string> Permissions { get; set; } = new List<string>();
+
+        public static User CurrentUser { get; set; }
 
     }
 }

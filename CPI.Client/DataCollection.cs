@@ -1,7 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+
 using Newtonsoft.Json;
-using System.Collections.Generic;
+
 
 namespace CPI.Client
 {

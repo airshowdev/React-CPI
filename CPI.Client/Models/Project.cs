@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+
 using Newtonsoft.Json;
+
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+
 namespace CPI.Client.Models
 {
     public partial class Project

@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,8 +16,7 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
 
 using CPI.Client.Models;
-using System.Security.Cryptography;
-using System.Text;
+
 
 namespace CPI.Client.Controllers
 {
@@ -66,6 +67,8 @@ namespace CPI.Client.Controllers
         public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
 
+            Log4NetLogger.Info("Get all projects process started");
+
 
 
             try
@@ -83,6 +86,8 @@ namespace CPI.Client.Controllers
                     stubs.Add(proj.ToStub());
                 }
 
+
+                Log4NetLogger.Info("Get all projects process completed succesfully");
                 return stubs;
             }
             catch (Exception E)
@@ -96,6 +101,8 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<Project> GetProjectAsync(string id)
         {
+
+            Log4NetLogger.Info($"Get project process started with parameter id = {id??"null"}");
             try
             {
 
@@ -111,6 +118,8 @@ namespace CPI.Client.Controllers
 
                 IAsyncCursor<Project> cursor = await projects.FindAsync<Project>(filter);
 
+                Log4NetLogger.Info("Get project process completed succesfully");
+
                 return await cursor.FirstAsync();
             }
             catch (Exception E)
@@ -123,7 +132,7 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<string> CreateProject()
         {
-
+            Log4NetLogger.Info("Create project process started");
             try
             {
                 string json = "";
@@ -144,6 +153,8 @@ namespace CPI.Client.Controllers
 
                 await projects.InsertOneAsync(newProject);
 
+                Log4NetLogger.Info("Create project process completed succesfully");
+
                 return newProject.Id.ToString();
             }
             catch (Exception E)
@@ -156,6 +167,8 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<long> UpdateProject()
         {
+
+            Log4NetLogger.Info("Update project process started");
 
             try
             {
@@ -179,6 +192,8 @@ namespace CPI.Client.Controllers
 
                 ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.Id == updateProject.Id, updateProject);
 
+                Log4NetLogger.Info("Update project process completed succesfully");
+
                 return result.ModifiedCount;
             }
             catch (Exception E)
@@ -188,9 +203,13 @@ namespace CPI.Client.Controllers
             }
         }
 
-        [HttpGet("[action]")]
         private async Task<object> GetPage(string id, string page)
         {
+
+
+            Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
+
+            object returnObj = null;
             try
             {
                 if (page == null)
@@ -208,13 +227,16 @@ namespace CPI.Client.Controllers
                 switch (page.ToUpper())
                 {
                     case "DATACOLLECTION":
-                        return project.DataCollection;
+                        returnObj =  project.DataCollection;
+                        break;
                     case "CHAMPMEET":
-                        return project.Champion;
+                        returnObj =  project.Champion;
+                        break;
                     case "TEAMLEADMEET":
-                        return project.TeamLeadMeeting;
+                        returnObj = project.TeamLeadMeeting;
+                        break;
                     case "DRAFTCHARTER":
-                        return new
+                        returnObj = new
                         {
                             project.Dates,
                             project.Name,
@@ -229,10 +251,13 @@ namespace CPI.Client.Controllers
                             project.DesiredEffects,
                             project.DraftCharter
                         };
+                        break;
                     case "CAUSEANDCOUNTERS":
-                        return project.RootCauses;
+                        returnObj = project.RootCauses;
+                        break;
                     default:
-                        return null;
+                        returnObj = null;
+                        break;
                 }
             }
             catch (Exception E)
@@ -240,6 +265,10 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(E);
                 throw;
             }
+
+            Log4NetLogger.Info("Get page process completed succesfully");
+
+            return returnObj;
         }
 
         [HttpGet("[action]")]
@@ -272,6 +301,8 @@ namespace CPI.Client.Controllers
         public async Task<bool> Authenticate()
         {
 
+            Log4NetLogger.Info("Authentication process started");
+
             try
             {
                 JObject authToken;
@@ -286,6 +317,8 @@ namespace CPI.Client.Controllers
 
                 authToken = (JObject)JsonConvert.DeserializeObject(tokenJson);
 
+                Log4NetLogger.Info($"Authentication json = {authToken}");
+
 
                 string username = authToken.GetValue("username").ToString();
                 string pass = authToken.GetValue("password").ToString();
@@ -294,7 +327,13 @@ namespace CPI.Client.Controllers
 
                 string hash = HashWithSalt(pass, username);
 
-                return hash == authUser.Password;
+                bool authenticated = hash == authUser.Password;
+
+                Log4NetLogger.Info($"Authentication attempt by {username} was {(authenticated ? "successful":"unsuccessful")}.");
+
+                Log4NetLogger.Info("Authentication process completed succesfully");
+
+                return authenticated;
             }
             catch (OutOfMemoryException memEx)
             {
@@ -315,7 +354,7 @@ namespace CPI.Client.Controllers
 
         private async Task<User> GetUserDetails(string username)
         {
-
+            Log4NetLogger.Info($"Get user details process started with parameters username = {username}");
             try
             {
                 MongoConnection connection = new MongoConnection(GetConnectionString());
@@ -325,6 +364,8 @@ namespace CPI.Client.Controllers
                 FilterDefinition<User> filter = Builders<User>.Filter.Eq("Username", username);
 
                 IAsyncCursor<User> cursor = await users.FindAsync<User>(filter);
+
+                Log4NetLogger.Info("Get user details process completed succesfully");
 
                 return await cursor.FirstAsync();
             }
@@ -336,15 +377,21 @@ namespace CPI.Client.Controllers
         }
         private string GetConnectionString()
         {
+
+            Log4NetLogger.Info("Get connection string process started");
             using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
             using (TextReader tr = new StreamReader(stream))
             {
+
+                Log4NetLogger.Info("Get connection string process completed succesfully");
                 return tr.ReadLine();
             }
+
         }
 
         private string HashWithSalt(string pass, string username)
         {
+            Log4NetLogger.Info("Create hash using salt process started");
             try
             {
                 HashAlgorithm algo = new SHA512Managed();
@@ -352,6 +399,7 @@ namespace CPI.Client.Controllers
                 byte[] bytes = Encoding.ASCII.GetBytes(pass + username);
 
 
+                Log4NetLogger.Info("Create hash using salt process completed succesfully");
                 return Convert.ToBase64String(algo.ComputeHash(bytes));
             }
             catch (ArgumentNullException nullEx)
