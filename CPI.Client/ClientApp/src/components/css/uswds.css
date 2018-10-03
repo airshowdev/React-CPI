@@ -4863,3 +4863,41 @@ input[type=search] {
   top: 0;
   transition: all 0.2s ease-in-out;
 }
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+    .sticky:before, .sticky:after {
+        content: '';
+        display: table;
+    }
+
+
+.sidenav {
+    display: none;
+}
+
+@media screen and (min-width: 951px) {
+    .sidenav {
+        display: block;
+        float: left;
+        margin-bottom: 525px;
+        margin-top: 50px;
+        padding-right: 1rem;
+        padding-left: 3rem;
+        overflow-y: auto;
+        top: 5rem;
+        width: 250px;
+    }
+}
+
+.lt-ie9 .sidenav {
+    width: 25%;
+}
+
+.sidenav .usa-navigation-submenu[aria-hidden="false"] {
+    display: block;
+}

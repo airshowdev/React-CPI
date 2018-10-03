@@ -12,7 +12,7 @@ export class MenuHeader extends Component {
                         <div className="usa-navbar">
                             <div className="usa-logo" id="basic-logo">
                                 <em className="usa-logo-text">
-                                    <a href="/" title="Home" aria-label="Home">Continual Process Improvement</a>
+                                    <a href="/" title="Home" aria-label="Home" style={{paddingTop: "50" }}>Continual Process Improvement</a>
                                 </em>
                             </div>
                             <button className="usa-menu-btn">Menu</button>

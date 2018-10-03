@@ -17,12 +17,7 @@ export class ProjectOverview extends Component {
     }
 
     componentDidMount() {
-        const values = querystring.parse(this.props.location.search);
-        const id = values.id;
-
-        console.log(id);
-
-        fetch('api/Project/GetProjectAsync?id=' + id)
+        fetch('api/Project/GetProjectAsync?id=' + this.props.id)
             .then(response => response.json())
             .then(data => {
                 this.setState({ project: data, loading: false });
@@ -32,25 +27,22 @@ export class ProjectOverview extends Component {
     render(project) {
         return (
             <div className="usa-grid">
-                <div className="usa-width-one-fifth">
-                    <h1>Pre-Event Planning Overview</h1>
+                <div className="usa-width-one-sixth">
+                    <h1 className="usa-heading">Pre-Event Planning Overview</h1>
                 </div>
-                <div className="usa-width-one-fifth">
-                    <h1>Pre-Event Preperation Overview</h1>
+                <div className="usa-width-one-sixth">
+                    <h1 className="usa-heading">Pre-Event Preperation Overview</h1>
                 </div>
-                <div className="usa-width-one-fifth">
-                    <h1>Event Execution Overview</h1>
+                <div className="usa-width-one-sixth">
+                    <h1 className="usa-heading">Event Execution Overview</h1>
                 </div>
-                <div className="usa-width-one-fifth">
-                    <h1>Post-Event Implementation Overview</h1>
+                <div className="usa-width-one-sixth">
+                    <h1 className="usa-heading">Post-Event Implementation Overview</h1>
                 </div>
-                <div className="usa-width-one-fifth">
-                    <h1>Post-Event Follow Up Overview</h1>
+                <div className="usa-width-one-sixth">
+                    <h1 className="usa-heading">Post-Event Follow Up Overview</h1>
                 </div>
             </div>
         );
     }
-    
-
-
 }

@@ -22,7 +22,6 @@ export class Projects extends Component {
         return (
             <form className="usa-forms">
                     <table>
-                        <caption></caption>
                         <thead>
                             <tr>
                                 <th scope="col">Project ID</th>

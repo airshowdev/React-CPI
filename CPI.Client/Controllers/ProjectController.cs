@@ -252,7 +252,5 @@ namespace CPI.Client.Controllers
                 return tr.ReadLine();
             }
         }
-
-
     }
 }

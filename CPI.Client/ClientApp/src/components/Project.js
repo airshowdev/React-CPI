@@ -3,9 +3,14 @@ import './css/uswds.css';
 import REST, { Post } from '../REST';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
-
+import { ProjectOverview } from './ProjectOverview';
+import { SideNav } from './SideNav';
 
 export class Project extends Component {
+
+    static renderSideNav(project) {
+        return <SideNav />;
+    }
 
     static renderProject(project) {
         return (
@@ -40,25 +45,20 @@ export class Project extends Component {
             </form>
         );
     }
+
     displayName = Project.name
-    
 
     constructor(props) {
         super(props);
-        this.state = { project: {}, loading: true };
-        this.handleClick = this.handleSubmit.bind(this);
+        this.state = { project: {} };
+        this.handleClick = this.handleSubmit.bind(this);     
     }
 
     componentDidMount() {
-        const values = querystring.parse(this.props.location.search);
-        const id = values.id;
-
-        console.log(id);
-        
-        fetch('api/Project/GetProjectAsync?id=' + id)
+        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ project: data, loading: false });
+                this.setState({ project: data });
             });
     }
 
@@ -74,16 +74,28 @@ export class Project extends Component {
         REST.Post( data, "Project", "UpdateProject");
     }
 
-    
     render() {
-        let contents = this.state.loading ? <p><em>Loading...</em></p> : Project.renderProject(this.state.project);
-
+        let contents = <div>yahYEET</div>;
+        if (this.props.match.params.Page !== null) {
+            switch (this.props.match.params.Page) {
+                case "ProjectOverview":
+                    contents = <div />/*<ProjectOverview Page={this.props.match.params} id={this.props.match.params}/>*/;
+                    break;
+                case "InitialDataCollection":
+                    contents = <div />;
+                    break;
+            }
+        }
+        else
+        {
+            contents = Project.renderProject(this.state.project);
+        }
+       
         return (
             <div>
-                <h1>{this.state.project.Name}</h1>
-                <button onClick={() => this.context.router.history.push('/Project?id=' + this.state.project.id)}>View Project</button>
-                <p></p>
-                {contents}
+                <div className="usa-grid">
+                    {contents}
+                </div>
             </div>
         );
     }
