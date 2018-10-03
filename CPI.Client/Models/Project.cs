@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+
 using Newtonsoft.Json;
+
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
@@ -26,19 +28,19 @@ namespace CPI.Client.Models
         public ObjectId Id { get; set; } = new ObjectId();
 
         [JsonProperty("Name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [JsonProperty("MajCom")]
-        public string MajCom { get; set; }
+        public string MajCom { get; set; } = "";
 
         [JsonProperty("Base")]
-        public string Base { get; set; }
+        public string Base { get; set; } = "";
 
         [JsonProperty("Creator")]
-        public string Creator { get; set; }
+        public string Creator { get; set; } = "";
 
         [JsonProperty("Unit")]
-        public string Unit { get; set; }
+        public string Unit { get; set; } = "";
 
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new List<string>();
@@ -50,88 +52,88 @@ namespace CPI.Client.Models
         public IList<string> Facilitators { get; set; } = new List<string>();
 
         [JsonProperty("Mentor")]
-        public string Mentor { get; set; }
+        public string Mentor { get; set; } = "";
 
         [JsonProperty("DataCollection")]
-        public ITemplate<IElement> DataCollection { get; set; } = null;
-
+        public DataCollection DataCollection { get; set; } = new DataCollection();
+        
         [JsonProperty("Champion")]
-        public Champion Champion { get; set; }
+        public Champion Champion { get; set; } = new Champion();
 
         [JsonProperty("TeamLeadMeeting")]
-        public TeamLeadMeeting TeamLeadMeeting { get; set; }
+        public TeamLeadMeeting TeamLeadMeeting { get; set; } = new TeamLeadMeeting();
 
         [JsonProperty("DraftCharter")]
-        public DraftCharter DraftCharter { get; set; }
+        public DraftCharter DraftCharter { get; set; } = new DraftCharter();
 
         [JsonProperty("RootCauses")]
 
-        public RootCause RootCauses { get; set; }
+        public RootCause RootCauses { get; set; } = new RootCause();
 
         [JsonProperty("DesiredEffects")]
-        public DesiredEffects DesiredEffects { get; set; }
+        public DesiredEffects DesiredEffects { get; set; } = new DesiredEffects();
 
         [JsonProperty("DateRange")]
 
-        public DateRange Dates { get; set; }
+        public DateRange Dates { get; set; } = new DateRange();
     }
 
     public partial class DesiredEffects
     {
         [JsonProperty("Productivity")]
-        public string Productivity { get; set; }
+        public string Productivity { get; set; } = "";
 
         [JsonProperty("EquipAvail")]
-        public string EquipAvail { get; set; }
+        public string EquipAvail { get; set; } = "";
 
         [JsonProperty("Agility")]
-        public string Agility { get; set; }
+        public string Agility { get; set; } = "";
 
         [JsonProperty("SafeOps")]
-        public string SafeOps { get; set; }
+        public string SafeOps { get; set; } = "";
 
         [JsonProperty("Efficiency")]
-        public string Efficiency { get; set; }
+        public string Efficiency { get; set; } = "";
     }
 
     public partial class Champion
     {
         [JsonProperty("Name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [JsonProperty("Deficiency")]
-        public string Deficiency { get; set; }
+        public string Deficiency { get; set; } = "";
 
         [JsonProperty("Expectation")]
-        public string Expectation { get; set; }
+        public string Expectation { get; set; } = "";
 
         [JsonProperty("Recommendation")]
-        public string Recommendation { get; set; }
+        public string Recommendation { get; set; } = "";
 
         [JsonProperty("Goal")]
-        public long Goal { get; set; }
+        public long Goal { get; set; } = 0;
 
         [JsonProperty("Response")]
-        public Response Response { get; set; }
+        public Response Response { get; set; } = new Response();
     }
 
     public partial class Response
     {
         [JsonProperty("Concur")]
-        public string Concur { get; set; }
+        public string Concur { get; set; } = "";
     }
 
-    public partial class ChampSig
+    public partial class Sig
     {
     }
 
     public partial class DraftCharter
     {
         [JsonProperty("TeamLeadSig")]
-        public ChampSig TeamLeadSig { get; set; }
+        public Sig TeamLeadSig { get; set; } = new Sig();
 
         [JsonProperty("ChampSig")]
-        public ChampSig ChampSig { get; set; }
+        public Sig ChampSig { get; set; } = new Sig();
     }
 
     
@@ -139,40 +141,40 @@ namespace CPI.Client.Models
     public partial class TeamLeadMeeting
     {
         [JsonProperty("MembersIdentified")]
-        public string[] MembersIdentified { get; set; }
+        public IList<string> MembersIdentified { get; set; } = new List<string>();
 
         [JsonProperty("SIPOC")]
-        public Sipoc Sipoc { get; set; }
+        public Sipoc Sipoc { get; set; } = new Sipoc();
 
         [JsonProperty("DateRange")]
-        public DateRange DateRange { get; set; }
+        public DateRange DateRange { get; set; } = new DateRange();
     }
 
     public partial class DateRange
     {
         [JsonProperty("begin")]
-        public string Begin { get; set; }
+        public string Begin { get; set; } = "";
 
         [JsonProperty("end")]
-        public string End { get; set; }
+        public string End { get; set; } = "";
     }
 
     public partial class Sipoc
     {
         [JsonProperty("Suppliers")]
-        public string[] Suppliers { get; set; }
+        public IList<string> Suppliers { get; set; } = new List<string>();
 
         [JsonProperty("Inputs")]
-        public string[] Inputs { get; set; }
+        public IList<string> Inputs { get; set; } = new List<string>();
 
         [JsonProperty("Process")]
-        public string[] Process { get; set; }
+        public IList<string> Process { get; set; } = new List<string>();
 
         [JsonProperty("Outputs")]
-        public string[] Outputs { get; set; }
+        public IList<string> Outputs { get; set; } = new List<string>();
 
         [JsonProperty("Customers")]
-        public string[] Customers { get; set; }
+        public IList<string> Customers { get; set; } = new List<string>();
     }
 
     public partial class Project
@@ -199,7 +201,7 @@ namespace CPI.Client.Models
     public partial class RootCause
     {
         [JsonProperty("FishboneBranch")]
-        IList<FishboneBranch> FishboneBranches { get; set; } = new List<FishboneBranch>();
+        IList<FishboneBranch> FishboneBranches { get; set; } = new List<FishboneBranch>(); 
 
         [JsonProperty("RootCausesAndCounters")]
         IDictionary<string, string> CausesAndCounters { get; set; } = new Dictionary<string, string>();
