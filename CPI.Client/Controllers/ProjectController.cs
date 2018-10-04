@@ -152,20 +152,35 @@ namespace CPI.Client.Controllers
 
                 if (name == "" || name == null)
                 {
-
+                    return "Name cannot be null or empty";
                 }
+                else if (assignedBase == "" || assignedBase == null)
+                {
+                    return "Base cannot be null or empty";
+                }
+                else if (unit == "" || unit == null)
+                {
+                    return "Unit cannot be null or empty";
+                }
+                else if (projectName == "" || projectName == null)
+                {
+                    return "Project Name cannot be null or empty";
+                }
+                else
+                {
 
-                Project newProject = Project.FromJson(json);
+                    Project newProject = Project.FromJson(json);
 
-                MongoConnection connection = new MongoConnection(GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                    MongoConnection connection = new MongoConnection(GetConnectionString());
+                    connection.ConnectDatabase("CPI_Database");
+                    IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                await projects.InsertOneAsync(newProject);
+                    await projects.InsertOneAsync(newProject);
 
-                Log4NetLogger.Info("Create project process completed succesfully");
+                    Log4NetLogger.Info("Create project process completed succesfully");
 
-                return newProject.Id.ToString();
+                    return newProject.Id.ToString();
+                }
             }
             catch (Exception E)
             {
