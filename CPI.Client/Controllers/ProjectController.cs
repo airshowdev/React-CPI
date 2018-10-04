@@ -145,6 +145,16 @@ namespace CPI.Client.Controllers
 
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
+                string name = project.GetValue("Creator").ToString();
+                string assignedBase = project.GetValue("Base").ToString();
+                string unit = project.GetValue("Unit").ToString();
+                string projectName = project.GetValue("Name").ToString();
+
+                if (name == "" || name == null)
+                {
+
+                }
+
                 Project newProject = Project.FromJson(json);
 
                 MongoConnection connection = new MongoConnection(GetConnectionString());
@@ -160,7 +170,7 @@ namespace CPI.Client.Controllers
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                throw;
+                return E.ToString();
             }
         }
 
