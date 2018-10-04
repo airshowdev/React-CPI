@@ -4,47 +4,11 @@ import REST, { Post } from '../REST';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
 import { ProjectOverview } from './ProjectOverview';
+import { AnalyzeData } from './AnalyzeData';
 import { SideNav } from './SideNav';
 
 export class Project extends Component {
 
-    static renderSideNav(project) {
-        return <SideNav />;
-    }
-
-    static renderProject(project) {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="usa-grid">
-                    <div className="usa-width-one-half">
-                        <label htmlFor="ID">ID</label>
-                        <input id="ID" name="ID" type="text" value={project.id}/>
-                        <label htmlFor="Name">Name</label>
-                        <input id="Name" name="Name" type="text" value={project.Name} />
-                        <label htmlFor="Base">Base</label>
-                        <input id="Base" name="Base" type="text" value={project.Base} />
-                        <label htmlFor="Unit">Unit</label>
-                        <input id="Unit" name="Unit" type="text" value={project.Unit} />
-                        <label htmlFor="Evaluators">Evaluators</label>
-                        <textarea id="Evaluators" name="Evaluators" value={project.Evaluators.join('\n')} />
-                    </div>
-                    <div className="usa-width-one-half">
-                        <label htmlFor="Template">Template</label>
-                        <input id="Template" name="Template" type="text" />
-                        <label htmlFor="Creator">Creator</label>
-                        <input id="Creator" name="Creator" type="text" />
-                        <label htmlFor="Champion">Champion</label>
-                        <input id="Champion" name="Champion" type="text" />
-                        <label htmlFor="TeamLead">TeamLead</label>
-                        <input id="TeamLead" name="TeamLead" type="text" />
-                        <label htmlFor="Mentor">Mentor</label>
-                        <input id="Mentor" name="Mentor" type="text" />
-                        <button id="Submit">Save Changes</button>
-                    </div>
-                </div>
-            </form>
-        );
-    }
 
     displayName = Project.name
 
@@ -75,26 +39,101 @@ export class Project extends Component {
     }
 
     render() {
-        let contents = <div>yahYEET</div>;
-        if (this.props.match.params.Page !== null) {
-            switch (this.props.match.params.Page) {
-                case "ProjectOverview":
-                    contents = <div />/*<ProjectOverview Page={this.props.match.params} id={this.props.match.params}/>*/;
-                    break;
-                case "InitialDataCollection":
-                    contents = <div />;
-                    break;
-            }
-        }
-        else
-        {
-            contents = Project.renderProject(this.state.project);
-        }
+    //    let contents = <div>yahYEET</div>;
+    //    if (this.props.match.params.Page !== null) {
+    //        switch (this.props.match.params.Page) {
+    //            case "ProjectOverview":
+    //                contents = <ProjectOverview Page={this.props.match.params} id={this.props.match.params}/>;
+    //                break;
+    //            case "InitialDataCollection":
+    //                contents = <ProjectOverview Page={this.props.match.params} id={this.props.match.params}/>;
+    //                break;
+    //            case "AnalyzeData":
+    //                contents = <AnalyzeData Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "RequestMentor":
+    //                contents = <RequestMentor Page={this.props.match.params} id={this.props.match.params}/>;
+    //                break;
+    //            case "MeetWithChampion":
+    //                contents = <MeetWithChampion Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "MeetWithTeamLead":
+    //                contents = <MeetWithTeamLead Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "DraftCharter":
+    //                contents = <DraftCharter Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ProcessWalk":
+    //                contents = <ProcessWalk Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "FinalizeCharter":
+    //                contents = <FinalizeCharter Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ReviewKPI":
+    //                contents = <ReviewKPI Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "IdentifyEventLocation":
+    //                contents = <IdentifyEventLocation Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "DistributeEVNotification":
+    //                contents = <DistributeEVNotification Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ScheduleInBriefOutBrief":
+    //                contents = <ScheduleInBriefOutBrief Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "TeamProcessWalk":
+    //                contents = <TeamProcessWalk Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "TeamKickOff":
+    //                contents = <TeamKickOff Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ValidateDataCollection":
+    //                contents = <ValidateDataCollection Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ObtainSupplies":
+    //                contents = <ObtainSupplies Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "EventGoNoGo":
+    //                contents = <EventGoNoGo Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "RoomSetUp":
+    //                contents = <RoomSetUp Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ClarifyAndValidateProblem":
+    //                contents = <ClarifyAndValidateProblem Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "IdentifyPerformanceGaps":
+    //                contents = <IdentifyPerformanceGaps Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "SetPerformanceTarget":
+    //                contents = <SetPerformanceTarget Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "DetermineRootCause":
+    //                contents = <DetermineRootCause Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "DevelopCountermeasures":
+    //                contents = <DevelopCountermeasures Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "SeeCountermeasuresThrough":
+    //                contents = <SeeCountermeasuresThrough Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "ValidateResults":
+    //                contents = <ValidateResults Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //            case "StandardizeSuccessfulProcess":
+    //                contents = <StandardizeSuccessfulProcess Page={this.props.match.params} id={this.props.match.params} />;
+    //                break;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        contents = Project.renderProject(this.state.project);
+    //    }
        
         return (
             <div>
                 <div className="usa-grid">
-                    {contents}
+                    {/*contents*/}
                 </div>
             </div>
         );
