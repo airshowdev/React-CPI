@@ -7,7 +7,8 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
-
+import { AnalyzeData } from './components/AnalyzeData';
+import { PreEventPlanningOverview } from './components/PreEventPlanningOverview'
 
 export default class App extends Component {
     displayName = App.name
@@ -32,6 +33,9 @@ export default class App extends Component {
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
             <Route path="/Project/:id/:Page" component={Project}/>
+            <Route path="/AnalyzeData" component={AnalyzeData} />
+            <Route path="/ProjectOverview" component={ProjectOverview} />
+            <Route path="/PreEventPlanningOverview" component={PreEventPlanningOverview} />
         </Layout>
     );
   }
