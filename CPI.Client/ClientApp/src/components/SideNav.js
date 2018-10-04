@@ -15,8 +15,6 @@ export class SideNav extends Component {
         var navHeight = {
             height: '905px'
         };
-
-        
         return (
             <aside className="sidenav sticky" style={navHeight}>
                 <ul className="usa-sidenav-list ">
