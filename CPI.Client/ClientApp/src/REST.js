@@ -9,7 +9,7 @@
 
 export function Post(data, controller, action) {
     console.log('yeet?');
-    return fetch('api/' + controller + '/' + action, {
+    fetch('api/' + controller + '/' + action, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -21,6 +21,6 @@ export function Post(data, controller, action) {
         referrer: "no-referrer",
         body: JSON.stringify(data)
     })
-        .then(response => response.json());
+        .then(response => { return response.json(); });
 }
 

@@ -7,6 +7,8 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
+import { ProjectInfo } from './components/ProjectInfo';
+import { AnalyzeData } from './components/AnalyzeData';
 
 import { PreEventPlanningOverview } from './components/PreEventPlanningOverview';
 import { BaselineData } from './components/BaselineData';
@@ -55,29 +57,29 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id/:Page" component={Project} />
-            <Route path='/ProjectOverview' component={ProjectOverview} />
-            <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/AnalyzeData' component={AnalyzeData} />
-            <Route path='/RequestAMentor' component={RequestAMentor} />
-            <Route path='/PreEventPrepOverview' component={PreEventPrepOverview} />
-            <Route path='/ProcessWalk' component={ProcessWalk} />
-            <Route path='/PreEventPlanningOverview' component={PreEventPlanningOverview} />
-            <Route path='/Validatecharter' from component={ValidateCharter} />
-            <Route path='/ReviewKPI' from component={ReviewKPI} />
-            <Route path='/IdentifyEventLocation' from component={IdentifyEventLocation} />
-            <Route path='/DistributeEventNotification' from component={DistributeEventNotification} />
-            <Route path='/ScheduleInOutBrief' from component={ScheduleInOutBrief} />
-            <Route path='/TeamProcessWalk' from component={TeamProcessWalk} />
-            <Route path='/TeamKickOffAwarenessTraining' from component={TeamKickOffAwarenessTraining} />
-            <Route path='/ValidateDataCollection' from component={ValidateDataCollection} />
-            <Route path='/ObtainSupplies' from component={ObtainSupplies} />
-            <Route path='/EventGoNoGo' from component={EventGoNoGo} />
-            <Route path='/RoomSetup' from component={RoomSetup} />
-            <Route path='/EventExecutionOverview' from component={EventExecutionOverview} />
-            <Route path='/ClarifyValidateProblem' from component={ClarifyValidateProblem} />
-            <Route path='/IdentifyPerformanceGaps' from component={IdentifyPerformanceGaps} />
-            <Route path='/SetImprovementTargets' from component={SetImprovementTargets} />
+
+            <Route path="/Project/:id" component={Project} />
+            <Route path='/Project/ProjectOverview/:id' component={ProjectOverview} />
+			<Route path='/Project/BaselineData/:id' component={BaselineData} />
+			<Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
+			<Route path='/Project/RequestAMentor/:id' component={RequestAMentor} />
+			<Route path='/Project/PreEventPrepOverview/:id' component={PreEventPrepOverview} />
+			<Route path='/Project/ProcessWalk/:id' component={ProcessWalk} />
+			<Route path='/Project/PreEventPlanningOverview/:id' component={PreEventPlanningOverview} />
+			<Route path='/Project/Validatecharter/:id' from component={ValidateCharter} />
+			<Route path='/Project/ReviewKPI/:id' from component={ReviewKPI} />
+			<Route path='/Project/IdentifyEventLocation/:id' from component={IdentifyEventLocation} />
+			<Route path='/Project/DistributeEventNotification/:id' from component={DistributeEventNotification} />
+			<Route path='/Project/ScheduleInOutBrief/:id' from component={ScheduleInOutBrief} />
+			<Route path='/Project/TeamProcessWalk/:id' from component={TeamProcessWalk} />
+			<Route path='/Project/TeamKickOffAwarenessTraining/:id' from component={TeamKickOffAwarenessTraining} />
+			<Route path='/Project/ValidateDataCollection/:id' from component={ValidateDataCollection} />
+			<Route path='/Project/ObtainSupplies/:id' from component={ObtainSupplies} />
+			<Route path='/Project/EventGoNoGo/:id' from component={EventGoNoGo} />
+			<Route path='/Project/RoomSetup/:id' from component={RoomSetup} />
+			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
+            <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
+            <Route path="/Project/AnalyzeData/:id" component={AnalyzeData} />
         </Layout>
     );
   }
