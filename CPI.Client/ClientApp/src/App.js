@@ -7,11 +7,10 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
+
 import { PreEventPlanningOverview } from './components/PreEventPlanningOverview';
 import { BaselineData } from './components/BaselineData';
 import { AnalyzeData } from './components/AnalyzeData';
-
-
 
 export default class App extends Component {
     displayName = App.name
