@@ -6,9 +6,9 @@ export class ProjectInfo extends Component {
 
     static renderProject(project) {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="usa-grid">
-                    <div className="usa-width-one-half">
+			<form onSubmit={this.handleSubmit}>
+				<div className="usa-grid" >
+					<div className="usa-width-one-half">
                         <label htmlFor="ID">ID</label>
                         <input id="ID" name="ID" type="text" value={project.id} />
                         <label htmlFor="Name">Name</label>
@@ -20,7 +20,7 @@ export class ProjectInfo extends Component {
                         <label htmlFor="Evaluators">Evaluators</label>
                         <textarea id="Evaluators" name="Evaluators" value={project.Evaluators.join('\n')} />
                     </div>
-                    <div className="usa-width-one-half">
+					<div className="usa-width-one-half" style={{ marginLeft: "auto", marginRight: "auto" }}>
                         <label htmlFor="Type">Type</label>
                         <input id="Type" name="Type" type="text" value={project.DataCollection.Type} />
                         <label htmlFor="Creator">Creator</label>
@@ -43,7 +43,8 @@ export class ProjectInfo extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    componentDidMount() {
+	componentDidMount() {
+		console.log(this.props.match.params.id);
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
@@ -68,10 +69,8 @@ export class ProjectInfo extends Component {
         var contents = this.state.loading ? <span>Loading</span> : ProjectInfo.renderProject(this.state.project);
 
         return (
-            <div>
-                <div className="usa-grid">
-                    {contents}
-                </div>
+			<div>
+                {contents}
             </div>
         );
     }

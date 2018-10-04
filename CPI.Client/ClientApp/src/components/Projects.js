@@ -32,7 +32,7 @@ export class Projects extends Component {
                         </thead>
                         <tbody>
                         {project.map(project =>(
-                            <tr key={project.ID} onClick={() => this.context.router.history.push('/Project?id=' + project.ID)}>
+                            <tr key={project.ID} onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + project.ID)}>
                                 <th scope="row">{project.ID}</th>
                                 <td>{project.Name}</td>
                                 <td>{project.Creator}</td>

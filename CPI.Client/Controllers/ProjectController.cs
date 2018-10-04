@@ -379,13 +379,21 @@ namespace CPI.Client.Controllers
         {
 
             Log4NetLogger.Info("Get connection string process started");
-            using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
-            using (TextReader tr = new StreamReader(stream))
-            {
+			try
+			{
+				using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
+				using (TextReader tr = new StreamReader(stream))
+				{
 
-                Log4NetLogger.Info("Get connection string process completed succesfully");
-                return tr.ReadLine();
-            }
+					Log4NetLogger.Info("Get connection string process completed succesfully");
+					return tr.ReadLine();
+				}
+			}
+			catch(IOException I)
+			{
+				Log4NetLogger.Error(I);
+				return null;
+			}
 
         }
 
