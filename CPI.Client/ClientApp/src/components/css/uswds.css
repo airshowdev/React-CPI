@@ -4930,3 +4930,19 @@ input[type=search] {
 .grid-with-border > button {
 	margin-left: 10px;
 }
+
+.left-aligned-paragraph {
+	margin-left: 35em;
+	margin-right: 35em;
+	padding: 5px;
+	border: solid #0071bc;
+}
+
+.left-aligned-paragraph > h1{
+	text-align: center;
+	
+}
+
+.image-alignment{
+	text-align: center;
+}

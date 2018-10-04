@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 
-export class PreEventPlanningOverview extends Component {
+export class PreEventPrepOverview extends Component {
 
-    displayName = PreEventPlanningOverview.name
+    displayName = PreEventPrepOverview.name
 
     constructor(props, context) {
         super(props, context)
@@ -17,8 +17,8 @@ export class PreEventPlanningOverview extends Component {
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />
-                    <p>Pre-planning is the most important phase of leading a successful CPI event. <br/>  In this phase you begin to develop the problem statement, determine feasibility <br/> of the event and get buy-in from the Champion and Team Lead.  </p>
-             </div>
-            )
+                <p> With Pre-Event Planning complete the Champion, Team Leader and Facilitator should have a general idea of the problem, the performance gap and target for success.  The goal of Pre-Event Preparation is to familiarize the remaining team members with this information by visiting the work center under study (Process or "Gemba" walk).     </p>
+            </div>
+        )
     }
 }
