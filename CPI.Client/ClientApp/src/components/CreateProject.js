@@ -40,8 +40,10 @@ export class CreateProject extends Component {
                             Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
                             Unit: this.state.unit
                         };
-                        Post(data, 'Project', 'CreateProject');}} value="Create Project">Create Project </button>
-                    <label>{this.state.name + this.state.creatorFirstName + this.state.creatorLastName + this.state.base + this.state.unit}</label>
+                        var response = Post(data, 'Project', 'CreateProject');
+                        console.log(response);
+                    }}>Create Project
+                        </button>
             </fieldset>
             </form>
         );
