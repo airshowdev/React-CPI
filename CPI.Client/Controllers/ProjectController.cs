@@ -189,6 +189,27 @@ namespace CPI.Client.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public async Task<string> DeleteProject(string id)
+        {
+            try
+            {
+                MongoConnection connection = new MongoConnection(GetConnectionString());
+                connection.ConnectDatabase("CPI_Database");
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
+
+                DeleteResult result = await projects.DeleteOneAsync(filter);
+                return result.ToString();
+            }
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
+        }
+
         [HttpPost("[action]")]
         public async Task<long> UpdateProject()
         {
