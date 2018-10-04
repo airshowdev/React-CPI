@@ -73,7 +73,7 @@ namespace CPI.Client.Controllers
 
             try
             {
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -110,7 +110,7 @@ namespace CPI.Client.Controllers
                 {
                     throw new ArgumentNullException("ID", "String id cannot be null");
                 }
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -171,7 +171,7 @@ namespace CPI.Client.Controllers
 
                     Project newProject = Project.FromJson(json);
 
-                    MongoConnection connection = new MongoConnection(GetConnectionString());
+                    MongoConnection connection = new MongoConnection( await GetConnectionString());
                     connection.ConnectDatabase("CPI_Database");
                     IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -194,7 +194,7 @@ namespace CPI.Client.Controllers
         {
             try
             {
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -232,7 +232,7 @@ namespace CPI.Client.Controllers
 
                 Project updateProject = Project.FromJson(json);
                 updateProject.Id = ID;
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -403,7 +403,7 @@ namespace CPI.Client.Controllers
             Log4NetLogger.Info($"Get user details process started with parameters username = {username}");
             try
             {
-                MongoConnection connection = new MongoConnection(GetConnectionString());
+                MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<User> users = connection.GetCollection<User>("User");
 
@@ -421,16 +421,34 @@ namespace CPI.Client.Controllers
                 return null;
             }
         }
-        private string GetConnectionString()
+        private async Task<string> GetConnectionString()
         {
 
-            Log4NetLogger.Info("Get connection string process started");
-            using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
-            using (TextReader tr = new StreamReader(stream))
+            try
             {
+                Log4NetLogger.Info("Get connection string process started");
+                using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
+                using (TextReader tr = new StreamReader(stream))
+                {
 
-                Log4NetLogger.Info("Get connection string process completed succesfully");
-                return tr.ReadLine();
+                    Log4NetLogger.Info("Get connection string process completed succesfully");
+                    return await tr.ReadLineAsync();
+                }
+            }
+            catch (ArgumentOutOfRangeException oorEx)
+            {
+                Log4NetLogger.Error(oorEx);
+                return null;
+            }
+            catch (ObjectDisposedException odEx)
+            {
+                Log4NetLogger.Error(odEx);
+                return null;
+            }
+            catch (InvalidOperationException invalidOpEx)
+            {
+                Log4NetLogger.Error(invalidOpEx);
+                return null;
             }
 
         }
