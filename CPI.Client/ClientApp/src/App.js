@@ -7,6 +7,8 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
+import { ProjectInfo } from './components/ProjectInfo';
+import { AnalyzeData } from './components/AnalyzeData';
 
 
 export default class App extends Component {
@@ -31,7 +33,9 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id/:Page" component={Project}/>
+            <Route path="/Project/ProjectOverview/:id" component={ProjectOverview} />
+            <Route path="/Project/ProjectInfo/:id" component={ProjectInfo} />
+            <Route path="/Project/AnalyzeData/:id" component={AnalyzeData} />
         </Layout>
     );
   }
