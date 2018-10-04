@@ -27,7 +27,7 @@ export class SideNav extends Component {
                                 <a>Initial Data Collection</a>
                                 </li>
                             <li>
-                                <a>Event Go/No Go Decision</a>
+                                <a>Analyze Data</a>
                             </li>
                             <li>
                                 <a>Request Mentor</a>
