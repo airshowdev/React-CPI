@@ -27,6 +27,12 @@ import { ValidateDataCollection } from './components/ValidateDataCollection';
 import { ObtainSupplies } from './components/ObtainSupplies';
 import { EventGoNoGo } from './components/EventGoNoGo';
 import { RoomSetup } from './components/RoomSetup';
+import { EventExecutionOverview } from './components/EventExecutionOverview';
+import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
+import { IdentifyPerformanceGaps } from './components/IdentifyPerformanceGaps';
+import { SetImprovementTargets } from './components/SetImprovementTargets';
+//import { DetermineRootCause } from './components/DetermineRootCause';
+//import { DevelopCountermeasures } from './components/DevelopCountermeasures';
 
 
 export default class App extends Component {
@@ -51,6 +57,7 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
+
             <Route path="/Project/:id" component={Project} />
             <Route path='/Project/ProjectOverview/:id' component={ProjectOverview} />
 			<Route path='/Project/BaselineData/:id' component={BaselineData} />
@@ -77,3 +84,7 @@ export default class App extends Component {
     );
   }
 }
+
+
+//<Route path='/DetermineRootCause' from component={DetermineRootCause} />
+//<Route path='/DevelopCountermeasures' from component={DevelopCountermeasures} />
