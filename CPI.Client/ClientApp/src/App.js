@@ -25,6 +25,12 @@ import { ValidateDataCollection } from './components/ValidateDataCollection';
 import { ObtainSupplies } from './components/ObtainSupplies';
 import { EventGoNoGo } from './components/EventGoNoGo';
 import { RoomSetup } from './components/RoomSetup';
+import { EventExecutionOverview } from './components/EventExecutionOverview';
+import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
+import { IdentifyPerformanceGaps } from './components/IdentifyPerformanceGaps';
+import { SetImprovementTargets } from './components/SetImprovementTargets';
+//import { DetermineRootCause } from './components/DetermineRootCause';
+//import { DevelopCountermeasures } from './components/DevelopCountermeasures';
 
 
 export default class App extends Component {
@@ -68,7 +74,15 @@ export default class App extends Component {
             <Route path='/ObtainSupplies' from component={ObtainSupplies} />
             <Route path='/EventGoNoGo' from component={EventGoNoGo} />
             <Route path='/RoomSetup' from component={RoomSetup} />
+            <Route path='/EventExecutionOverview' from component={EventExecutionOverview} />
+            <Route path='/ClarifyValidateProblem' from component={ClarifyValidateProblem} />
+            <Route path='/IdentifyPerformanceGaps' from component={IdentifyPerformanceGaps} />
+            <Route path='/SetImprovementTargets' from component={SetImprovementTargets} />
         </Layout>
     );
   }
 }
+
+
+//<Route path='/DetermineRootCause' from component={DetermineRootCause} />
+//<Route path='/DevelopCountermeasures' from component={DevelopCountermeasures} />
