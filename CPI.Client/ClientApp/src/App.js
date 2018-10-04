@@ -9,6 +9,7 @@ import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
 
 
+
 export default class App extends Component {
     displayName = App.name
 
@@ -31,7 +32,8 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id/:Page" component={Project}/>
+            <Route path="/Project/:id/:Page" component={Project} />
+            <Route path='/ProjectOverview' component={ProjectOverview} />
         </Layout>
     );
   }
