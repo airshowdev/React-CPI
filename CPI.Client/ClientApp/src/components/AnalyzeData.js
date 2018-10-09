@@ -2,7 +2,6 @@
 import './css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2'
 
 export class AnalyzeData extends Component {
 
