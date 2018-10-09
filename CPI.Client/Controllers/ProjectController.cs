@@ -70,7 +70,7 @@ namespace CPI.Client.Controllers
             Log4NetLogger.Info("Get all projects process started");
 
 
-
+            
             try
             {
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
@@ -99,7 +99,7 @@ namespace CPI.Client.Controllers
 
 
         [HttpGet("[action]")]
-        public async Task<Project> GetProjectAsync(string id)
+        public async Task<string> GetProjectAsync(string id)
         {
 
             Log4NetLogger.Info($"Get project process started with parameter id = {id??"null"}");
@@ -108,7 +108,7 @@ namespace CPI.Client.Controllers
 
                 if (id == null)
                 {
-                    throw new ArgumentNullException("ID", "String id cannot be null");
+                    return "404";
                 }
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
@@ -120,7 +120,7 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Get project process completed succesfully");
 
-                return await cursor.FirstAsync();
+                return (await cursor.FirstAsync()).ToJson();
             }
             catch (Exception E)
             {
@@ -194,6 +194,12 @@ namespace CPI.Client.Controllers
         {
             try
             {
+
+
+                if (id == null || id == "")
+                {
+                    return " 404 ";
+                }
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -201,6 +207,10 @@ namespace CPI.Client.Controllers
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
                 DeleteResult result = await projects.DeleteOneAsync(filter);
+                if (result.DeletedCount == 0)
+                {
+                    return " 404 ";
+                }
                 return result.ToString();
             }
             catch (Exception E)
@@ -228,7 +238,14 @@ namespace CPI.Client.Controllers
 
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
-                ObjectId ID = new ObjectId(project.GetValue("_id").ToString());
+                string id = project.GetValue("_id").ToString();
+
+                if (id == null || id == "")
+                {
+                    return 404;
+                }
+
+                ObjectId ID = new ObjectId(id);
 
                 Project updateProject = Project.FromJson(json);
                 updateProject.Id = ID;
@@ -253,21 +270,20 @@ namespace CPI.Client.Controllers
         {
 
 
+            if (id == null || id == "")
+            {
+                return "404 ID not found";
+            }
+            else if (page == null || page == "")
+            {
+                return "404 Page not found";
+            }
             Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
 
             object returnObj = null;
             try
             {
-                if (page == null)
-                {
-                    Log4NetLogger.Warn("Parameter (string) Page is null. ArumentNullException Possible");
-                }
-
-                if (id == null)
-                {
-                    return null;
-                }
-                Project project = await GetProjectAsync(id);
+                Project project = Project.FromJson(await GetProjectAsync(id));
 
 
                 switch (page.ToUpper())
@@ -369,7 +385,7 @@ namespace CPI.Client.Controllers
 
                 User authUser = await GetUserDetails(username);
 
-                string hash = HashWithSalt(pass, username);
+                string hash = GenerateHash(pass);
 
                 bool authenticated = hash == authUser.PasswordHash;
 
@@ -453,18 +469,34 @@ namespace CPI.Client.Controllers
 
         }
 
-        private string HashWithSalt(string pass, string username)
+        private string GenerateHash(string pass)
         {
             Log4NetLogger.Info("Create hash using salt process started");
             try
             {
+
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
                 HashAlgorithm algo = new SHA512Managed();
 
-                byte[] bytes = Encoding.ASCII.GetBytes(pass + username);
+                byte[] bytes = Encoding.ASCII.GetBytes(pass);
 
+                byte[] salt = new byte[8];
+
+                rng.GetBytes(salt);
+
+                bytes = algo.ComputeHash(bytes);
+
+                byte[] hashWithSalt = new byte[bytes.Length + salt.Length];
+
+                Array.Copy(bytes, hashWithSalt, bytes.Length);
+
+                for (int i = 0; i < salt.Length; i++)
+                {
+                    hashWithSalt[bytes.Length + i] = salt[i];
+                }
 
                 Log4NetLogger.Info("Create hash using salt process completed succesfully");
-                return Convert.ToBase64String(algo.ComputeHash(bytes));
+                return Convert.ToBase64String(hashWithSalt);
             }
             catch (ArgumentNullException nullEx)
             {
@@ -476,6 +508,11 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(encodingEx);
                 return "";
             }
+        }
+
+        private string VerifiyHash(string pass)
+        {
+            return "";
         }
 
 
