@@ -440,6 +440,7 @@ namespace CPI.Client.Controllers
         private async Task<string> GetConnectionString()
         {
 
+
             try
             {
                 Log4NetLogger.Info("Get connection string process started");
@@ -466,6 +467,7 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(invalidOpEx);
                 return null;
             }
+
 
         }
 

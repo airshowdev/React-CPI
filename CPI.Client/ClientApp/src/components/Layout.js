@@ -11,22 +11,22 @@ export class Layout extends Component {
         super();
     }
   render() {
-      return (
-        <Grid>
-        <Row>
-        <Col>
-            <MenuHeader />
-        </Col>
-        </Row>
-            <Row>
-                  <Col sm={3}>
-                      <Route path="/Project/:Page/:id" Component={SideNav}/>
-                    </Col>
-                <Col sm={9} >
-                    {this.props.children}
-                </Col>
-            </Row>
-        </Grid>
+	  return (
+		<Grid>
+			<Row>
+				<Col>
+					<MenuHeader />
+				</Col>
+			</Row>
+			<Row>
+				<Col fluid sm={3}>
+					  <Route path="/Project/:Page/" component={SideNav}/>
+				</Col>
+				<Col fluid sm={9}>
+					{this.props.children}
+				</Col>
+			</Row>
+		</Grid>
     );
   }
 }
