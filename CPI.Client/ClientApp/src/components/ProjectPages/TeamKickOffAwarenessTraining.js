@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import './css/uswds.css';
+import '../css/uswds.css';
 
 export class TeamKickOffAwarenessTraining extends Component {
 

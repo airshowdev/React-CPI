@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
-import REST, { Post } from '../REST';
+import { Post } from '../REST';
 
 export class ProjectInfo extends Component {
 
@@ -24,13 +24,13 @@ export class ProjectInfo extends Component {
                         <label htmlFor="Type">Type</label>
                         <input id="Type" name="Type" type="text" value={project.DataCollection.Type} />
                         <label htmlFor="Creator">Creator</label>
-                        <input id="Creator" name="Creator" type="text" />
+                        <input id="Creator" name="Creator" type="text" value={project.Creator.Name || ""}/>
                         <label htmlFor="Champion">Champion</label>
-                        <input id="Champion" name="Champion" type="text" />
+                        <input id="Champion" name="Champion" type="text" value={project.Champion.Name || ""}/>
                         <label htmlFor="TeamLead">TeamLead</label>
-                        <input id="TeamLead" name="TeamLead" type="text" />
+                        <input id="TeamLead" name="TeamLead" type="text" value={project.TeamLeads.join("/n")}/>
                         <label htmlFor="Mentor">Mentor</label>
-                        <input id="Mentor" name="Mentor" type="text" />
+                        <input id="Mentor" name="Mentor" type="text" value={project.Mentor}/>
                         <button id="Submit">Save Changes</button>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ export class ProjectInfo extends Component {
             data.set(name, form.elements[name]);
         }
 
-        REST.Post(data, "Project", "UpdateProject");
+        Post(data, "Project", "UpdateProject");
     }
 
     render() {

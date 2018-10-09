@@ -20,7 +20,7 @@ export class Layout extends Component {
 			</Row>
 			<Row>
 				<Col fluid sm={3}>
-					  <Route path="/Project/:Page/" component={SideNav}/>
+	    			  <Route path="/Project/:Page/" component={SideNav}/>
 				</Col>
 				<Col fluid sm={9}>
 					{this.props.children}

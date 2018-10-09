@@ -1,30 +1,27 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { MenuHeader } from './components/MenuHeader';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
-import { Project } from './components/Project';
-import { ProjectOverview } from './components/ProjectOverview';
-import { withRouter } from 'react-router';
 import { ProjectInfo } from './components/ProjectInfo';
-import { PreEventPlanningOverview } from './components/PreEventPlanningOverview';
-import { BaselineData } from './components/BaselineData';
-import { AnalyzeData } from './components/AnalyzeData';
-import { RequestAMentor } from './components/RequestAMentor';
-import { PreEventPrepOverview } from './components/PreEventPrepOverview';
-import { ProcessWalk } from './components/ProcessWalk';
-import { ValidateCharter } from './components/ValidateCharter';
-import { ReviewKPI } from './components/ReviewKPI';
-import { IdentifyEventLocation } from './components/IdentifyEventLocation';
-import { DistributeEventNotification } from './components/DistributeEventNotification';
-import { ScheduleInOutBrief } from './components/ScheduleInOutBrief';
-import { TeamProcessWalk } from './components/TeamProcessWalk';
-import { TeamKickOffAwarenessTraining } from './components/TeamKickOffAwarenessTraining';
-import { ValidateDataCollection } from './components/ValidateDataCollection';
-import { ObtainSupplies } from './components/ObtainSupplies';
-import { EventGoNoGo } from './components/EventGoNoGo';
-import { RoomSetup } from './components/RoomSetup';
+import { ProjectOverview } from './components/ProjectPages/ProjectOverview';
+import { PreEventPlanningOverview } from './components/ProjectPages/PreEventPlanningOverview';
+import { BaselineData } from './components/ProjectPages/BaselineData';
+import { AnalyzeData } from './components/ProjectPages/AnalyzeData';
+import { RequestAMentor } from './components/ProjectPages/RequestAMentor';
+import { PreEventPrepOverview } from './components/ProjectPages/PreEventPrepOverview';
+import { ProcessWalk } from './components/ProjectPages/ProcessWalk';
+import { ValidateCharter } from './components/ProjectPages/ValidateCharter';
+import { ReviewKPI } from './components/ProjectPages/ReviewKPI';
+import { IdentifyEventLocation } from './components/ProjectPages/IdentifyEventLocation';
+import { DistributeEventNotification } from './components/ProjectPages/DistributeEventNotification';
+import { ScheduleInOutBrief } from './components/ProjectPages/ScheduleInOutBrief';
+import { TeamProcessWalk } from './components/ProjectPages/TeamProcessWalk';
+import { TeamKickOffAwarenessTraining } from './components/ProjectPages/TeamKickOffAwarenessTraining';
+import { ValidateDataCollection } from './components/ProjectPages/ValidateDataCollection';
+import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
+import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
+import { RoomSetup } from './components/ProjectPages/RoomSetup';
 
 
 export default class App extends Component {

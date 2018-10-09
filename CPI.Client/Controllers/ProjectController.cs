@@ -223,7 +223,6 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<long> UpdateProject()
         {
-
             Log4NetLogger.Info("Update project process started");
 
             try
@@ -268,8 +267,6 @@ namespace CPI.Client.Controllers
 
         private async Task<object> GetPage(string id, string page)
         {
-
-
             if (id == null || id == "")
             {
                 return "404 ID not found";

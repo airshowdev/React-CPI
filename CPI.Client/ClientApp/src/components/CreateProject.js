@@ -12,10 +12,20 @@ export class CreateProject extends Component {
             creatorFirstName: "", creatorLastName: "", base: "", name: "", unit: ""
         };
     }
-    
+
+    handleSubmit(event) {
+        event.PreventDefault();
+        const form = event.target;
+        const data = new FormData(event);
+
+        for (let name of data.keys()) {
+            data.set(name, form.elements[name]);
+        }
+    }
+
     render() {
         return (
-            <form className="usa-form">
+            <form className="usa-form" onSubmit={this.handleSubmit}>
             <fieldset>
                 <legend>Create Project</legend>
                     <label htmlFor="ProjectName">Project Name</label>

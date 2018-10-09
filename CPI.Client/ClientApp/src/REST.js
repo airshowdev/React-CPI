@@ -10,7 +10,7 @@
 export function Post(data, controller, action) {
     console.log('yeet?');
     fetch('api/' + controller + '/' + action, {
-        method: "POST",
+        method: "PUT",
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
