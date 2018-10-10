@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
+import './css/HallMartino.css';
 
 export class PreEventPlanningOverview extends Component {
 
@@ -14,7 +15,7 @@ export class PreEventPlanningOverview extends Component {
         return (
             <div className="usa-grid">
             <div className="paragraph">
-                <h1> Overview </h1>
+                <h1> Pre Event Planning Overview </h1>
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />

@@ -1,0 +1,138 @@
+﻿.paragraph {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50vw;
+	min-width: 600px;
+	border: solid #0071bc;
+	text-align: center;
+}
+
+	.paragraph > h1 {
+		margin-top: 1em;
+	}
+
+.grid-with-border {
+	border: solid;
+	border-width: thin;
+	margin-left: -1px;
+	margin-top: -1px;
+	margin-right: -1px;
+}
+
+	.grid-with-border > h1, h2 {
+		margin-left: 15px;
+		margin-top: 30px;
+	}
+
+	.grid-with-border > button {
+		margin-left: 10px;
+	}
+
+.left-aligned-paragraph {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50vw;
+	min-width: 800px;
+	border: solid #0071bc;
+}
+
+	.left-aligned-paragraph > h1 {
+		text-align: center;
+	}
+
+.image-alignment {
+	text-align: center;
+}
+
+.horizontal-div-left {
+	float: left;
+}
+
+.horizontal-div-right {
+	float: right;
+}
+
+.border-basic {
+	border: solid #0071bc;
+}
+
+.centered-textarea {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.no-border td {
+	border: hidden;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+.no-borderish {
+	border: hidden;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+.td-resize-content {
+	padding: 0;
+}
+
+.table-cell-resize {
+	margin-top: 0;
+	width: 100%;
+}
+
+.table-cell-resize th {
+	text-align: center;
+}
+
+.center-input {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.one-half-right {
+	float: right;
+	display: block;
+	margin-right: 250px;
+}
+
+.one-half-left {
+	float: left;
+	display: block;
+	margin-left: 250px;
+}
+
+.column-input-box {
+	margin: auto;
+	width: auto;
+	background-color: #efec50;
+	border: hidden;
+}
+
+.radio-input-size {
+	display: flex;
+	text-wrap: none;
+}
+
+.radio-input-size input[type=radio] {
+	margin-right: 12px;
+	text-wrap: none;
+}
+
+.radio-input-size label {
+	text-wrap: none;
+}
+
+.paragraph-response-text {
+	display: inline-block;
+}
+
+.paragraph-response-text input {
+	width: 200px;
+}
+
+

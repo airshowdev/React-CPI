@@ -18,11 +18,11 @@ export class Layout extends Component {
             <MenuHeader />
         </Col>
         </Row>
-            <Row>
-                  <Col sm={3}>
+        <Row>
+            <Col style={{ float: 'left', width: '15%' }}>
                       <Route path="/Project/:Page" component={SideNav} />
                     </Col>
-                <Col sm={9} >
+                  <Col style={{width: '85%', float: 'right'}}>
                     {this.props.children}
                 </Col>
             </Row>

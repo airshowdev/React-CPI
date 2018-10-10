@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
+import './css/HallMartino.css';
 
 export class BaselineData extends Component {
 
@@ -27,13 +28,13 @@ export class BaselineData extends Component {
             <div>
                 <h1> Collect Baseline Data </h1>
 
-            
-                <table>
+
+                <table style={{ marginBottom: "0", width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td scope="row">Instructions</td>
-                            <td>Parameters</td>
-                            <td>Data Summary</td>
+                            <td style={{ textAlign: "center" }}>Instructions</td>
+                            <td style={{ textAlign: "center" }}>Parameters</td>
+                            <td style={{ textAlign: "center" }} colSpan="2">Data Summary</td>
                         </tr>
                         <tr>
                             <td scope="row">Contact your Military Personnel Section to determine the following:<br /><br />
@@ -42,78 +43,79 @@ export class BaselineData extends Component {
                                 Enter data in the yellow highlighted fields.  The program  calculates "days after" and "status". This <br />
                                 information is used to identify your unit's ability to meet the VOC requirement of 100% of EPRs<br /> submitted to MPS on time.
                             </td>
-                            <td>
-                                <tr>
-                                    <td>% On Time Goal</td>
-                                    <td>100%</td>
-                                </tr>
-                                <tr>
-                                    <td>Threshold</td>
-                                    <td>70%</td>
-                                </tr>
-                                <tr>
-                                    <td>Chamption Goal</td>
-                                    <td>90%</td>
-                                </tr>
+                            <td className="td-resize-content" style={{height: "1px"}}>
+                                <table className="no-borderish">
+                                    <tbody>
+                                    <tr>
+                                        <td>% On Time Goal</td>
+                                        <td>100%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Threshold</td>
+                                        <td>70%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamption Goal</td>
+                                        <td>90%</td>
+                                    </tr>
+                                        </tbody>
+                                </table>
+                            </td>
+                            <td className="td-resize-content">
+                                <table className="no-border">
+                                        <tbody>
+                                            <tr>
+                                                <td>Total Reports</td>
+                                                <td>55</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Late Reports</td>
+                                                <td>3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total On-Time</td>
+                                                <td>52</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                             </td>
                             <td>
-                                
-                                    <td>
-                                        <table className="usa-table-borderless">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Total Reports</td>
-                                                    <td>55</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Total Late Reports</td>
-                                                    <td>3</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Total On-Time</td>
-                                                    <td>52</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table className="usa-table-borderless">
-                                            <tbody>
-                                                <tr>
-                                                    <td>% On Time</td>
-                                                    <td>95%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Goal</td>
-                                                    <td>100%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Gap</td>
-                                                    <td>5%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Champion Goal</td>
-                                                    <td>90%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Revised Gap</td>
-                                                    <td>-5%</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>                               
-                            </td>
+                                <table className="no-border">
+                                    <tbody>
+                                        <tr>
+                                            <td>% On Time</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Goal</td>
+                                            <td>100%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gap</td>
+                                            <td>5%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Champion Goal</td>
+                                            <td>90%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Revised Gap</td>
+                                            <td>-5%</td>
+                                        </tr>
+                                    </tbody>
+                                    </table>
+                            </td> 
                         </tr>
-
+                       
                     </tbody>
                 </table>
-                <table>
+                <table className= "table-cell-resize">
                     <thead>
                         <tr>
-                            <th scope="col">Due Date</th>
-                            <th scope="col">Date Submitted</th>
-                            <th scope="col">Days after C/O</th>
-                            <th scope="col">Status</th>                      
+                            <th >Due Date</th>
+                            <th >Date Submitted</th>
+                            <th >Days after C/O</th>
+                            <th >Status</th>
                         </tr>
                     </thead>
                      <tbody>
