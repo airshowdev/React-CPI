@@ -106,7 +106,7 @@ namespace CPI.Client.Controllers
             try
             {
 
-                if (id == null)
+                if (id == null || id == "")
                 {
                     return "404";
                 }
@@ -244,10 +244,8 @@ namespace CPI.Client.Controllers
                     return 404;
                 }
 
-                ObjectId ID = new ObjectId(id);
-
                 Project updateProject = Project.FromJson(json);
-                updateProject.Id = ID;
+                updateProject.Id = id;
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -338,7 +336,7 @@ namespace CPI.Client.Controllers
         [HttpGet("[action]")]
         public async Task<object> DataCollection(string id)
         {
-            return await GetPage(id, "DataCollection");
+            return (await GetPage(id, "DataCollection"));
         }
         [HttpGet("[action]")]
         public async Task<object> ChampMeet(string id)
@@ -384,7 +382,7 @@ namespace CPI.Client.Controllers
 
                 string hash = GenerateHash(pass);
 
-                bool authenticated = hash == authUser.PasswordHash;
+                bool authenticated = VerifiyHash(pass, authUser.PasswordHash);
 
                 Models.User.CurrentUser = (authenticated) ? authUser : null;
 
@@ -470,7 +468,7 @@ namespace CPI.Client.Controllers
 
         private string GenerateHash(string pass)
         {
-            Log4NetLogger.Info("Create hash using salt process started");
+            Log4NetLogger.Info("Generate hash process started");
             try
             {
 
@@ -494,7 +492,7 @@ namespace CPI.Client.Controllers
                     hashWithSalt[bytes.Length + i] = salt[i];
                 }
 
-                Log4NetLogger.Info("Create hash using salt process completed succesfully");
+                Log4NetLogger.Info("Generate hash process completed succesfully");
                 return Convert.ToBase64String(hashWithSalt);
             }
             catch (ArgumentNullException nullEx)
@@ -509,9 +507,42 @@ namespace CPI.Client.Controllers
             }
         }
 
-        private string VerifiyHash(string pass)
+        private bool VerifiyHash(string pass, string hash)
         {
-            return "";
+
+            byte[] hashBytes = Convert.FromBase64String(hash);
+
+            byte[] salt = new byte[8];
+
+            for (int i = 8; i > 0; i--)
+            {
+                salt[i - 1] = hashBytes[hashBytes.Length - i];
+            }
+
+            Array.Reverse(salt);
+
+            HashAlgorithm algo = new SHA512Managed();
+
+            byte[] passBytes = Encoding.ASCII.GetBytes(pass);
+
+            byte[] passHash = algo.ComputeHash(passBytes);
+
+            byte[] passWithSalt = new byte[passHash.Length + salt.Length];
+
+            Array.Copy(passHash, passWithSalt, passHash.Length);
+
+            for (int i = 0; i < salt.Length; i++)
+            {
+                passWithSalt[passHash.Length + i] = salt[i];
+            }
+
+            string verifyingPass = Convert.ToBase64String(passWithSalt);
+
+            if (verifyingPass == hash)
+            {
+                return true;
+            }
+            return false;
         }
 
 
