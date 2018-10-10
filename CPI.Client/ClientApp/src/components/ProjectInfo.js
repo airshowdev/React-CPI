@@ -60,6 +60,20 @@ export class ProjectInfo extends Component {
     }
 
     handleSubmit() {
+        /*var jsonToSubmit = {
+            id: project.id,
+            changes: {
+                Name: this.state.project.Name,
+                Base: this.state.project.Base,
+                Unit: this.state.project.Unit,
+                Evaluators: this.state.project.Evaluators,
+                DataCollection: this.state.project.DataCollection,
+                ChampionName: this.state.project.Champion.Name,
+                TeamLead: this.state.project.TeamLeads,
+                Mentor: this.state.project.TeamLead
+                }
+            }
+        }*/
         alert(JSON.stringify(this.state.project));
         Post(this.state.project, "Project", "UpdateProject");
     }
@@ -75,7 +89,7 @@ export class ProjectInfo extends Component {
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
-                            <input id="ID" name="ID" type="text" value={this.state.project.Id} />
+                            <input id="ID" name="ID" type="text" value={this.state.project._id} />
                             <label htmlFor="Name">Name</label>
                             <input id="Name" name="Name" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Name} />
                             <label htmlFor="Base">Base</label>
@@ -87,13 +101,13 @@ export class ProjectInfo extends Component {
                         </div>
                         <div className="usa-width-one-half" style={{ float: 'right', margin: 'auto' }}>
                             <label htmlFor="Type">Type</label>
-                            <input id="Type" name="Type" type="text" placeholder="Not Defined" value={this.state.project.DataCollection.Type} />
+                            <input id="Type" name="Type" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.DataCollection.Type} />
                             <label htmlFor="Creator">Creator</label>
-                            <input id="Creator" name="Creator" type="text" placeholder="Not Defined" value={this.state.project.Creator.Name} />
+                            <input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.Creator.Name} />
                             <label htmlFor="Champion">Champion</label>
-                            <input id="Champion" name="Champion" type="text" placeholder="Not Defined" value={this.state.project.Champion.Name} />
+                            <input id="Champion" name="Champion" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Champion.Name} />
                             <label htmlFor="TeamLead">TeamLead</label>
-                            <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" value={this.state.project.TeamLeads.join("\n")} />
+                            <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.TeamLeads.join("\n")} />
                             <label htmlFor="Mentor">Mentor</label>
                             <input id="Mentor" name="Mentor" type="text" value={this.state.project.Mentor} />
                             <button id="Submit">Save Changes</button>

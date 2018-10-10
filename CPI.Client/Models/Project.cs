@@ -13,16 +13,20 @@ namespace CPI.Client.Models
         {
             return new Stub()
             {
-                ID = Id,
+                ID = id.ToString(),
                 Name = Name,
                 Creator = Creator,
                 Unit = Unit
             };
         }
-        [JsonIgnore]
-        public string Id { get { return id.ToString(); } set { id = new ObjectId(value); } }
+
+        [BsonIgnore]
+        [JsonProperty("_id")]
+        public string ID { get { return id.ToString(); } set { id = new ObjectId(value); } }
+
         [BsonId]
-        private ObjectId id { get; set; } = new ObjectId();
+        [JsonIgnore]
+        public ObjectId id { get; set; } = new ObjectId();
 
         [JsonProperty("Name")]
         public string Name { get; set; } = "";
