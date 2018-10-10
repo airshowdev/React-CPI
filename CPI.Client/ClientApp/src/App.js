@@ -51,7 +51,7 @@ export default class App extends Component {
             <Route exact path='/Projects' component={Projects} />
             <Route path='/Project/ProjectOverview/' component={ProjectOverview} />
 			<Route path='/Project/BaselineData/' component={BaselineData} />
-			<Route path='/Project/AnalyzeData/' component={AnalyzeData} />
+			<Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
 			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
 			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
