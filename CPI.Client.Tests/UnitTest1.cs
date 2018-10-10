@@ -5,6 +5,10 @@ using CPI.Client.Models;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using System.Threading.Tasks;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace CPI.Client.Tests
 {
@@ -29,8 +33,24 @@ namespace CPI.Client.Tests
         public void TestGetProject()
         {
             ProjectController controller = new ProjectController();
-            string expected = "{ \"Id\":\"5bb230c5d346df46e89dcb43\",\"Name\":\"The CPI Project itself\",\"MajCom\":\"AFGSC\",\"Base\":\"Barksdale\",\"Creator\":\"Gabriel Stines\",\"Unit\":\"595 SCS\",\"Evaluators\":[\"Travis Menard\",\"Alex Cyriac\"],\"TeamLeads\":[\"Ivan Martinovich\",\"Kaya Garcia\",\"\"],\"Facilitators\":[\"Ebony Crawford\",\"Christopher Majek\",\"\"],\"Mentor\":\"Sean Bean\",\"DataCollection\":{\"Elements\":[{\"Goal\":\"\"\"\",\"Actual\":\"\"\"\",\"Name\":\"1\",\"Type\":\"\",\"VA\":null,\"NVA\":null,\"Labor\":null,\"Material\":null,\"Other\":null,\"Transaction\":null,\"Total\":null}],\"Id\":\"000000000000000000000000\",\"Name\":\"Empty\",\"Type\":\"\"},\"Champion\":{\"Name\":\"\",\"Deficiency\":\"\",\"Expectation\":\"\",\"Recommendation\":\"\",\"Goal\":0,\"Response\":{\"Concur\":\"\"}},\"TeamLeadMeeting\":{\"MembersIdentified\":[],\"SIPOC\":{\"Suppliers\":[],\"Inputs\":[],\"Process\":[],\"Outputs\":[],\"Customers\":[]},\"DateRange\":{\"begin\":\"\",\"end\":\"\"}},\"DraftCharter\":{\"TeamLeadSig\":{},\"ChampSig\":{}},\"RootCauses\":{\"FishboneBranch\":[],\"RootCausesAndCounters\":{}},\"DesiredEffects\":{\"Productivity\":\"\",\"EquipAvail\":\"\",\"Agility\":\"\",\"SafeOps\":\"\",\"Efficiency\":\"\"},\"DateRange\":{\"begin\":\"\",\"end\":\"\"}}";
             string id = "5bb230c5d346df46e89dcb43";
+
+            string expected = GetContents("./project.json");
+            Task<string> task = controller.GetProjectAsync(id);
+            task.Wait();
+            string actual = task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetProjectWithEmptyID()
+        {
+            ProjectController controller = new ProjectController();
+            string expected = "404";
+            string id = "";
 
             Task<string> task = controller.GetProjectAsync(id);
             task.Wait();
@@ -38,7 +58,286 @@ namespace CPI.Client.Tests
 
             Assert.IsNotNull(actual);
             Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected.Replace(" ", ""), actual.Replace(" ", ""));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetProjectWithNullID()
+        {
+            ProjectController controller = new ProjectController();
+            string expected = "404"; 
+            string id = null;
+
+            Task<string> task = controller.GetProjectAsync(id);
+            task.Wait();
+            string actual = task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+
+        public void TestGetDataCollection()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "5bb230c5d346df46e89dcb43";
+            string json = GetContents("./datacollection.json").Replace(" ","");
+            DataCollection expected = DataCollection.FromJson(json);
+            
+            Task<object> task = controller.DataCollection(id);
+            task.Wait();
+            DataCollection actual = (DataCollection)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+        }
+
+        [TestMethod]
+        public void TestGetDataCollectionWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.DataCollection(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetDataCollectionWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.DataCollection(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+
+        public void TestGetChampMeet()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "5bb230c5d346df46e89dcb43";
+            string json = GetContents("./ChampMeet.json").Replace(" ","");
+            Champion expected = Champion.FromJson(json);
+            
+            Task<object> task = controller.ChampMeet(id);
+            task.Wait();
+            Champion actual = (Champion)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+        }
+
+        [TestMethod]
+        public void TestGetChampMeetWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.ChampMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetChampMeetWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.ChampMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+
+        public void TestGetTeamLeadMeeting()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "5bb230c5d346df46e89dcb43";
+            string json = GetContents("./TeamLeadMeet.json").Replace(" ","");
+            TeamLeadMeeting expected = TeamLeadMeeting.FromJson(json);
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            TeamLeadMeeting actual = (TeamLeadMeeting)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+        }
+
+        [TestMethod]
+        public void TestGetTeamLeadMeetingWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetTeamLeadMeetingWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void TestGetCauseAndCounters()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "5bb230c5d346df46e89dcb43";
+            string json = GetContents("./CauseAndCounters.json").Replace(" ","");
+            RootCause expected = RootCause.FromJson(json);
+            
+            Task<object> task = controller.CauseAndCounters(id);
+            task.Wait();
+            RootCause actual = (RootCause)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+        }
+
+        [TestMethod]
+        public void TestGetCauseAndCountersWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetCauseAndCountersWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void TestGetDraftCharter()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "5bb230c5d346df46e89dcb43";
+            string expected = GetContents("./DraftCharter.json").Replace(" ","");
+
+
+
+            Task<object> task = controller.DraftCharter(id);
+            task.Wait();
+            string actual = task.Result.ToJson().Replace(" ","");
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected.ToLower(),actual.ToLower());
+        }
+
+        [TestMethod]
+        public void TestGetDraftCharterWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetDraftCharterWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+            
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("",actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        private string GetContents(string filePath)
+        {
+            using (Stream stream = new FileStream(filePath, FileMode.Open))
+            using (TextReader tr = new StreamReader(stream))
+            {
+                return tr.ReadToEnd();
+            }
         }
     }
 }
