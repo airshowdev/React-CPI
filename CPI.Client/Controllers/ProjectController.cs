@@ -16,7 +16,8 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
 
 using CPI.Client.Models;
-
+using System.Security.Cryptography.X509Certificates;
+using System.ComponentModel;
 
 namespace CPI.Client.Controllers
 {
@@ -25,6 +26,8 @@ namespace CPI.Client.Controllers
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
+
+        
         [HttpGet("[action]")]
         public async Task<string> Test(string function = "getAll", string ID = "", string json = "")
         {
@@ -102,7 +105,7 @@ namespace CPI.Client.Controllers
         public async Task<string> GetProjectAsync(string id)
         {
 
-            Log4NetLogger.Info($"Get project process started with parameter id = {id??"null"}");
+            Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
             try
             {
 
@@ -110,7 +113,7 @@ namespace CPI.Client.Controllers
                 {
                     return "404";
                 }
-                MongoConnection connection = new MongoConnection( await GetConnectionString());
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -127,6 +130,29 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(E);
                 throw;
             }
+        }
+
+        [HttpGet("[action]")]
+
+        public bool PKIAuth()
+        {
+
+            try
+            {
+                List<X509Certificate2> certs = BaseSmartCardCryptoProvider.GetCertificates();
+
+                X509Certificate2 cert = certs[0];
+                return true;
+            }
+            catch (Win32Exception win)
+            {
+                if (win.Message.Contains("Access Denied"))
+                {
+                    
+                }
+            }
+
+            return false;
         }
 
         [HttpPost("[action]")]
