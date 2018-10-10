@@ -32,7 +32,7 @@ export default class App extends Component {
 
        //this.setCurrentProject = this.setCurrentProject.bind(this);
 
-        //this.state.currentProject = "";
+       //this.state.currentProject = "";
     }
 
     setCurrentProject() {

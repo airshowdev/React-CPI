@@ -19,10 +19,10 @@ export class Layout extends Component {
 				</Col>
 			</Row>
 			<Row>
-				<Col fluid sm={3}>
+                  <Col fluid style={{width: '15%'}}>
 	    			  <Route path="/Project/:Page/" component={SideNav}/>
 				</Col>
-				<Col fluid sm={9}>
+                  <Col fluid style={{width: '85%'}}>
 					{this.props.children}
 				</Col>
 			</Row>
