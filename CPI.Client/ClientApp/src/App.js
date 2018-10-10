@@ -22,6 +22,7 @@ import { ValidateDataCollection } from './components/ProjectPages/ValidateDataCo
 import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
+import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
 
 
 export default class App extends Component {
@@ -43,7 +44,8 @@ export default class App extends Component {
 
   render() {
     return (
-		<Layout>
+        <Layout>
+            <Route path="/NVAData/:id" component={NVADataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
