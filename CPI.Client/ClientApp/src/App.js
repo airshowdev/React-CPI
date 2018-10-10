@@ -7,10 +7,12 @@ import { Projects } from './components/Projects';
 import { Project } from './components/Project';
 import { ProjectOverview } from './components/ProjectOverview';
 import { withRouter } from 'react-router';
-
+import { RequestAMentor } from './components/RequestAMentor';
 import { PreEventPlanningOverview } from './components/PreEventPlanningOverview';
 import { BaselineData } from './components/BaselineData';
 import { AnalyzeData } from './components/AnalyzeData';
+import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
+import { PostEventFollowUp } from './components/PostEventFollowUp';
 
 export default class App extends Component {
     displayName = App.name
@@ -38,6 +40,9 @@ export default class App extends Component {
             <Route path='/ProjectOverview' component={ProjectOverview} />
             <Route path='/BaselineData' component={BaselineData} />
             <Route path='/AnalyzeData' component={AnalyzeData} />
+            <Route path='/RequestAMentor' component={RequestAMentor} />
+            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
         </Layout>
     );
   }
