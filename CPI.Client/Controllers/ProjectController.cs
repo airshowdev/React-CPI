@@ -223,7 +223,6 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<long> UpdateProject()
         {
-
             Log4NetLogger.Info("Update project process started");
 
             try
@@ -266,8 +265,6 @@ namespace CPI.Client.Controllers
 
         private async Task<object> GetPage(string id, string page)
         {
-
-
             if (id == null || id == "")
             {
                 return "404 ID not found";
@@ -438,6 +435,7 @@ namespace CPI.Client.Controllers
         private async Task<string> GetConnectionString()
         {
 
+
             try
             {
                 Log4NetLogger.Info("Get connection string process started");
@@ -464,6 +462,7 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(invalidOpEx);
                 return null;
             }
+
 
         }
 

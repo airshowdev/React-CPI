@@ -3874,7 +3874,7 @@ fieldset {
   .usa-navbar {
     border-bottom: none;
     display: inline-block;
-    height: 7.8rem;
+    height: 10rem;
   }
 }
 
@@ -4903,8 +4903,10 @@ input[type=search] {
 }
 
 .paragraph {
-	margin-left: 22em;
-	margin-right: 22em;
+	padding-top: 0px;
+	margin-left: 35em;
+	margin-right: 35em;
+	margin-top:auto;
 	border: solid #0071bc;
 	text-align: center;
 }
@@ -4921,6 +4923,27 @@ input[type=search] {
 	margin-right: -1px;
 }
 
-.grid-with-border > h1 {
-	margin: 10px;
+.grid-with-border > h1, h2 {
+	margin-left: 15px;
+	margin-top: 30px;
+}
+
+.grid-with-border > button {
+	margin-left: 10px;
+}
+
+.left-aligned-paragraph {
+	margin-left: 35em;
+	margin-right: 35em;
+	padding: 5px;
+	border: solid #0071bc;
+}
+
+.left-aligned-paragraph > h1{
+	text-align: center;
+	
+}
+
+.image-alignment{
+	text-align: center;
 }
