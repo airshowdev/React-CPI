@@ -179,7 +179,7 @@ namespace CPI.Client.Controllers
 
                     Log4NetLogger.Info("Create project process completed succesfully");
 
-                    return newProject.Id.ToString();
+                    return newProject.ID;
                 }
             }
             catch (Exception E)
@@ -194,8 +194,6 @@ namespace CPI.Client.Controllers
         {
             try
             {
-
-
                 if (id == null || id == "")
                 {
                     return " 404 ";
@@ -223,6 +221,7 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<long> UpdateProject()
         {
+
             Log4NetLogger.Info("Update project process started");
 
             try
@@ -245,12 +244,12 @@ namespace CPI.Client.Controllers
                 }
 
                 Project updateProject = Project.FromJson(json);
-                updateProject.Id = id;
+                updateProject.ID = id;
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
-
-                ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.Id == updateProject.Id, updateProject);
+                
+                ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.id == updateProject.id, updateProject);
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 
