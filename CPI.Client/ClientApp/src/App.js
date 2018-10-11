@@ -63,6 +63,7 @@ export default class App extends Component {
         <Layout>
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
+<<<<<<< HEAD
 
             <Route path="/Project/:id" component={Project} />
             <Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
@@ -95,6 +96,15 @@ export default class App extends Component {
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
             <Route path='/Project/MeetWithChampion/' component={MeetWithChampion} />
             <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
+=======
+            <Route path="/Project/:id/:Page" component={Project} />
+            <Route path='/ProjectOverview' component={ProjectOverview} />
+            <Route path='/BaselineData' component={BaselineData} />
+            <Route path='/AnalyzeData' component={AnalyzeData} />
+            <Route path='/RequestAMentor' component={RequestAMentor} />
+            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+>>>>>>> CPI/Views-Cyriac
         </Layout>
     );
   }
