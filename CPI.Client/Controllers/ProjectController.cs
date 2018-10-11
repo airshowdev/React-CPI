@@ -134,7 +134,7 @@ namespace CPI.Client.Controllers
 
         [HttpGet("[action]")]
 
-        public bool PKIAuth()
+        public string PKIAuth()
         {
 
             try
@@ -142,17 +142,17 @@ namespace CPI.Client.Controllers
                 List<X509Certificate2> certs = BaseSmartCardCryptoProvider.GetCertificates();
 
                 X509Certificate2 cert = certs[0];
-                return true;
+                return "Authenticated";
             }
             catch (Win32Exception win)
             {
-                if (win.Message.Contains("Access Denied"))
+                if (win.ErrorCode == -2147467259)
                 {
-                    
+                    return "Error";
                 }
             }
 
-            return false;
+            return "Not Authenticated";
         }
 
         [HttpPost("[action]")]
@@ -459,8 +459,6 @@ namespace CPI.Client.Controllers
         }
         private async Task<string> GetConnectionString()
         {
-
-
             try
             {
                 Log4NetLogger.Info("Get connection string process started");
@@ -487,8 +485,6 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(invalidOpEx);
                 return null;
             }
-
-
         }
 
         private string GenerateHash(string pass)
@@ -496,7 +492,6 @@ namespace CPI.Client.Controllers
             Log4NetLogger.Info("Generate hash process started");
             try
             {
-
                 RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
                 HashAlgorithm algo = new SHA512Managed();
 
