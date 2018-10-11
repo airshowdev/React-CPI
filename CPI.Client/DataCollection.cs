@@ -8,10 +8,14 @@ using Newtonsoft.Json;
 
 namespace CPI.Client
 {
-    public class DataCollection
+    public partial class DataCollection
     {
+        [JsonProperty("_id")]
+        [BsonIgnore]
+        public string Id { get { return id.ToString(); } set { id = new ObjectId(value); } }
         [BsonId]
-        public ObjectId Id { get; set; } = new ObjectId();
+        [JsonIgnore]
+        private ObjectId id { get; set; } = new ObjectId();
 
         [JsonProperty("Name")]
         public string Name { get; set; } = "";
@@ -74,5 +78,27 @@ namespace CPI.Client
         }
 
         
+    }
+
+    public partial class DataCollection
+    {
+        public static DataCollection FromJson(string json) => JsonConvert.DeserializeObject<DataCollection>(json, Converter.Settings);
+    }
+
+    public static class Serialize
+    {
+        public static string ToJson(this DataCollection self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+
+    internal static class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters = {
+                new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AssumeUniversal }
+            },
+        };
     }
 }

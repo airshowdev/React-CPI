@@ -1,8 +1,5 @@
 ﻿import React, { Component } from 'react';
-import './css/uswds.css';
-import querystring from 'query-string';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2'
+import '../css/uswds.css';
 
 export class AnalyzeData extends Component {
 
@@ -12,8 +9,7 @@ export class AnalyzeData extends Component {
         super(props, context)
         this.state = { project: {}, BarData: {}, loading: false };   
     }
-
-
+	
     render() {
         return ( 
             <div>

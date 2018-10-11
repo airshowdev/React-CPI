@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-import './css/uswds.css';
-import querystring from 'query-string';
-import PropTypes from 'prop-types';
+import '../css/uswds.css';
 
 export class MeetWithChampion extends Component {
 

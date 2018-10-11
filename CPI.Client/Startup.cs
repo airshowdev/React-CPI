@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +19,11 @@ namespace CPI.Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(
+            
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -41,6 +44,8 @@ namespace CPI.Client
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -8,24 +8,25 @@ using MongoDB.Bson;
 namespace CPI.Client.Models
 {
     public partial class Project
-    {
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-
+    { 
         public Stub ToStub()
         {
             return new Stub()
             {
-                ID = Id.ToString(),
+                ID = id.ToString(),
                 Name = Name,
                 Creator = Creator,
                 Unit = Unit
             };
         }
+
+        [BsonIgnore]
+        [JsonProperty("_id")]
+        public string ID { get { return id.ToString(); } set { id = new ObjectId(value); } }
+
         [BsonId]
-        public ObjectId Id { get; set; } = new ObjectId();
+        [JsonIgnore]
+        public ObjectId id { get; set; } = new ObjectId();
 
         [JsonProperty("Name")]
         public string Name { get; set; } = "";
@@ -111,7 +112,7 @@ namespace CPI.Client.Models
         public string Recommendation { get; set; } = "";
 
         [JsonProperty("Goal")]
-        public long Goal { get; set; } = 0;
+        public int Goal { get; set; } = 0;
 
         [JsonProperty("Response")]
         public Response Response { get; set; } = new Response();
@@ -182,9 +183,35 @@ namespace CPI.Client.Models
         public static Project FromJson(string json) => JsonConvert.DeserializeObject<Project>(json, Converter.Settings);
     }
 
-    public static class Serialize
+    public static partial class Serialize
     {
         public static string ToJson(this Project self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+public partial class Champion
+    {
+        public static Champion FromJson(string json) => JsonConvert.DeserializeObject<Champion>(json, Converter.Settings);
+    }
+
+    public static partial class Serialize
+    {
+        public static string ToJson(this Champion self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+    public partial class TeamLeadMeeting
+    {
+        public static TeamLeadMeeting FromJson(string json) => JsonConvert.DeserializeObject<TeamLeadMeeting>(json, Converter.Settings);
+    }
+
+    public static partial class Serialize
+    {
+        public static string ToJson(this TeamLeadMeeting self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }public partial class RootCause
+    {
+        public static RootCause FromJson(string json) => JsonConvert.DeserializeObject<RootCause>(json, Converter.Settings);
+    }
+
+    public static partial class Serialize
+    {
+        public static string ToJson(this RootCause self) => JsonConvert.SerializeObject(self, Converter.Settings);
     }
 
     internal static class Converter
