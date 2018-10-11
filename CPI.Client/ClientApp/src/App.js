@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
+import { Project } from './components/Project';
 import { ProjectInfo } from './components/ProjectInfo';
 import { ProjectOverview } from './components/ProjectPages/ProjectOverview';
 import { PreEventPlanningOverview } from './components/ProjectPages/PreEventPlanningOverview';
@@ -23,6 +24,8 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
+import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
+import { PostEventFollowUp } from './components/PostEventFollowUp';
 
 
 export default class App extends Component {
@@ -49,6 +52,7 @@ export default class App extends Component {
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
+<<<<<<< HEAD
             <Route path='/Project/ProjectOverview/' component={ProjectOverview} />
 			<Route path='/Project/BaselineData/' component={BaselineData} />
 			<Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
@@ -70,6 +74,15 @@ export default class App extends Component {
 			<Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
+=======
+            <Route path="/Project/:id/:Page" component={Project} />
+            <Route path='/ProjectOverview' component={ProjectOverview} />
+            <Route path='/BaselineData' component={BaselineData} />
+            <Route path='/AnalyzeData' component={AnalyzeData} />
+            <Route path='/RequestAMentor' component={RequestAMentor} />
+            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+>>>>>>> Views-Cyriac
         </Layout>
     );
   }
