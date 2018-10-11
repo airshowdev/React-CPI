@@ -4933,9 +4933,10 @@ input[type=search] {
 }
 
 .left-aligned-paragraph {
-	margin-left: 35em;
-	margin-right: 35em;
-	padding: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50vw;
+	min-width: 800px;
 	border: solid #0071bc;
 }
 
@@ -4946,4 +4947,22 @@ input[type=search] {
 
 .image-alignment{
 	text-align: center;
+}
+
+.horizontal-div-left{
+	float: left;
+	
+}
+
+.horizontal-div-right {
+	float: right;
+}
+
+.border-basic {
+	border: solid #0071bc;
+}
+
+.centered-textarea {
+	margin-left: auto;
+	margin-right: auto;
 }
