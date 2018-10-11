@@ -1,10 +1,6 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/ProcessWalk.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/ProcessWalk.js
+import '../css/HallMartino.css';
 
 export class ProcessWalk extends Component {
 

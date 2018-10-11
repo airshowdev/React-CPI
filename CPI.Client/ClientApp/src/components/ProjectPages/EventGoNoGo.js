@@ -1,10 +1,6 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/EventGoNoGo.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/EventGoNoGo.js
+import '../css/HallMartino.css';
 
 export class EventGoNoGo extends Component {
 

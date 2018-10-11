@@ -2,7 +2,7 @@
 import '../css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
-import './css/HallMartino.css';
+import '../css/HallMartino.css';
 
 export class BaselineData extends Component {
 

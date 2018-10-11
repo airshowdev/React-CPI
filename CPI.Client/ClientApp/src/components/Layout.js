@@ -11,24 +11,6 @@ export class Layout extends Component {
         super();
     }
   render() {
-<<<<<<< HEAD
-	  return (
-		<Grid>
-			<Row>
-				<Col>
-					<MenuHeader />
-				</Col>
-			</Row>
-			<Row>
-                  <Col fluid style={{width: '15%'}}>
-	    			  <Route path="/Project/:Page/" component={SideNav}/>
-				</Col>
-                  <Col fluid style={{width: '85%'}}>
-					{this.props.children}
-				</Col>
-			</Row>
-		</Grid>
-=======
       return (
         <Grid>
         <Row>
@@ -45,7 +27,6 @@ export class Layout extends Component {
                 </Col>
             </Row>
         </Grid>
->>>>>>> Views
     );
   }
 }

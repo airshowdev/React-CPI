@@ -1,10 +1,6 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/ValidateCharter.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/ValidateCharter.js
+import '../css/HallMartino.css';
 
 export class ValidateCharter extends Component {
 

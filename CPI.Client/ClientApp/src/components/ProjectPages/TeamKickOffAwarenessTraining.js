@@ -1,10 +1,6 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/TeamKickOffAwarenessTraining.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/TeamKickOffAwarenessTraining.js
+import '../css/HallMartino.css';
 
 export class TeamKickOffAwarenessTraining extends Component {
 

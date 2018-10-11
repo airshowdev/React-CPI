@@ -3,8 +3,6 @@ import './css/uswds.css';
 import REST, { Post } from '../REST';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
-import { ProjectOverview } from './ProjectOverview';
-import { AnalyzeData } from './AnalyzeData';
 import { SideNav } from './SideNav';
 
 export class Project extends Component {
