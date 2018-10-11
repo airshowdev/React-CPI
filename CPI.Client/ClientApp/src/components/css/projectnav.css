@@ -1,7 +1,0 @@
-﻿.project-nav > ul li a {
-    display: none;
-}
-
-.project-nav:focus > ul li a {
-    display: block;
-}
