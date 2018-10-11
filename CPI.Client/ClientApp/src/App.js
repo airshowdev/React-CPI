@@ -25,6 +25,7 @@ import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
 
 
+
 export default class App extends Component {
     displayName = App.name
 
@@ -51,6 +52,7 @@ export default class App extends Component {
             <Route exact path='/Projects' component={Projects} />
             <Route path='/Project/ProjectOverview/' component={ProjectOverview} />
 			<Route path='/Project/BaselineData/' component={BaselineData} />
+
 			<Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
 			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
@@ -74,3 +76,7 @@ export default class App extends Component {
     );
   }
 }
+
+
+//<Route path='/DetermineRootCause' from component={DetermineRootCause} />
+//<Route path='/DevelopCountermeasures' from component={DevelopCountermeasures} />
