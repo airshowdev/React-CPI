@@ -60,7 +60,7 @@ export default class App extends Component {
   render() {
     return (
         <Layout>
-            <Route path="/NVAData/:id" component={NVADataCollection} />
+            <Route path="/Project/NVAData/:id" component={NVADataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
