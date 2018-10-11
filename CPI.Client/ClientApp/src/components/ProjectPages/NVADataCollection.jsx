@@ -1,14 +1,14 @@
 ﻿import { NavButtons } from "../NavButtons";
 import React, { Component } from 'react';
 import '../css/uswds.css';
-
-
+import { Alert } from "reactstrap";
 
 export class NVADataCollection extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            notNumberIsVisable: false,
             Elements: [], newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: false
         };
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -19,6 +19,7 @@ export class NVADataCollection extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleClear = this.handleClear.bind(this);
+        this.notNumberDismiss = this.notNumberDismiss.bind(this);
     }
 
     componentDidMount() {
@@ -26,6 +27,10 @@ export class NVADataCollection extends Component {
             .then(data => {
                 this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
             });*/
+    }
+
+    notNumberDismiss() {
+        this.setState({ notNumberIsVisable: false })
     }
 
     handleGoalChange(event) {
@@ -49,7 +54,7 @@ export class NVADataCollection extends Component {
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
-            alert("Value Added, NVA, and Goal must be valid numerical values");
+            this.setState({ notNumberIsVisable: true });
         }
     }
     handleDelete(event) {
@@ -126,6 +131,11 @@ export class NVADataCollection extends Component {
                         </tr>
                     </tbody>
                     </table>
+                    <div>
+                        <Alert color="danger" isOpen={this.state.notNumberIsVisable} toggle={this.notNumberDismiss}>
+                            NVA, VA, and Goal must be numerical values.
+                        </Alert>
+                    </div>    
                 </div>
 
             );
