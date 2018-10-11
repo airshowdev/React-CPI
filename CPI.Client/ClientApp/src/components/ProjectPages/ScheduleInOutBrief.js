@@ -1,5 +1,10 @@
 ﻿import React, { Component } from 'react';
+<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/ScheduleInOutBrief.js
 import '../css/uswds.css';
+=======
+import './css/uswds.css';
+import './css/HallMartino.css';
+>>>>>>> Views:CPI.Client/ClientApp/src/components/ScheduleInOutBrief.js
 
 export class ScheduleInOutBrief extends Component {
 

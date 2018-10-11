@@ -26,6 +26,19 @@ import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
 import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
 import { PostEventFollowUp } from './components/PostEventFollowUp';
+import { EventExecutionOverview } from './components/EventExecutionOverview';
+import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
+import { IdentifyPerformanceGaps } from './components/IdentifyPerformanceGaps';
+import { SetImprovementTargets } from './components/SetImprovementTargets';
+import { DetermineRootCause } from './components/DetermineRootCause';
+import { DevelopCountermeasures } from './components/DevelopCountermeasures';
+import { PostEventImplementationOverview } from './components/PostEventImplementationOverview';
+import { SeeCountermeasuresThrough } from './components/SeeCountermeasuresThrough';
+import { ConfirmResults } from './components/ConfirmResults';
+import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
+import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
+import { MeetWithChampion } from './components/MeetWithChampion';
+import { ChampionResponse } from './components/ChampionResponse';
 
 
 export default class App extends Component {
@@ -53,13 +66,22 @@ export default class App extends Component {
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Route path='/Project/ProjectOverview/' component={ProjectOverview} />
 			<Route path='/Project/BaselineData/' component={BaselineData} />
 			<Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
+=======
+
+            <Route path="/Project/:id" component={Project} />
+            <Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
+            <Route path='/Project/BaselineData/' component={BaselineData} />
+			<Route path='/Project/AnalyzeData/' component={AnalyzeData} />
+>>>>>>> Views
 			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
 			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
 			<Route path='/Project/PreEventPlanningOverview/' component={PreEventPlanningOverview} />
+<<<<<<< HEAD
 			<Route path='/Project/Validatecharter/' from component={ValidateCharter} />
 			<Route path='/Project/ReviewKPI/' from component={ReviewKPI} />
 			<Route path='/Project/IdentifyEventLocation/' from component={IdentifyEventLocation} />
@@ -83,7 +105,36 @@ export default class App extends Component {
             <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
             <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
 >>>>>>> Views-Cyriac
+=======
+			<Route path='/Project/Validatecharter/' component={ValidateCharter} />
+			<Route path='/Project/ReviewKPI/' component={ReviewKPI} />
+			<Route path='/Project/IdentifyEventLocation/' component={IdentifyEventLocation} />
+			<Route path='/Project/DistributeEventNotification/' component={DistributeEventNotification} />
+			<Route path='/Project/ScheduleInOutBrief/' component={ScheduleInOutBrief} />
+			<Route path='/Project/TeamProcessWalk/' component={TeamProcessWalk} />
+			<Route path='/Project/TeamKickOffAwarenessTraining/' component={TeamKickOffAwarenessTraining} />
+			<Route path='/Project/ValidateDataCollection/' component={ValidateDataCollection} />
+			<Route path='/Project/ObtainSupplies/' component={ObtainSupplies} />
+			<Route path='/Project/EventGoNoGo/' component={EventGoNoGo} />
+			<Route path='/Project/RoomSetup/' component={RoomSetup} />
+            <Route path='/Project/ProjectInfo/' component={ProjectInfo} />
+            <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+            <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
+            <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
+            <Route path='/Project/DevelopCountermeasures/' component={DevelopCountermeasures} />
+            <Route path='/Project/PostEventImplementationOverview/' component={PostEventImplementationOverview} />
+            <Route path='/Project/SeeCountermeasuresThrough/' component={SeeCountermeasuresThrough} />
+            <Route path='/Project/ConfirmResults/' component={ConfirmResults} />
+            <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
+            <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
+            <Route path='/Project/MeetWithChampion/' component={MeetWithChampion} />
+            <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
+>>>>>>> Views
         </Layout>
     );
   }
 }
+
+
+
+

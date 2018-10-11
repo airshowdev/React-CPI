@@ -1,5 +1,10 @@
 ﻿import React, { Component } from 'react';
+<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/IdentifyEventLocation.js
 import '../css/uswds.css';
+=======
+import './css/uswds.css';
+import './css/HallMartino.css';
+>>>>>>> Views:CPI.Client/ClientApp/src/components/IdentifyEventLocation.js
 
 export class IdentifyEventLocation extends Component {
 

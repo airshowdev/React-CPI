@@ -15,10 +15,15 @@ export class SideNav extends Component {
         var navHeight = {
             height: '905px'
         };
+<<<<<<< HEAD
 
         
 		return (
 			<div className="sidenav sticky" style={navHeight}>
+=======
+        return (
+            <aside className="sidenav sticky" style={navHeight}>
+>>>>>>> Views
                 <ul className="usa-sidenav-list ">
                     <li className="project-nav" tabIndex={1}>
                         <a >Pre-Event Planning (T-3 Weeks)</a>

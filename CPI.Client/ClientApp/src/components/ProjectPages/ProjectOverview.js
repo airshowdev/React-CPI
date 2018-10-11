@@ -2,6 +2,7 @@
 import '../css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
+import './css/HallMartino.css';
 
 export class ProjectOverview extends Component {
 
@@ -24,7 +25,7 @@ export class ProjectOverview extends Component {
             });
     }
 
-    render(project) {
+    render() {
         return (
             <div className="usa-grid">
                 <div className="grid-with-border">

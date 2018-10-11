@@ -1,5 +1,10 @@
 ﻿import React, { Component } from 'react';
+<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/TeamProcessWalk.js
 import '../css/uswds.css';
+=======
+import './css/uswds.css';
+import './css/HallMartino.css';
+>>>>>>> Views:CPI.Client/ClientApp/src/components/TeamProcessWalk.js
 
 export class TeamProcessWalk extends Component {
 
