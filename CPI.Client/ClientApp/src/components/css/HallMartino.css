@@ -109,30 +109,32 @@
 .column-input-box {
 	margin: auto;
 	width: auto;
-	background-color: #efec50;
+	background-color: #ffe378;
 	border: hidden;
 }
 
 .radio-input-size {
-	display: flex;
-	text-wrap: none;
-}
 
-.radio-input-size input[type=radio] {
-	margin-right: 12px;
-	text-wrap: none;
 }
 
 .radio-input-size label {
-	text-wrap: none;
+	display: inline-block;
+	min-width: 100%;
 }
 
 .paragraph-response-text {
-	display: inline-block;
 }
 
 .paragraph-response-text input {
 	width: 200px;
+}
+
+.teamlead-table {
+	
+}
+
+.teamlead-table td, input {
+	max-width: 200px;
 }
 
 

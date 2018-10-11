@@ -39,6 +39,9 @@ import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessful
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
 
+//adding in more routes to test pages
+import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
+import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
 
 export default class App extends Component {
     displayName = App.name
@@ -97,6 +100,10 @@ export default class App extends Component {
             <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+
+            {/* adding in more routes to test pages */}
+            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
+            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
         </Layout>
     );
   }

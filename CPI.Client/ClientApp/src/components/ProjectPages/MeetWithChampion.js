@@ -1,10 +1,6 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/MeetWithChampion.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/MeetWithChampion.js
+import '../css/HallMartino.css';
 
 export class MeetWithChampion extends Component {
 
@@ -17,7 +13,7 @@ export class MeetWithChampion extends Component {
 
     render(project) {
         return (
-            <div className="paragraph" style={{ border: "hidden" }}>
+            <div className="paragraph" style={{ border: "hidden", minWidth: "687px" }}>
                 <h1> Meet With Champion </h1>
                 <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                     <tbody>
