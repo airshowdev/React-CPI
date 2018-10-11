@@ -8,7 +8,7 @@ export class NVADataCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Elements: [], newElementVA: 0.00, newElementNVA: 0.00, newElementName: "", newElementGoal: 0, loading: false
+            Elements: [], newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: false
         };
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNVAChange = this.handleNVAChange.bind(this);
@@ -67,8 +67,8 @@ export class NVADataCollection extends Component {
         } else {
             return (
                 <div className="usa-grid">
-                    <NavButtons previous="ProjectOverview" next="AnalyzeData" projectId={this.props.match.params.id}/>
-                <table>
+					<NavButtons previous="ProjectOverview" next="AnalyzeData" projectId={this.props.match.params.id} />
+					<table>
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
@@ -86,10 +86,10 @@ export class NVADataCollection extends Component {
                             <tr key={x.Name} >
                                 <td>{x.Name}</td>
                                 <td>{x.VA}</td>
-                                <td>{x.NVA}</td>
-                                <td>{x.NVA / (x.VA + x.NVA)}</td>
-                                <td>{x.Goal}</td>
-                                <td>{((x.NVA / (x.VA + x.NVA)) <= x.Goal) ? "Success" : "Fail"}</td>
+								<td>{x.NVA}</td>
+								<td>{(this.NVAPercentage(x.NVA, x.VA))}</td>
+								<td>{x.Goal}</td>
+								<td>{this.NVAGoal(x.Goal, x.NVA, x.VA)}</td>
                                 <td><button id={x.Name} onClick={this.handleDelete}>Delete</button></td>
                                 <td><button>Edit</button></td>
                             </tr>
