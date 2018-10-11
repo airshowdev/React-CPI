@@ -7,7 +7,7 @@
     };
 }
 
-export function Post(data, controller, action) {
+export async function Post(data, controller, action) {
     console.log('yeet?');
     fetch('api/' + controller + '/' + action, {
         method: "POST",

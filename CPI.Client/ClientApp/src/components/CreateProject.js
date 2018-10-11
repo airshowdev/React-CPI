@@ -11,11 +11,24 @@ export class CreateProject extends Component {
         this.state = {
             creatorFirstName: "", creatorLastName: "", base: "", name: "", unit: ""
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
+
+    handleSubmit() {
+
+        var data = {
+            Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
+            Base: this.state.base,
+            Name: this.state.name,
+            Unit: this.state.unit
+        };
+
+        Post(data, 'Project', 'CreateProject');
+    }
+
     render() {
         return (
-            <form className="usa-form">
+            <form className="usa-form" onSubmit={this.handleSubmit}>
             <fieldset>
                 <legend>Create Project</legend>
                     <label htmlFor="ProjectName">Project Name</label>
@@ -33,17 +46,7 @@ export class CreateProject extends Component {
                     <label htmlFor="Unit">Unit</label>
                     <input id="Unit" ref="Unit" type="text" onChange={(event) => this.setState({ unit: event.target.value })}required aria-required="true" />
 
-                    <button className="usa-button" onClick={() => {
-                        var data = {
-                            Name: this.state.name,
-                            Base: this.state.base,
-                            Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
-                            Unit: this.state.unit
-                        };
-                        var response = Post(data, 'Project', 'CreateProject');
-                        console.log(response);
-                    }}>Create Project
-                        </button>
+                    <input type="submit" className="usa-button" value="Create Project"/>
             </fieldset>
             </form>
         );

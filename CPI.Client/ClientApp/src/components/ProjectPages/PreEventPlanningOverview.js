@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import './css/uswds.css';
+import '../css/uswds.css';
 
 export class PreEventPlanningOverview extends Component {
 
@@ -17,7 +17,7 @@ export class PreEventPlanningOverview extends Component {
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />
                 <img src="./img/close.png" defaultValue="Place Holder" />
-                    <p>Pre-planning is the most important phase of leading a successful CPI event. <br/>  In this phase you begin to develop the problem statement, determine feasibility <br/> of the event and get buy-in from the Champion and Team Lead.  </p>
+                <p>Pre-planning is the most important phase of leading a successful CPI event. <br/>  In this phase you begin to develop the problem statement, determine feasibility <br/> of the event and get buy-in from the Champion and Team Lead.  </p>
              </div>
             )
     }

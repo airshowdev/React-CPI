@@ -27,7 +27,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\ProjectPages\NVADataCollection.jsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\components\charting\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\ProjectPages\NVADataCollection.jsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

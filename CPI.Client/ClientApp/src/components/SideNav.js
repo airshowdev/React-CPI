@@ -17,8 +17,8 @@ export class SideNav extends Component {
         };
 
         
-        return (
-            <aside className="sidenav sticky" style={navHeight}>
+		return (
+			<div className="sidenav sticky" style={navHeight}>
                 <ul className="usa-sidenav-list ">
                     <li className="project-nav" tabIndex={1}>
                         <a >Pre-Event Planning (T-3 Weeks)</a>
@@ -125,8 +125,8 @@ export class SideNav extends Component {
                             </li>
                         </ul>
                     </li>
-                </ul>
-            </aside>
+				</ul>
+			</div>
 //            <aside className="sidenav sticky" style={navHeight}>
 //                <ul className="usa-sidenav-list">
 //                    <li>
