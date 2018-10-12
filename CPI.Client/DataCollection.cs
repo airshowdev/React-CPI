@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 using Newtonsoft.Json;
@@ -10,15 +9,6 @@ namespace CPI.Client
 {
     public partial class DataCollection
     {
-        [JsonProperty("_id")]
-        [BsonIgnore]
-        public string Id { get { return id.ToString(); } set { id = new ObjectId(value); } }
-        [BsonId]
-        [JsonIgnore]
-        private ObjectId id { get; set; } = new ObjectId();
-
-        [JsonProperty("Name")]
-        public string Name { get; set; } = "";
 
         [JsonProperty("Elements")]
         public IList<Element> Elements = new List<Element>();
