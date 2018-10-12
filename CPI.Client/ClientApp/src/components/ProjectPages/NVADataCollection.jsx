@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import '../css/uswds.css';
 import { Alert } from "reactstrap";
+import { Post } from '../../REST';
 
 export class NVADataCollection extends Component {
 
@@ -20,17 +21,18 @@ export class NVADataCollection extends Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.notNumberDismiss = this.notNumberDismiss.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
-        /*fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
-            });*/
+        //fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+        //    .then(data => {
+        //        this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
+        //    });
     }
 
     notNumberDismiss() {
-        this.setState({ notNumberIsVisable: false })
+        this.setState({ notNumberIsVisable: false });
     }
 
     handleGoalChange(event) {
@@ -74,6 +76,21 @@ export class NVADataCollection extends Component {
     }
     handleClear() {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
+    }
+
+    handleSave() {
+
+        var type = 'NVA';
+        var elements = this.state.Elements;
+        elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
+        var postData = {
+            _id: this.props.match.params.id,
+            Type: type,
+            Elements: elements
+        }
+        alert(JSON.stringify(postData));
+        Post(postData, "Project", "UpdateProject").then(response => alert(JSON.stringify(response)));
+        
     }
 
     NVAPercentage(nva, va) {
@@ -135,12 +152,13 @@ export class NVADataCollection extends Component {
                         <Alert color="danger" isOpen={this.state.notNumberIsVisable} toggle={this.notNumberDismiss}>
                             NVA, VA, and Goal must be numerical values.
                         </Alert>
-                    </div>    
+                    </div>
+                    <div style={{ float: 'right' }}>
+                        <button onClick={this.handleSave}>Save Data</button>
+                    </div>
                 </div>
 
             );
         }
-    }
-
-    
+    }  
 }
