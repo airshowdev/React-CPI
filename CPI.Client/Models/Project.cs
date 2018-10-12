@@ -214,6 +214,24 @@ public partial class Champion
         public static string ToJson(this RootCause self) => JsonConvert.SerializeObject(self, Converter.Settings);
     }
 
+    public static partial class Serialize
+    {
+        public static string ToJson(this DesiredEffects self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+    public partial class DesiredEffects
+    {
+        public static DesiredEffects FromJson(string json) => JsonConvert.DeserializeObject<DesiredEffects>(json, Converter.Settings);
+    }
+
+    public static partial class Serialize
+    {
+        public static string ToJson(this DraftCharter self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+    public partial class DraftCharter
+    {
+        public static DraftCharter FromJson(string json) => JsonConvert.DeserializeObject<DraftCharter>(json, Converter.Settings);
+    }
+
     internal static class Converter
     {
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings

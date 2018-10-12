@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.Cryptography.X509Certificates;
+using System.ComponentModel;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,8 +18,8 @@ using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
 
 using CPI.Client.Models;
-using System.Security.Cryptography.X509Certificates;
-using System.ComponentModel;
+using CPI.Client;
+
 
 namespace CPI.Client.Controllers
 {
@@ -63,6 +65,224 @@ namespace CPI.Client.Controllers
 
             return (response == null) ? null : await response.Content.ReadAsStringAsync();
 
+        }
+
+        [HttpPost("[action]")]
+        public async Task<string> UpdateDataCollection()
+        {
+
+            string json = "";
+
+            JObject jObj;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                json = reader.ReadToEnd();
+
+                jObj = (JObject) JsonConvert.DeserializeObject(json);
+            }
+
+            string projID = jObj.GetValue("_id").ToString();
+
+            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+
+            DataCollection collection = Client.DataCollection.FromJson(json);
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+
+                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+
+                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.DataCollection, collection);
+
+                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+
+                return result.ToString();
+            }
+
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
+            
+        }
+
+        public async Task<string> UpdateChampMeet()
+        {
+            string json = "";
+
+            JObject jObj;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                json = reader.ReadToEnd();
+
+                jObj = (JObject)JsonConvert.DeserializeObject(json);
+            }
+
+            string projID = jObj.GetValue("_id").ToString();
+
+            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+
+            Champion champion = Champion.FromJson(json);
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+
+                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+
+                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.Champion, champion);
+
+                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+
+                return result.ToString();
+            }
+
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
+        }
+
+        public async Task<string> UpdateTeamLeadMeet()
+        {
+            string json = "";
+
+            JObject jObj;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                json = reader.ReadToEnd();
+
+                jObj = (JObject)JsonConvert.DeserializeObject(json);
+            }
+
+            string projID = jObj.GetValue("_id").ToString();
+
+            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+
+            TeamLeadMeeting meeting = TeamLeadMeeting.FromJson(json);
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+
+                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+
+                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.TeamLeadMeeting, meeting);
+
+                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+
+                return result.ToString();
+            }
+
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
+        }
+
+        public async Task<string> UpdateDraftCharter()
+        {
+            string json = "";
+
+            JObject jObj;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                json = reader.ReadToEnd();
+
+                jObj = (JObject)JsonConvert.DeserializeObject(json);
+            }
+
+            string projID = jObj.GetValue("_id").ToString();;
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+
+                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+
+                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.Dates.Begin, (jObj.GetValue("Dates") as JObject).GetValue("Begin"))
+                    .Set(x => x.Dates.End, (jObj.GetValue("Dates") as JObject).GetValue("End"))
+                    .Set(x => x.Name, jObj.GetValue("Name").ToString())
+                    .Set(x => x.Unit, jObj.GetValue("Unit").ToString())
+                    .Set(x => x.Creator, jObj.GetValue("Creator").ToString())
+                    .Set(x => x.Champion, Champion.FromJson(jObj.GetValue("Champion").ToString()))
+                    .Set(x => x.TeamLeads, JsonConvert.DeserializeObject<IList<string>>(jObj.GetValue("TeamLeads").ToString()))
+                    .Set(x => x.Facilitators, JsonConvert.DeserializeObject<IList<string>>(jObj.GetValue("Facilitators").ToString()))
+                    .Set(x => x.Mentor, jObj.GetValue("Mentor").ToString())
+                    .Set(x => x.TeamLeadMeeting, TeamLeadMeeting.FromJson(jObj.GetValue("TeamLeadMeeting").ToString()))
+                    .Set(x => x.DesiredEffects, DesiredEffects.FromJson(jObj.GetValue("DesiredEffects").ToString()));
+                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+
+                return result.ToString();
+            }
+
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
+        }
+
+        public async Task<string> UpdateRootCauses()
+        {
+            string json = "";
+
+            JObject jObj;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                json = reader.ReadToEnd();
+
+                jObj = (JObject)JsonConvert.DeserializeObject(json);
+            }
+
+            string projID = jObj.GetValue("_id").ToString();
+
+            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+
+            RootCause rootCause = RootCause.FromJson(json);
+
+            try
+            {
+                MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+
+                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+
+                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
+
+                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+
+                return result.ToString();
+            }
+
+            catch (Exception E)
+            {
+                Log4NetLogger.Error(E);
+                return E.ToString();
+            }
         }
 
 
@@ -146,6 +366,8 @@ namespace CPI.Client.Controllers
             }
             catch (Win32Exception win)
             {
+
+                Log4NetLogger.Error(win.ToString());
                 if (win.ErrorCode == -2147467259)
                 {
                     return "Error";
