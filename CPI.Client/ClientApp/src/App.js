@@ -24,7 +24,6 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
-import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
 import { PostEventFollowUp } from './components/PostEventFollowUp';
 import { EventExecutionOverview } from './components/EventExecutionOverview';
 import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
@@ -38,6 +37,8 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
+import { MeetingChampionPpt } from './components/MeetingChampionPpt';
+
 
 
 export default class App extends Component {
@@ -85,7 +86,6 @@ export default class App extends Component {
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
             <Route path="/Project/:id/:Page" component={Project} />
             <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
             <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
             <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
@@ -97,11 +97,8 @@ export default class App extends Component {
             <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+            <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
         </Layout>
     );
   }
 }
-
-
-
-
