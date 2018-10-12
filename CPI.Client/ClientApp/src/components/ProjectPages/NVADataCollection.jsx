@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import '../css/uswds.css';
 import { Alert } from "reactstrap";
 import { Post } from '../../REST';
+import { DataCollectionStatus } from '../DataCollectionStatus'
 
 export class NVADataCollection extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            Elements: [], Project: {} ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
+            Elements: [], championGoal: "", Type: "" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
         };
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNVAChange = this.handleNVAChange.bind(this);
@@ -26,7 +27,7 @@ export class NVADataCollection extends Component {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements, Project: data, loading: false });
+                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
             });
     }
     
@@ -120,90 +121,12 @@ export class NVADataCollection extends Component {
         
 
         if (this.state.loading) {
-            return (<span>Loading UwU</span>);
+            return (<span>Loading Data</span>);
         } else {
             return (
-                <div>
-                <table style={{ marginBottom: "0", width: "100%" }}>
-                    <tbody>
-                        <tr>
-                            <td style={{ textAlign: "center" }}>Instructions</td>
-                            <td style={{ textAlign: "center" }}>Parameters</td>
-                            <td style={{ textAlign: "center" }} colSpan="2">Data Summary</td>
-                        </tr>
-                        <tr>
-                                <td scope="row">Guide:<br />
-                                    <br />
-                                    NVA: Non-Value-Added.  These are expenses that do not directly mission accomplishment, preparedness, and effectiveness<br />
-                                    VA: Value Added.  These are expenses that do directly support mission accomplishment, preparedness, and effectiveness<br />
-                                    Percentage NVA: The percentage of total cost (NVA + VA) that NVA expenses takes up.  Lower is better<br />
-                                    Goal: The percentage NVA that is deemed satisfactory
-                            </td>
-                            <td className="td-resize-content" style={{ height: "1px" }}>
-                                <table className="no-borderish">
-                                    <tbody>
-                                        <tr>
-                                                <td>NVA Percentage Goal</td>
-                                                <td>{this.calculateAverageGoal}</td>
-                                        </tr>
-                                        <tr>
-                                                <td>Champion Goal</td>
-                                                <td>{this.state.Project.Champion.Goal}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td className="td-resize-content">
-                                <table className="no-border">
-                                    <tbody>
-                                        <tr>
-                                                <td>Total Items</td>
-                                                <td>{this.state.Elements.length}</td>
-                                        </tr>
-                                        <tr>
-                                                <td>Total Unsatisfactory Items</td>
-                                                <td>{}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Total Satisfactory Items</td>
-                                            <td>52</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className="no-border">
-                                    <tbody>
-                                        <tr>
-                                            <td>% On Time</td>
-                                            <td>95%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Goal</td>
-                                            <td>100%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gap</td>
-                                            <td>5%</td>
-                                        </tr>
-                                        <tr>
-                                                <td>Champion Goal</td>
-                                                <td>{this.state.Project.Champion.Goal}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Revised Gap</td>
-                                            <td>-5%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-
                 <div className="usa-grid">
-					<NavButtons previous="ProjectOverview" next="AnalyzeData" projectId={this.props.match.params.id} />
+                        <NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
+                        <DataCollectionStatus {...this.state} />
 					<table>
                     <thead>
                         <tr>
@@ -246,7 +169,6 @@ export class NVADataCollection extends Component {
                         <button onClick={this.handleSave}>Save Data</button>
                     </div>
                     </div>
-                </div>
             );
         }
     }  

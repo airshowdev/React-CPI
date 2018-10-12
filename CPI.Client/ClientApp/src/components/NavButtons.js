@@ -10,10 +10,11 @@ export class NavButtons extends Component {
     displayName = NavButtons.name
     render() {
         return (
-            <div className="usa-grid">
+            <div className="usa-grid" style={{ textAlign: "center", fontFamily: 'verdana', fontSize: "36px" }}>
                 <div style={{ float: 'left' }}>
                     <button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button">Previous</button>
                 </div>
+                <span>{this.props.title}</span>
                 <div style={{ float: 'right' }}>
                     <button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button">Next</button>
                 </div>
