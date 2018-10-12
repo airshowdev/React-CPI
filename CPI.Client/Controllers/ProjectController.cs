@@ -67,7 +67,7 @@ namespace CPI.Client.Controllers
 
         }
 
-        [HttpPost("[action]")]
+        [HttpPatch("[action]")]
         public async Task<string> UpdateDataCollection()
         {
 
@@ -83,13 +83,15 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+            json = json.Replace("\"_id\":\"," + projID + "\",", "");
 
             DataCollection collection = Client.DataCollection.FromJson(json);
 
             try
             {
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                connection.ConnectDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -100,7 +102,6 @@ namespace CPI.Client.Controllers
                 UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.DataCollection, collection);
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-
                 return result.ToString();
             }
 
@@ -126,7 +127,7 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+            json = json.Replace("\"_id\":\"" + projID + "\",", "");
 
             Champion champion = Champion.FromJson(json);
 
@@ -168,7 +169,7 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\"", "");
+            json = json.Replace("\"_id\":\"" + projID + "\",", "");
 
             TeamLeadMeeting meeting = TeamLeadMeeting.FromJson(json);
 
@@ -257,8 +258,8 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\"", "");
-
+            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+            
             RootCause rootCause = RootCause.FromJson(json);
 
             try
@@ -322,7 +323,7 @@ namespace CPI.Client.Controllers
 
 
         [HttpGet("[action]")]
-        public async Task<string> GetProjectAsync(string id)
+        public async Task<Project> GetProjectAsync(string id)
         {
 
             Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
@@ -331,7 +332,7 @@ namespace CPI.Client.Controllers
 
                 if (id == null || id == "")
                 {
-                    return "404";
+                    return null;
                 }
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
@@ -343,7 +344,7 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Get project process completed succesfully");
 
-                return (await cursor.FirstAsync()).ToJson();
+                return (await cursor.FirstAsync());
             }
             catch (Exception E)
             {
@@ -525,7 +526,7 @@ namespace CPI.Client.Controllers
             object returnObj = null;
             try
             {
-                Project project = Project.FromJson(await GetProjectAsync(id));
+                Project project = await GetProjectAsync(id);
 
 
                 switch (page.ToUpper())

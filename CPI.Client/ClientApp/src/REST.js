@@ -10,7 +10,7 @@
 export async function Post(data, controller, action) {
     console.log('yeet?');
     fetch('api/' + controller + '/' + action, {
-        method: "POST",
+        method: "PATCH",
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",
@@ -21,6 +21,7 @@ export async function Post(data, controller, action) {
         referrer: "no-referrer",
         body: JSON.stringify(data)
     })
-        .then(response => { return response.json(); });
+        .then(response => { return response.json();
+        });
 }
 
