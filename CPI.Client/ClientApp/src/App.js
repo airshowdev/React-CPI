@@ -3,7 +3,6 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
-import { Project } from './components/Project';
 import { ProjectInfo } from './components/ProjectInfo';
 import { ProjectOverview } from './components/ProjectPages/ProjectOverview';
 import { PreEventPlanningOverview } from './components/ProjectPages/PreEventPlanningOverview';
@@ -64,7 +63,6 @@ export default class App extends Component {
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id" component={Project} />
 			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
 			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
@@ -83,7 +81,6 @@ export default class App extends Component {
 			<Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
-            <Route path="/Project/:id/:Page" component={Project} />
             <Route path='/BaselineData' component={BaselineData} />
             <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
             <Route path='/PostEventFollowUp' component={PostEventFollowUp} />

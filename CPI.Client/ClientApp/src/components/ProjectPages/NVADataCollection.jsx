@@ -9,7 +9,6 @@ export class NVADataCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notNumberIsVisable: false,
             Elements: [], newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: false
         };
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -20,21 +19,16 @@ export class NVADataCollection extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleClear = this.handleClear.bind(this);
-        this.notNumberDismiss = this.notNumberDismiss.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
-        //fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-        //    .then(data => {
-        //        this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
-        //    });
+        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+            .then(data => {
+                this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
+            });
     }
-
-    notNumberDismiss() {
-        this.setState({ notNumberIsVisable: false });
-    }
-
+    
     handleGoalChange(event) {
         this.setState({ newElementGoal: event.target.value });
     }
@@ -56,7 +50,7 @@ export class NVADataCollection extends Component {
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
-            this.setState({ notNumberIsVisable: true });
+            alert("gib #");
         }
     }
     handleDelete(event) {
@@ -89,7 +83,7 @@ export class NVADataCollection extends Component {
             Elements: elements
         }
         alert(JSON.stringify(postData));
-        Post(postData, "Project", "UpdateProject").then(response => alert(JSON.stringify(response)));
+        Post(postData, "Project", "UpdateDataCollection").then(response => alert(JSON.stringify(response)));
         
     }
 
@@ -104,6 +98,8 @@ export class NVADataCollection extends Component {
     }
 
     render() {
+        
+
         if (this.state.loading) {
             return (<span>Loading UwU</span>);
         } else {
@@ -123,36 +119,31 @@ export class NVADataCollection extends Component {
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        { this.state.Elements.map((x, i) => (
-                            <tr key={i} >
-                                <td>{x.Name}</td>
-                                <td>{x.VA}</td>
-								<td>{x.NVA}</td>
-								<td>{(this.NVAPercentage(x.NVA, x.VA))}</td>
-								<td>{x.Goal}</td>
-								<td>{this.NVAGoal(x.Goal, x.NVA, x.VA) ? "Epic Gamer Win!" : "You mad bro? xd"}</td>
-                                <td><button id={i} onClick={this.handleDelete}>Delete</button></td>
-                                <td><button id={i} onClick={this.handleEdit}>Edit</button></td>
-                            </tr>
-                        ))}
+                        <tbody>
+                            {(this.state.Elements.length > 0) ? this.state.Elements.map((x, i) =>
+                                (<tr key={i} >
+                                    <td>{x.Name}</td>
+                                    <td>{x.VA}</td>
+                                    <td>{x.NVA}</td>
+                                    <td>{(this.NVAPercentage(x.NVA, x.VA))}</td>
+                                    <td>{x.Goal}</td>
+                                    <td>{this.NVAGoal(x.Goal, x.NVA, x.VA) ? "Success" : "Fail"}</td>
+                                    <td><button id={i} onClick={this.handleDelete}>Delete</button></td>
+                                    <td><button id={i} onClick={this.handleEdit}>Edit</button></td>
+                                </tr>
+                                )) : <div/>}
                         <tr>
                             <td><input type="text" id="Name" onChange={this.handleNameChange} value={this.state.newElementName} required aria-required /></td>
                             <td><input type="text" id="VA" onChange={this.handleVAChange} value={this.state.newElementVA} required aria-required /></td>
-                                <td><input type="text" id="NVA" onChange={this.handleNVAChange} value={this.state.newElementNVA} required aria-required /></td>
-                                <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
+                            <td><input type="text" id="NVA" onChange={this.handleNVAChange} value={this.state.newElementNVA} required aria-required /></td>
+                            <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
                             <td><input type="text" id="Goal" onChange={this.handleGoalChange} value={this.state.newElementGoal} required aria-required /></td>
                             <td>{this.NVAGoal(this.state.newElementGoal, this.state.newElementNVA, this.state.newElementVA) ? "Success" : "Fail"}</td>
-                                <td><input type="submit" value="Add" onClick={this.handleAdd} /></td>
-                                <td><input type="submit" value="Clear" onClick={this.handleClear}/></td>
+                            <td><input type="submit" value="Add" onClick={this.handleAdd} /></td>
+                            <td><input type="submit" value="Clear" onClick={this.handleClear}/></td>
                         </tr>
                     </tbody>
                     </table>
-                    <div>
-                        <Alert color="danger" isOpen={this.state.notNumberIsVisable} toggle={this.notNumberDismiss}>
-                            NVA, VA, and Goal must be numerical values.
-                        </Alert>
-                    </div>
                     <div style={{ float: 'right' }}>
                         <button onClick={this.handleSave}>Save Data</button>
                     </div>
