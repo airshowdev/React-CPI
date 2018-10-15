@@ -10,7 +10,7 @@
 export async function Post(data, controller, action) {
     console.log('yeet?');
     fetch('api/' + controller + '/' + action, {
-        method: "PATCH",
+        method: "POST",
         mode: "cors",
         cache: "no-cache",
         credentials: "same-origin",

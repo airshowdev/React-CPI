@@ -37,6 +37,7 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
+import { OnTimeDataCollection } from './components/ProjectPages/OnTimeDataCollection';
 
 
 export default class App extends Component {
@@ -60,6 +61,7 @@ export default class App extends Component {
     return (
         <Layout>
             <Route path="/Project/NVAData/:id" component={NVADataCollection} />
+            <Route path="/Project/OnTimeData/:id" component={OnTimeDataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />

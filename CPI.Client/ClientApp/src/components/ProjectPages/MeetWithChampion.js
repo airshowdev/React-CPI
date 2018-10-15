@@ -1,10 +1,7 @@
 ﻿import React, { Component } from 'react';
-<<<<<<< HEAD:CPI.Client/ClientApp/src/components/ProjectPages/MeetWithChampion.js
 import '../css/uswds.css';
-=======
-import './css/uswds.css';
-import './css/HallMartino.css';
->>>>>>> Views:CPI.Client/ClientApp/src/components/MeetWithChampion.js
+import '../css/HallMartino.css';
+
 
 export class MeetWithChampion extends Component {
 

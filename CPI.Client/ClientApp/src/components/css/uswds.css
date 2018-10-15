@@ -2075,13 +2075,13 @@ dfn {
 .usa-section > :first-child,
 .usa-grid > :first-child,
 .usa-grid-full > :first-child {
-  margin-top: 0;
+  margin-top: .2em;
 }
 
 .usa-section > :last-child,
 .usa-grid > :last-child,
 .usa-grid-full > :last-child {
-  margin-bottom: 0;
+  margin-bottom: .2em;
 }
 
 .usa-width-one-whole:first-child > :first-child,

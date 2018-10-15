@@ -1,9 +1,8 @@
 ﻿import { NavButtons } from "../NavButtons";
 import React, { Component } from 'react';
 import '../css/uswds.css';
-import { Alert } from "reactstrap";
 import { Post } from '../../REST';
-import { DataCollectionStatus } from '../DataCollectionStatus'
+import { DataCollectionStatus } from '../DataCollectionStatus';
 
 export class NVADataCollection extends Component {
 
@@ -118,8 +117,6 @@ export class NVADataCollection extends Component {
     }
 
     render() {
-        
-
         if (this.state.loading) {
             return (<span>Loading Data</span>);
         } else {

@@ -67,7 +67,7 @@ namespace CPI.Client.Controllers
 
         }
 
-        [HttpPatch("[action]")]
+        [HttpPost("[action]")]
         public async Task<string> UpdateDataCollection()
         {
 

@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 
 
-export class DataCollectionStatus extends React.Component {
+export class DataCollectionStatus extends Component {
     constructor(props) {
         super(props)
         this.state = {
