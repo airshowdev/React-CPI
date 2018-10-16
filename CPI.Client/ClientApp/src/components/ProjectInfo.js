@@ -3,7 +3,6 @@ import './css/uswds.css';
 import { Post } from '../REST';
 
 export class ProjectInfo extends Component {
-    
 
     constructor(props) {
         super(props);

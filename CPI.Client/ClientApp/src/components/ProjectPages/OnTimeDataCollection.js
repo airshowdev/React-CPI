@@ -15,21 +15,18 @@ export class OnTimeDataCollection extends Component {
         super(props);
 
         this.state = {
-            Elements: [], championGoal: "", Type: "", newElementGoalDay: "", newElementGoalMonth: "", newElementGoalYear: "", newElementActualDay: "", newElementActualMonth: "", newElementActualYear: "", loading: false
+            Elements: [], championGoal: "", Type: "", newElementActual: "", newElementGoal: "", loading: false
         };
-
-        this.handleGoalDayChange = this.handleGoalDayChange.bind(this);
-        this.handleGoalMonthChange = this.handleGoalMonthChange.bind(this);
-        this.handleGoalYearChange = this.handleGoalYearChange.bind(this);
-
-        this.handleActualDayChange = this.handleActualDayChange.bind(this);
-        this.handleActualMonthChange = this.handleActualMonthChange.bind(this);
-        this.handleActualYearChange = this.handleActualYearChange.bind(this);
 
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleClear = this.handleClear.bind(this);
+
+        this.handleGoalChange = this.handleGoalChange.bind(this);
+        this.handleActualChange = this.handleActualChange.bind(this);
+        this.formatDateActual = this.formatDateActual.bind(this);
+        this.formatDateGoal = this.formatDateGoal.bind(this);
     }
 
     componentDidMount() {/*
@@ -38,26 +35,6 @@ export class OnTimeDataCollection extends Component {
             .then(data => {
                 this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
             });*/
-    }
-
-    handleGoalDayChange(event) {
-        this.setState({ newElementGoalDay: event.target.value });
-    }
-    handleGoalMonthChange(event) {
-        this.setState({ newElementGoalMonth: event.target.value });
-    }
-    handleGoalYearChange(event) {
-        this.setState({ newElementGoalYear: event.target.value });
-    }
-
-    handleActualDayChange(event) {
-        this.setState({ newElementActualDay: event.target.value });
-    }
-    handleActualMonthChange(event) {
-        this.setState({ newElementActualMonth: event.target.value });
-    }
-    handleActualYearChange(event) {
-        this.setState({ newElementActualYear: event.target.value });
     }
 
 
@@ -78,8 +55,12 @@ export class OnTimeDataCollection extends Component {
     }
     handleAdd() {
         var elements = this.state.Elements;
-        elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual });
-        this.setState({ Elements: elements, newElementActual: "", newElementGoal: "" });
+        if (this.isDate(this.state.newElementGoal) && this.isDate(this.state.newElementActual)) {
+            elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual });
+            this.setState({ Elements: elements, newElementActual: "", newElementGoal: "" });
+        } else {
+            alert("New element dates are not formatted correctly");
+        }
     }
     handleClear() {
 
@@ -88,7 +69,6 @@ export class OnTimeDataCollection extends Component {
     handleSave() {
         var type = "OnTime";
         var elements = this.state.Elements;
-        elements.forEach((x) => { x.Actual = this.NVAPercentage(x.NVA, x.VA) });
         var postData = {
             _id: this.props.match.params.id,
             Type: type,
@@ -97,6 +77,43 @@ export class OnTimeDataCollection extends Component {
         alert(JSON.stringify(postData));
 
         Post(postData, "Project", "UpdateDataCollection");
+    }
+
+    metGoal(goal, actual) {
+
+    }
+
+    isDate(date) {
+        console.log(Date.parse(date));
+        return !isNaN(Date.parse(date));
+    }
+
+    formatDateActual(event) {
+        var formatted = Date.parse(event.target.value);
+        if (!event.target.value) {
+            alert('format fail');
+        } else if (this.isDate(event.target.value)) {
+            this.setState({ newElementActual: formatted.toString() });
+        } else {
+            alert("Please Enter a valid date for the new element's \"Actual\" value ");
+        }
+    }
+
+    formatDateGoal(event) {
+        var formatted = Date.parse(event.target.value);
+        if (!event.target.value) {
+            alert('format fail');
+        } else if (this.isDate(event.target.value)){
+            this.setState({ newElementGoal: formatted.toString() });
+        } else {
+            alert("Please Enter a valid date for the new element's \"Goal\" value ");
+        }
+    }
+    handleActualChange(event) {
+        this.setState({ newElementActual: event.target.value });
+    }
+    handleGoalChange(event) {
+        this.setState({ newElementGoal: event.target.value });
     }
 
     render() {
@@ -130,13 +147,10 @@ export class OnTimeDataCollection extends Component {
                                 )) : <div />}
                             <tr>
                                 <td className="usa-grid">
-                                    <input className="usa-width-one-third" style={{ maxWidth: '60px' }} type="text" id="GoalDay" onChange={this.handleGoalDayChange} value={this.state.newElementGoalDay} />
-                                    <input className="usa-width-one-third" style={{ maxWidth: '60px' }} type="text" id="GoalMonth" onChange={this.handleGoalMonthChange} value={this.state.newElementGoalMonth} />
-                                    <input className="usa-width-one-third" style={{ maxWidth: '80px' }} type="text" id="GoalYear" onChange={this.handleGoalYearChange} value={this.state.newElementGoalYear} /></td>
+                                    <input className="usa-width-one-third" style={{ minWidth: '120px' }} type="text" id="GoalDay" onBlur={this.formatDateGoal}onChange={this.handleGoalChange} value={this.state.newElementGoal} />
+                                </td>
                                 <td className="usa-grid">
-                                    <input className="usa-width-one-third" style={{ maxWidth: '60px' }} type="text" id="ActualDay" onChange={this.handleActualDayChange} value={this.state.newElementActualDay} />
-                                    <input className="usa-width-one-third" style={{ maxWidth: '60px' }} type="text" id="ActualMonth" onChange={this.handleActualMonthChange} value={this.state.newElementActualMonth} />
-                                    <input className="usa-width-one-third" style={{ maxWidth: '80px' }} type="text" id="ActualYear" onChange={this.handleActualYearChange} value={this.state.newElementActualYear} /></td>
+                                    <input className="usa-width-one-third" style={{ minWidth: '120px' }} type="text" onBlur={this.formatDateActual} id="ActualYear" onChange={this.handleActualChange} value={this.state.newElementActual} /></td>
                                 <td>{/*this.state.newElementActual.isAfter(this.state.newElementGoal) ? "Fail" : "Success"*/}</td>
                                 <td><input type="submit" value="Add" onClick={this.handleAdd} /></td>
                                 <td><input type="submit" value="Clear" onClick={this.handleClear} /></td>
