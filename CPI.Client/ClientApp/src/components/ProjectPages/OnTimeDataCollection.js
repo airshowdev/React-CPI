@@ -3,10 +3,7 @@ import React, { Component } from 'react';
 import '../css/uswds.css';
 import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
-import 'moment-timezone';
 
-var moment = require('moment');
-var dateFormat = "DD-MM-YYYY";
 
 export class OnTimeDataCollection extends Component {
     displayName = OnTimeDataCollection.name
@@ -15,13 +12,14 @@ export class OnTimeDataCollection extends Component {
         super(props);
 
         this.state = {
-            Elements: [], championGoal: "", Type: "", newElementActual: "", newElementGoal: "", loading: false
+			Elements: [], championGoal: "", Standard: "", Type: "", newElementActual: "", newElementGoal: "", loading: true
         };
 
         this.handleEdit = this.handleEdit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
-        this.handleClear = this.handleClear.bind(this);
+		this.handleClear = this.handleClear.bind(this);
+		this.handleSave = this.handleSave.bind(this);
 
         this.handleGoalChange = this.handleGoalChange.bind(this);
         this.handleActualChange = this.handleActualChange.bind(this);
@@ -29,12 +27,12 @@ export class OnTimeDataCollection extends Component {
         this.formatDateGoal = this.formatDateGoal.bind(this);
     }
 
-    componentDidMount() {/*
+    componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
-            .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
-            });*/
+			.then(data => {
+				this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
+            });
     }
 
 
@@ -56,14 +54,14 @@ export class OnTimeDataCollection extends Component {
     handleAdd() {
         var elements = this.state.Elements;
         if (this.isDate(this.state.newElementGoal) && this.isDate(this.state.newElementActual)) {
-            elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual });
-            this.setState({ Elements: elements, newElementActual: "", newElementGoal: "" });
+			elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual });
+			this.setState({ Elements: elements });
         } else {
             alert("New element dates are not formatted correctly");
         }
     }
-    handleClear() {
-
+	handleClear() {
+		this.setState({ newElementGoal: "", newElementActual: "" });
     }
     
     handleSave() {
@@ -80,7 +78,7 @@ export class OnTimeDataCollection extends Component {
     }
 
     metGoal(goal, actual) {
-
+		return Date.parse(goal) >= Date.parse(actual);
     }
 
     isDate(date) {
@@ -88,23 +86,21 @@ export class OnTimeDataCollection extends Component {
         return !isNaN(Date.parse(date));
     }
 
-    formatDateActual(event) {
-        var formatted = Date.parse(event.target.value);
+	formatDateActual(event) {
         if (!event.target.value) {
-            alert('format fail');
+			return;
         } else if (this.isDate(event.target.value)) {
-            this.setState({ newElementActual: formatted.toString() });
+            this.setState({ newElementActual: event.target.value});
         } else {
             alert("Please Enter a valid date for the new element's \"Actual\" value ");
         }
     }
 
-    formatDateGoal(event) {
-        var formatted = Date.parse(event.target.value);
+	formatDateGoal(event) {
         if (!event.target.value) {
-            alert('format fail');
+			return;
         } else if (this.isDate(event.target.value)){
-            this.setState({ newElementGoal: formatted.toString() });
+            this.setState({ newElementGoal: event.target.value });
         } else {
             alert("Please Enter a valid date for the new element's \"Goal\" value ");
         }
@@ -114,7 +110,7 @@ export class OnTimeDataCollection extends Component {
     }
     handleGoalChange(event) {
         this.setState({ newElementGoal: event.target.value });
-    }
+	}
 
     render() {
         if (this.state.loading) {
@@ -124,7 +120,7 @@ export class OnTimeDataCollection extends Component {
                 <div className="usa-grid">
                     <NavButtons previous="ProjectOverview" title="On-Time Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
                     <DataCollectionStatus {...this.state} />
-                    <label>*All dates should be formatted as DD-MM-YYYY e.g. {moment().format("DD-MM-YYYY")}</label>
+                    <label>*All dates should be formatted as DD-MM-YYYY</label>
                     <table>
                         <thead>
                             <tr>
@@ -137,10 +133,10 @@ export class OnTimeDataCollection extends Component {
                         </thead>
                         <tbody>
                             {(this.state.Elements.length > 0) ? this.state.Elements.map((x, i) =>
-                                (<tr key={i} >
-                                    <td>{x.newElementGoalDay}/{x.newElementGoalMonth}/{x.newElementGoalYear}</td>
-                                    <td>{x.newElementActualDay}/{x.newElementActualMonth}/{x.newElementActualYear}</td>
-                                    <td></td>
+								(<tr key={i} >
+									<td>{x.Goal}</td>
+									<td>{x.Actual}</td>
+									<td>{this.metGoal(x.Goal, x.Actual) ? "On Time" : "Late"}</td>
                                     <td><button id={i} onClick={this.handleDelete}>Delete</button></td>
                                     <td><button id={i} onClick={this.handleEdit}>Edit</button></td>
                                 </tr>

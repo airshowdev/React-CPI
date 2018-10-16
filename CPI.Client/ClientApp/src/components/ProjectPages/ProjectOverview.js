@@ -3,6 +3,7 @@ import '../css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
 import '../css/HallMartino.css';
+import { NavButtons } from '../NavButtons'
 
 export class ProjectOverview extends Component {
 
@@ -17,8 +18,8 @@ export class ProjectOverview extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.id)
+	componentDidMount() {
+		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
                 this.setState({ project: data, loading: false });
@@ -26,7 +27,9 @@ export class ProjectOverview extends Component {
     }
 
     render() {
-        return (
+		return (
+			<div>
+				<NavButtons next="OnTimeData" previous="ProjectInfo" projectId={this.props.match.params.id}/>
             <div className="usa-grid">
                 <div className="grid-with-border">
                     <h1 className="usa-heading">Pre-Event Planning Overview</h1>
@@ -77,7 +80,8 @@ export class ProjectOverview extends Component {
                         <h2>T+120 Days</h2>
                             <button className="usa-button">Standardize Successful Process</button>
                 </div>
-            </div>
+				</div>
+				</div>
         );
     }
 }

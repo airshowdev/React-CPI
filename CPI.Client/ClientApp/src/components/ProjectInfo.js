@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { Post } from '../REST';
+import { NavButtons } from './NavButtons'
 
 export class ProjectInfo extends Component {
 
@@ -59,20 +60,6 @@ export class ProjectInfo extends Component {
     }
 
     handleSubmit() {
-        /*var jsonToSubmit = {
-            id: project.id,
-            changes: {
-                Name: this.state.project.Name,
-                Base: this.state.project.Base,
-                Unit: this.state.project.Unit,
-                Evaluators: this.state.project.Evaluators,
-                DataCollection: this.state.project.DataCollection,
-                ChampionName: this.state.project.Champion.Name,
-                TeamLead: this.state.project.TeamLeads,
-                Mentor: this.state.project.TeamLead
-                }
-            }
-        }*/
         alert(JSON.stringify(this.state.project));
         Post(this.state.project, "Project", "UpdateProject");
     }
@@ -83,7 +70,9 @@ export class ProjectInfo extends Component {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
-            return (
+			return (
+				<div>
+					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
                 <form id="projectInfo" onSubmit={this.handleSubmit} >
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
@@ -112,7 +101,8 @@ export class ProjectInfo extends Component {
                             <button id="Submit">Save Changes</button>
                         </div>
                     </div>
-                </form>
+						</form>
+				</div>
             );
         }
     }

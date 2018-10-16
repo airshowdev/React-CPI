@@ -80,22 +80,22 @@ export default class App extends Component {
 			<Route path='/Project/ObtainSupplies/' from component={ObtainSupplies} />
 			<Route path='/Project/EventGoNoGo/' from component={EventGoNoGo} />
 			<Route path='/Project/RoomSetup/' from component={RoomSetup} />
-			<Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
+			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
-            <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
+            <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
             <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
-            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
-            <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
-            <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
-            <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
-            <Route path='/Project/ConfirmResults/' component={ConfirmResults} />
-            <Route path='/Project/SeeCountermeasuresThrough/' component={SeeCountermeasuresThrough} />
-            <Route path='/Project/PostEventImplementationOverview/' component={PostEventImplementationOverview} />
-            <Route path='/Project/DevelopCountermeasures/' component={DevelopCountermeasures} />
-            <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
-            <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
-            <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+            <Route path='/StandardizeSuccessfulProject/:id' component={StandardizeSuccessfulProject} />
+            <Route path='/PostEventFollowUp/:id' component={PostEventFollowUp} />
+			<Route path='/Project/StandardizeSuccessfulProcess/:id' component={StandardizeSuccessfulProcess} />
+			<Route path='/Project/PostEventFollowUpOverview/:id' component={PostEventFollowUpOverview} />
+			<Route path='/Project/ChampionResponse/:id' component={ChampionResponse} />
+			<Route path='/Project/ConfirmResults/:id' component={ConfirmResults} />
+			<Route path='/Project/SeeCountermeasuresThrough/:id' component={SeeCountermeasuresThrough} />
+			<Route path='/Project/PostEventImplementationOverview/:id' component={PostEventImplementationOverview} />
+			<Route path='/Project/DevelopCountermeasures/:id' component={DevelopCountermeasures} />
+			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
+			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
+			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
         </Layout>
     );
   }
