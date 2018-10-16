@@ -13,7 +13,7 @@ export class MenuHeader extends Component {
                         <div className="usa-navbar">
                             <div className="usa-logo" id="basic-logo">
                                 <em className="usa-logo-text">
-                                    <LinkContainer to="/"><a title="Home" aria-label="Home">Continuous PI</a></LinkContainer>
+                                    <LinkContainer to="/"><h1 title="Home" aria-label="Home">CPI</h1></LinkContainer>
                                 </em>
                             </div>
                             <button className="usa-menu-btn">Menu</button>

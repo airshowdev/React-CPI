@@ -1,7 +1,8 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { withRouter } from "react-router-dom";
-import  PropTypes  from 'prop-types';
+import PropTypes from 'prop-types';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export class Projects extends Component {  
     static contextTypes = {
@@ -20,8 +21,8 @@ export class Projects extends Component {
     }
     renderProjectsTable(project) {
         return (
-            <form className="usa-forms">
-                    <table>
+            <form>
+				<table className="usa-table-borderless" style={{width: "70vw"}}>
                         <thead>
                             <tr>
                                 <th scope="col">Project ID</th>
@@ -49,7 +50,12 @@ export class Projects extends Component {
 
         return (
             <div>
-                <h1>Existing Projects</h1>
+				
+				<span> <h2>Existing Projects</h2>
+					<LinkContainer style={{float:'right', marginRight: '15vw'}} to="/CreateProject">
+						<button>Create Project</button>
+					</LinkContainer>
+				</span>
                 <p></p>
                 {contents}
             </div>

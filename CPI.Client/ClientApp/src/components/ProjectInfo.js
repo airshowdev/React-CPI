@@ -32,17 +32,20 @@ export class ProjectInfo extends Component {
             case "Base":
                 stateProject.Base = event.target.value;
                 break;
-            case "Unit":
+			case "Unit":
                 stateProject.Unit = event.target.value;
-                break;
+				break;
+			case "TeamLead":
+				stateProject.TeamLeads = event.target.value.split('\n')
+				break;
             case "Evaluators":
                 stateProject.Evaluators = event.target.value.split('\n');
                 break;
             case "Type":
                 stateProject.DataCollection.Type = event.target.value;
                 break;
-            case "Creator":
-                stateProject.Creator = event.target.value;
+			case "Creator":
+				stateProject.Creator = event.target.value;
                 break;
             case "Champion":
                 stateProject.Champion.Name = event.target.value;
@@ -50,8 +53,8 @@ export class ProjectInfo extends Component {
             case "Teamlead":
                 stateProject.TeamLeads = event.target.value.split('\n');
                 break;
-            case "Mentor":
-                stateProject.Name = event.target.value;
+			case "Mentor":
+				stateProject.Mentor = event.target.value;
                 break;
             default:
                 break;
@@ -85,19 +88,19 @@ export class ProjectInfo extends Component {
                             <label htmlFor="Unit">Unit</label>
                             <input id="Unit" name="Unit" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Unit} />
                             <label htmlFor="Evaluators">Evaluators</label>
-                            <textarea id="Evaluators" name="Evaluators" defaultValue={this.state.project.Evaluators.join('\n')} />
+								<textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators.join('\n')} />
                         </div>
                         <div className="usa-width-one-half" style={{ float: 'right', margin: 'auto' }}>
                             <label htmlFor="Type">Type</label>
                             <input id="Type" name="Type" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.DataCollection.Type} />
                             <label htmlFor="Creator">Creator</label>
-                            <input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.Creator.Name} />
+                            <input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.Creator} />
                             <label htmlFor="Champion">Champion</label>
                             <input id="Champion" name="Champion" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Champion.Name} />
                             <label htmlFor="TeamLead">TeamLead</label>
                             <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.TeamLeads.join("\n")} />
-                            <label htmlFor="Mentor">Mentor</label>
-                            <input id="Mentor" name="Mentor" type="text" value={this.state.project.Mentor} />
+								<label htmlFor="Mentor">Mentor</label>
+								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} />
                             <button id="Submit">Save Changes</button>
                         </div>
                     </div>
