@@ -65,12 +65,12 @@
 
 }
 
-.no-border td {
-	border: hidden;
-	height: 100%;
-	width: 100%;
-	margin: 0;
-}
+	.no-border td {
+		border: hidden;
+		height: 100%;
+		width: 100%;
+		margin: 0;
+	}
 
 .no-borderish {
 	border: hidden;
@@ -88,9 +88,9 @@
 	width: 100%;
 }
 
-.table-cell-resize th {
-	text-align: center;
-}
+	.table-cell-resize th {
+		text-align: center;
+	}
 
 .center-input {
 	display: block;
@@ -116,12 +116,12 @@
 	border: hidden;
 }
 
-.column-input-box input {
-	margin: auto;
-	background-color: #ffe378;
-	border: hidden;
-	min-width: 150px;
-}
+	.column-input-box input {
+		margin: auto;
+		background-color: #ffe378;
+		border: hidden;
+		min-width: 150px;
+	}
 
 .thincolumn-input-box {
 	margin: auto;
@@ -142,18 +142,30 @@
 
 }
 
-.radio-input-size label {
-	display: inline-block;
-	min-width: 100%;
-}
+	.radio-input-size label {
+		display: inline-block;
+		min-width: 100%;
+	}
 
 .paragraph-response-text {
-	text-anchor: end;
+	
 }
 
-.paragraph-response-text input {
-	width: 200px;
-}
+	.paragraph-response-text input {
+		width: 200px;
+		height: 17px;
+		display: inline-block;
+		border-left: hidden;
+		border-right: hidden;
+		border-top: hidden;
+		padding: 0;
+		vertical-align: bottom;
+		margin-bottom: 0;
+	}
+
+	.paragraph-response-text label {
+		min-width: 100%;
+	}
 
 .teamlead-table {
 
