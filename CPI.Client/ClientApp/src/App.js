@@ -42,6 +42,7 @@ import { ChampionResponse } from './components/ChampionResponse';
 //adding in more routes to test pages
 import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
 import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
+import { DraftCharter } from './components/ProjectPages/DraftCharter';
 
 export default class App extends Component {
     displayName = App.name
@@ -104,6 +105,7 @@ export default class App extends Component {
             {/* adding in more routes to test pages */}
             <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
             <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
+            <Route path='/Project/DraftCharter' component={DraftCharter} />
         </Layout>
     );
   }

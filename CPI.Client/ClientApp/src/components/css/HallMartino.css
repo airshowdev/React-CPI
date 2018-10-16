@@ -61,6 +61,10 @@
 	margin-right: auto;
 }
 
+.no-border {
+
+}
+
 .no-border td {
 	border: hidden;
 	height: 100%;
@@ -109,8 +113,29 @@
 .column-input-box {
 	margin: auto;
 	width: auto;
+	border: hidden;
+}
+
+.column-input-box input {
+	margin: auto;
 	background-color: #ffe378;
 	border: hidden;
+	min-width: 150px;
+}
+
+.thincolumn-input-box {
+	margin: auto;
+	width: auto;
+	background-color: #ffe378;
+	border: hidden;
+}
+
+.tinycolumn-input-box {
+	background-color: #ffe378;
+	border: hidden;
+	min-width: 100%;
+	max-width: 100%;
+	margin: 0px;
 }
 
 .radio-input-size {
@@ -130,11 +155,93 @@
 }
 
 .teamlead-table {
-	
+
 }
 
-.teamlead-table td, input {
-	max-width: 200px;
+.teamlead-table td {
+	max-width: 300px;
+	text-align: center;
 }
+
+	.teamlead-table input {
+		max-width: 300px;
+		min-height: 75px;
+		text-align: center;
+		background-color: #ffe378;
+		border: hidden;
+		margin: 0;
+	}
+
+.draftcharter-table {
+
+}
+
+.draftcharter-table td{
+	text-align: center;
+	max-height: 43px;
+	min-height: 43px;
+	min-width: 400px;
+}
+
+	.draftcharter-table input {
+		text-align: center;
+		max-height: 43px;
+		min-height: 43px;
+		min-width: 400px;
+	}
+
+.draftcharter-button {
+	text-align: center;
+	padding: 0px;
+	margin-bottom: 5px;
+	width: 13em;
+}
+
+.draftcharter-button label {
+	min-width: 5em;
+	max-width: 5em;
+	margin: 0;
+}
+
+.draftcharter-input-box
+{
+
+}
+
+.draftcharter-input-box input {
+	background-color: #ffe378;
+	width: auto;
+	height: auto;
+	margin: 0;
+	border: hidden;
+}
+
+.draftcharter-team-members {
+	padding: 0px;
+	margin-bottom: 5px;
+	max-width: 700px; 
+	min-width: 700px;
+}
+
+	.draftcharter-team-members input {
+		background-color: #ffe378;
+		height: auto;
+		margin: 0;
+		border: hidden;
+		min-width: 700px;
+	}
+
+.approval-table {
+
+}
+
+	.approval-table input {
+		background-color: #ffe378;
+		width: auto;
+		height: auto;
+		margin: 0;
+		border: hidden;
+	}
+
 
 
