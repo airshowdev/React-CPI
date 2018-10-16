@@ -88,9 +88,9 @@ export default class App extends Component {
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
             <Route path="/Project/:id/:Page" component={Project} />
-            <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
-            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+            <Route path='/Project/BaselineData' component={BaselineData} />
+            <Route path='/Project/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/Project/PostEventFollowUp' component={PostEventFollowUp} />
             <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
             <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
@@ -106,6 +106,9 @@ export default class App extends Component {
             <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
             <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
             <Route path='/Project/DraftCharter' component={DraftCharter} />
+
+            {/* adding in more routes to test on 10/16 */}
+            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
         </Layout>
     );
   }

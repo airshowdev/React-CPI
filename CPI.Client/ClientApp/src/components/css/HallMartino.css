@@ -148,6 +148,7 @@
 }
 
 .paragraph-response-text {
+	text-anchor: end;
 }
 
 .paragraph-response-text input {
@@ -243,5 +244,98 @@
 		border: hidden;
 	}
 
+.text-area-align {
 
+}
 
+	.text-area-align textarea {
+		margin-top: 10px;
+		width: 300%;
+		height: 12em;
+		background-color: #ffe378;
+		resize: none;
+	}
+
+.performance-gap-text-area {
+	min-width: 48.7vw;
+	background-color: #ffe378;
+	resize: none;
+	margin: 10px;
+}
+
+.set-improvement-text-area {
+	resize: none;
+	min-width: 48.7vw;
+	margin-left: 10px;
+	background-color: #ffe378;
+}
+
+.root-cause-list {
+	margin-bottom: 2px;
+}
+
+	.root-cause-list li {
+		margin: 1px;
+	}
+
+.root-cause-table {
+	width: 48.7vw;
+	margin-left: 10px;
+}
+
+	.root-cause-table input {
+		min-width: 36.2vw;
+		height: auto;
+		margin: 0;
+		background-color: #ffe378;
+		border: hidden;
+	}
+
+.countermeasure-lists-div {
+	border: solid 1px;
+	width: 30%;
+	display: inline-block;
+	margin: 5px;
+}
+
+	.countermeasure-lists ul {
+
+	}
+
+.see-countermeasures-through-table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+	.see-countermeasures-through-table input {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		background-color: #ffe378;
+		border: hidden;
+	}
+
+	.see-countermeasures-through-table th {
+		background-color: rgba(0, 113, 188, 0.8);
+		color: white;
+		text-align: center;
+	}
+
+.standardize-process-table {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+	.standardize-process-table input {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		background-color: #ffe378;
+		border: hidden;
+	}
+
+	.standardize-process-table th {
+		background-color: rgba(0, 113, 188, 0.8);
+		color: white;
+		text-align: center;
+	}

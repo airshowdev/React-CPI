@@ -15,7 +15,7 @@ export class ChampionResponse extends Component {
     handleChange(event)
     {
         if (!event.target.value.includes("%"))
-            this.setState({ successPercent: "%" + event.target.value });
+            this.setState({ successPercent: event.target.value + "%" });
         else
             this.setState({ successPercent: event.target.value });
     }
@@ -27,29 +27,35 @@ export class ChampionResponse extends Component {
                     <p>
                         According to preliminary information obtained from the MPS, our unit is not meeting standards for turning performance reports in on time to the MPS. 
                     </p>
-                <h3>Expectation:</h3>
-                    <p>
-                        _________ requires that 100% of performance reports be turned into the MPS by suspsence date established by the MPS.  
-                        This enables the MPS to comply with getting reports to AFPC NLT 45 days after close-out-date (COD), 
-                        per AFI 36-2406 para 1.4.2.3.2 so it can be placed in the members records NLT 60 days after the COD.
-                    </p>
+
+                    <h3>Expectation:</h3>
+                    <div className="paragraph-response-text">
+                        <input type="text" id="expectation" name="expectationName" />
+                        <p>requires that 100% of performance reports be turned into the MPS by suspsence date established by the MPS.  
+                            This enables the MPS to comply with getting reports to AFPC NLT 45 days after close-out-date (COD), 
+                            per AFI 36-2406 para 1.4.2.3.2 so it can be placed in the members records NLT 60 days after the COD.
+                        </p>
+                    </div>
                 <h3>Recommendation:</h3>
                     <p>
                         In order to meet expectations set by our local MPS, and ultimately AF requirement for on time turn in of peformance reports, 
                         it is recommended that our unit complete a CPI event to improve our current process.
                         An effective Process Improvement event on our existing process could increase performance by -5%.
                     </p>
+
                 <h3>Champion's Response:</h3>
                     <div className="radio-input-size">
                         <input type="radio" value="1" name="OptionOne" id="DontSupport" />
                         <label htmlFor="DontSupport"><span className="radio-input-size">I do not concur with supporting a CPI event at this time.</span></label>
                     </div>
+
                     <div className="radio-input-size">
                         <input type="radio" value="2" name="OptionTwo" id="FullySupport" />
                         <label htmlFor="FullySupport">I fully support a CPI event to improve our current performance.</label>
                     </div>
+
                     <div className="paragraph-response-text">
-                    <div>
+                    
                         <div style={{width:"inherit"}}>
                             <label htmlFor="teamLead">
                                 The person I would like to be the Team Leader for this event is 
@@ -61,7 +67,7 @@ export class ChampionResponse extends Component {
                             
                         </div>
                       </div>
-                    </div>
+                    
                     <div className="radio-input-size">
                         <input type="radio" value="3" name="OptionThree" id="WillSupport" />
                         <label htmlFor="WillSupport"><span className="radio-input-size">I will support this CPI Event by allowing team members to use duty hours to complete tasks related to this event.
