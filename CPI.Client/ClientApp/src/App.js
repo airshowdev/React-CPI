@@ -37,7 +37,8 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
-import { MeetingChampionPpt } from './components/MeetingChampionPpt';
+import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
+import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
 
 
 
@@ -98,6 +99,7 @@ export default class App extends Component {
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
             <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
+            <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
         </Layout>
     );
   }

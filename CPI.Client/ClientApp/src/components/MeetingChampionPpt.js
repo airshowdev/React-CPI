@@ -1,23 +1,45 @@
 ﻿import React, { Component } from 'react';
 import { Slide } from 'react-slideshow-image';
 
-const slideImages = [
-    './img/MeetingChampionPic0.png',
-    './img/MeetingChampionPic1.png',
-    './img/MeetingChampionPic2.png',
-    './img/MeetingChampionPic3.png',
-    './img/MeetingChampionPic4.png',
-    './img/MeetingChampionPic5.png',
-    './img/MeetingChampionPic6.png',
-    './img/MeetingChampionPic7.png'
-];
+//This is called from inside the class. The height and width are set to match the size of the current 8 pictures. They are all the same size. 
+const Slideshow = () => {
+    return (
+        <div style={{ marginTop: '1em', marginLeft: '5em', width: '33vw' }}>
+            <Slide   {...properties} >
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic0.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic1.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic2.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic3.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic4.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic5.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic6.png') + ')' }}>
+                </div>
+
+                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingChampionPic7.png') + ')' }}>
+                </div>
+            </Slide>
+        </div>
+    );
+}
 
 const properties = {
-    duration: 5000,
-    transitionDuration: 500,
-    infinite: true,
-    indicators: true,
-    arrows: true
+    duration: 9999,//Int; How long each slide lasts for
+    transitionDuration: 500,//Int; Duration of the transition to the next slide
+    infinite: true,//Boolean; Wether or not to keep looping throuhg slideshow
+    indicators: true,//Boolean; Wether dots at bottom of slideshow are visible
+    arrows: true,//Boolean; Wether arrows on side of slideshow are visible
 }
 
 export class MeetingChampionPpt extends Component {
@@ -27,55 +49,10 @@ export class MeetingChampionPpt extends Component {
         super()
     }
 
+    
+
     render() {
-        return (
-
-                <Slide {...properties}>
-                <div className='each-slide' style={{ height: 400, width: 200, backgroundImage: 'url(' + require('./img/MeetingChampionPic0.png') + ')' }}>
-                        <span>Slide 1</span>
-                    </div>
-
-
-                <div className='each-slide' style={{ height: 400, width: 200, backgroundImage: 'url(' + require('./img/MeetingChampionPic1.png') + ')' }}>
-
-                        <span>Slide 2</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 200, backgroundImage: 'url(' + require('./img/MeetingChampionPic2.png') + ')' }}>
-
-                        <span>Slide 3</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 300, backgroundImage: 'url(' + require('./img/MeetingChampionPic3.png') + ')' }}>
-
-                        <span>Slide 4</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 400, backgroundImage: 'url(' + require('./img/MeetingChampionPic4.png') + ')' }}>
-                        <span>Slide 5</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 400, backgroundImage: 'url(' + require('./img/MeetingChampionPic5.png') + ')' }}>
-                        <span>Slide 6</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 400, backgroundImage: 'url(' + require('./img/MeetingChampionPic6.png') + ')' }}>
-                        <span>Slide 7</span>
-                    </div>
-
-                <div className='each-slide' style={{ height: 400, width: 400, backgroundImage: 'url(' + require('./img/MeetingChampionPic7.png') + ')' }}>
-                        <span>Slide 8</span>
-                    </div>
-                
-                    <div className='each-slide'>
-
-                        <span>Slide 8</span>
-                    </div>
-
-                </Slide>
-            
-            
-        ); 
+        return Slideshow();
     }
 }
 
