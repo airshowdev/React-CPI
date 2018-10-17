@@ -23,7 +23,6 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
-import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
 import { PostEventFollowUp } from './components/PostEventFollowUp';
 import { EventExecutionOverview } from './components/EventExecutionOverview';
 import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
@@ -37,9 +36,18 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
+
 import { OnTimeDataCollection } from './components/ProjectPages/OnTimeDataCollection';
 import { DataCollection } from './components/ProjectPages/DataCollection';
 
+import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
+import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
+
+
+//adding in more routes to test pages
+import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
+import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
+import { DraftCharter } from './components/ProjectPages/DraftCharter';
 
 export default class App extends Component {
     displayName = App.name
@@ -85,7 +93,7 @@ export default class App extends Component {
 			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
-			<Route path='/BaselineData:id' component={BaselineData} />
+			      <Route path='/BaselineData:id' component={BaselineData} />
             <Route path='/StandardizeSuccessfulProject/:id' component={StandardizeSuccessfulProject} />
             <Route path='/PostEventFollowUp/:id' component={PostEventFollowUp} />
 			<Route path='/Project/StandardizeSuccessfulProcess/:id' component={StandardizeSuccessfulProcess} />
@@ -104,5 +112,20 @@ export default class App extends Component {
 }
 
 
+            <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
+            <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
 
 
+            {/* adding in more routes to test pages */}
+            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
+            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
+            <Route path='/Project/DraftCharter' component={DraftCharter} />
+
+            {/* adding in more routes to test */}
+            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
+            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
+
+        </Layout>
+    );
+  }
+}
