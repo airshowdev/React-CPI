@@ -3,7 +3,6 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
-import { Project } from './components/Project';
 import { ProjectInfo } from './components/ProjectInfo';
 import { ProjectOverview } from './components/ProjectPages/ProjectOverview';
 import { PreEventPlanningOverview } from './components/ProjectPages/PreEventPlanningOverview';
@@ -41,6 +40,10 @@ import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
 
 
+//adding in more routes to test pages
+import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
+import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
+import { DraftCharter } from './components/ProjectPages/DraftCharter';
 
 export default class App extends Component {
     displayName = App.name
@@ -62,11 +65,10 @@ export default class App extends Component {
   render() {
     return (
         <Layout>
-            <Route path="/NVAData/:id" component={NVADataCollection} />
+            <Route path="/Project/NVAData/:id" component={NVADataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
             <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id" component={Project} />
 			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
 			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
@@ -86,8 +88,9 @@ export default class App extends Component {
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
             <Route path="/Project/:id/:Page" component={Project} />
-            <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+            <Route path='/Project/BaselineData' component={BaselineData} />
+            <Route path='/Project/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/Project/PostEventFollowUp' component={PostEventFollowUp} />
             <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
             <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
@@ -98,8 +101,20 @@ export default class App extends Component {
             <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+
             <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
             <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
+
+
+            {/* adding in more routes to test pages */}
+            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
+            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
+            <Route path='/Project/DraftCharter' component={DraftCharter} />
+
+            {/* adding in more routes to test */}
+            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
+            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
+
         </Layout>
     );
   }

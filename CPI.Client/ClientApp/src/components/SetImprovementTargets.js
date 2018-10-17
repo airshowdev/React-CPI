@@ -11,31 +11,33 @@ export class SetImprovementTargets extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    render(project) {
+    render() {
         return (
             <div className="paragraph">
                 <h1> PPSM Step 3 - Set Improvement Targets </h1>
-                <img src="./img/close.png" defaultValue="Place Holder" />
-                <img src="./img/close.png" defaultValue="Place Holder" />
-                <img src="./img/close.png" defaultValue="Place Holder" />
-                <img src="./img/close.png" defaultValue="Place Holder" />
-                <img src="./img/close.png" defaultValue="Place Holder" />
-                <textarea className="centered-textarea" placeholder="Performance Gap:"></textarea>
+                <textarea className="set-improvement-text-area" placeholder="Performance Gap:"></textarea>
                 <table className = "centered-textarea">
-                    <thead>
-                        <tr>
-                            <td>Baseline</td>
-                            <td></td>
-                            <td>Projected</td>
-                            <td></td>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
+                            <td style={{ border: "hidden" }}></td>
+                            <td style={{ borderTop: "hidden", borderRight: "hidden" }}>Baseline</td>
+                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}>Projected</td>
+                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                        </tr>
+                        <tr>
+                            <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>TIME FRAME</td>
                             <td></td>
+                            <td style={{backgroundColor: "rgba(0, 113, 188, 0.5)"}}></td>
+                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                        </tr>
+                        <tr>
+                            <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>% On Time</td>
                             <td></td>
-                            <td></td>
-                            <td></td>
+                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
                         </tr>
                     </tbody>
                 </table>

@@ -11,13 +11,10 @@ export class EventGoNoGo extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    render(project) {
+    render() {
         return (
-            <div className="left-aligned-paragraph">
+            <div className="paragraph">
                 <h1> Event Go/ No-Go </h1>
-                <div className="image-alignment">
-                    <img src="./img/close.png" defaultValue="Place Holder" />
-                </div>
                 <p>A vector check at this stage in the process ensures the Champion agrees the team has a solid<br/> grasp of the Problem to be solved, Gap to be closed, Target to be met.</p>
             </div>
         )
