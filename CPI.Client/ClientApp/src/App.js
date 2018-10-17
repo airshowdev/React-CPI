@@ -38,6 +38,10 @@ import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessful
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
 
+//adding in more routes to test pages
+import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
+import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
+import { DraftCharter } from './components/ProjectPages/DraftCharter';
 
 export default class App extends Component {
     displayName = App.name
@@ -81,9 +85,10 @@ export default class App extends Component {
 			<Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
-            <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
-            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+            <Route path="/Project/:id/:Page" component={Project} />
+            <Route path='/Project/BaselineData' component={BaselineData} />
+            <Route path='/Project/StandardizeSuccessfulProject' component={StandardizeSuccessfulProject} />
+            <Route path='/Project/PostEventFollowUp' component={PostEventFollowUp} />
             <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
             <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
@@ -94,6 +99,15 @@ export default class App extends Component {
             <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+
+            {/* adding in more routes to test pages */}
+            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
+            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
+            <Route path='/Project/DraftCharter' component={DraftCharter} />
+
+            {/* adding in more routes to test */}
+            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
+            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
         </Layout>
     );
   }
