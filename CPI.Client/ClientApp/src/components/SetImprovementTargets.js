@@ -11,7 +11,7 @@ export class SetImprovementTargets extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    render(project) {
+    render() {
         return (
             <div className="paragraph">
                 <h1> PPSM Step 3 - Set Improvement Targets </h1>

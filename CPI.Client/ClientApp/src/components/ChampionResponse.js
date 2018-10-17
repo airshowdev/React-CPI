@@ -16,9 +16,6 @@ export class ChampionResponse extends Component {
     handleChange(event)
     {
         var keynum = this.state.key;
-        
-
-        console.log(keynum);
 
         if (keynum == "Backspace") {
 
@@ -36,7 +33,8 @@ export class ChampionResponse extends Component {
         this.setState({key: event.key})
     }
 
-    render(project) {
+    render()
+    {
         return (
             <div className="left-aligned-paragraph">
                 <h3>Deficiency:</h3>
@@ -62,37 +60,35 @@ export class ChampionResponse extends Component {
                 </p>
 
                 <h3>Champion's Response:</h3>
+                    <div className="radio-input-size">
+                        <input type="radio" value="1" name="Option" id="DontSupport" />
+                        <label htmlFor="DontSupport"><span className="radio-input-size">I do not concur with supporting a CPI event at this time.</span></label>
+                    </div>
 
-                <div className="radio-input-size">
-                    <input type="radio" value="1" name="OptionOne" id="DontSupport" />
-                    <label htmlFor="DontSupport"><span className="radio-input-size">I do not concur with supporting a CPI event at this time.</span></label>
-                </div>
+                    <div className="radio-input-size">
+                        <input type="radio" value="2" name="Option" id="FullySupport" />
+                        <label htmlFor="FullySupport">I fully support a CPI event to improve our current performance.</label>
+                    </div>
 
-                <div className="radio-input-size">
-                    <input type="radio" value="2" name="OptionTwo" id="FullySupport" />
-                    <label htmlFor="FullySupport">I fully support a CPI event to improve our current performance.</label>
-                </div>
+                    <div className="paragraph-response-text">
+                        <label>
+                            <input type="text" style={{ marginRight: "3px" }} /> the person I would like to be the Team Leader for this event is 
+                        </label>   
+                    </div>
 
-                <div className="paragraph-response-text">
-                    <label>
-                        <input type="text" style={{ marginRight: "3px" }} /> the person I would like to be the Team Leader for this event is 
-                    </label>   
-                </div>
+                    <div className="paragraph-response-text">
+                        <label>My definition of "success" for this CPI event is to achieve an "on-time" turn in rate to MPS of
+                            <input type="text" style={{ marginLeft: "3px" }} id="goalInput" value={this.state.successPercent} onKeyDown={this.keyPress} onChange={this.handleChange} />
+                        </label>
+                    </div>
 
-                <div className="paragraph-response-text">
-                    <label>My definition of "success" for this CPI event is to achieve an "on-time" turn in rate to MPS of
-                        <input type="text" style={{ marginLeft: "3px" }} id="goalInput" value={this.state.successPercent} onKeyDown={this.keyPress} onChange={this.handleChange} />
-                    </label>
-                </div>
-
-                <div className="radio-input-size">
-                    <input type="radio" value="3" name="OptionThree" id="WillSupport" />
-                    <label htmlFor="WillSupport"><span className="radio-input-size">I will support this CPI Event by allowing team members to use duty hours to complete tasks related to this event.
-                            In addition, I will attend key portions of the event - Kickoff, Vector Check, Wrap-up.</span></label>
-                </div>
-
+                    <div className="radio-input-size">
+                        <input type="radio" value="3" name="Option" id="WillSupport" />
+                        <label htmlFor="WillSupport"><span className="radio-input-size">I will support this CPI Event by allowing team members to use duty hours to complete tasks related to this event.
+                                In addition, I will attend key portions of the event - Kickoff, Vector Check, Wrap-up.</span></label>
+                    </div>
             </div>
-            )
+        )
     }
 
 }

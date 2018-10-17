@@ -107,8 +107,9 @@ export default class App extends Component {
             <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
             <Route path='/Project/DraftCharter' component={DraftCharter} />
 
-            {/* adding in more routes to test on 10/16 */}
+            {/* adding in more routes to test */}
             <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
+            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
         </Layout>
     );
   }
