@@ -13,6 +13,7 @@ export class DataCollection extends Component {
 		this.state = {type: this.props.type || "", loading: true};
 
 		this.handleSelect = this.handleSelect.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 
 	}
 	componentDidMount() {
@@ -31,6 +32,9 @@ export class DataCollection extends Component {
 				break;
 		}
 	}
+	handleChange(event) {
+		this.setState({type: event.target.value});
+	}
 
 	render() {
 		switch (this.state.type) {
@@ -45,9 +49,9 @@ export class DataCollection extends Component {
 			this.state.loading ? <span>Loading</span> : (
 				<div>
 				<h3> Please Select a project type</h3>
-				<select>
-					<option onChange={() => this.setState({ type: "OnTime" })} value="OnTime">On Time</option>
-					<option onChange={() => this.setState({type: "NVA"})} value="NVA">NVA</option>
+			    <select onChange={this.handleChange}>
+				    <option value="OnTime">On Time</option>
+					<option value="NVA">NVA</option>
 				</select>
 					<button onClick={this.handleSelect}>Select</button>
 					</div>
