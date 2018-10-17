@@ -24,7 +24,7 @@ export class DataCollectionStatus extends Component {
 			case "NVA":
 				properties.Instructions = <div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
 					VA: Value Added.These are expenses that do directly support mission accomplishment, preparedness, and effectiveness < br />
-					Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.Lower is better < br />
+					Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.  Lower is better < br />
 					Goal: The percentage NVA that is deemed satisfactory</div>;
 				properties.StandardGoalLabel = "NVA Goal";
 				break;
@@ -36,7 +36,8 @@ export class DataCollectionStatus extends Component {
 
     NVAPercentage(nva, va) {
         var flNVA = parseFloat(nva);
-        var flVA = parseFloat(va);
+		var flVA = parseFloat(va);
+
         let total = flNVA + flVA;
         return Math.round((flNVA * 100) / total);
     }
@@ -56,15 +57,34 @@ export class DataCollectionStatus extends Component {
 				return this.state.Standard + "%";
 				break;
 		}
-    }
+	}
+
+	TotalCalculated() {
+		switch (this.state.Type) {
+			case "NVA":
+				var totalNVA = 0;
+				var totalVA = 0;
+				this.state.Elements.map((x) => {
+					totalNVA += parseFloat(x.NVA);
+					totalVA += parseFloat(x.VA);
+				});
+				return this.NVAPercentage(totalNVA, totalVA);
+				break;
+			case "OnTime":
+				var unsats = 0;
+				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
+				return (unsats / this.state.Elements.length) * 100;
+				break;
+		}
+	}
+
 	calculateUnsat() {
 	
 		var unsats = 0;
 		switch (this.state.Type) {
 			case "NVA":
-				this.state.Elements.map((x) => { (!(parseFloat(x.NVA) * 100 / ((parseFloat(x.VA) + parseFloat(x.NVA))) > x.Goal) ? unsats++ : unsats) });
+				
 				break;
-
 			case "OnTime":
 				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
 				break;
@@ -131,7 +151,7 @@ export class DataCollectionStatus extends Component {
                             <tbody>
                                 <tr>
                                     <td>Total Calculated</td>
-                                    <td>{this.calculateUnsat() * 100 / this.state.Elements.length}%</td>
+                                    <td>{this.TotalCalculated()}%</td>
                                 </tr>
                                 <tr>
                                     <td>{this.state.Type == "OnTime" ? "Goal" : "Average Goal"}</td>

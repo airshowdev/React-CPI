@@ -85,7 +85,9 @@ namespace CPI.Client.Controllers
 
             json = json.Replace("\"_id\":\"," + projID + "\",", "");
 
-            DataCollection collection = Client.DataCollection.FromJson(json);
+			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
+
+            DataCollection collection = Client.DataCollection.FromJson(jCollection.ToString());
 
             try
             {
@@ -102,7 +104,7 @@ namespace CPI.Client.Controllers
                 UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.DataCollection, collection);
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-                return result.ToString();
+                return result.ToJson();
             }
 
             catch (Exception E)

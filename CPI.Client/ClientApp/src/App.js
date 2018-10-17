@@ -54,16 +54,6 @@ export default class App extends Component {
 
     constructor(props) {
         super(props)
-
-       //this.setCurrentProject = this.setCurrentProject.bind(this);
-
-       //this.state.currentProject = "";
-    }
-
-    setCurrentProject() {
-        /*is.setState({
-            currentProject: ""
-        });*/
     }
 
   render() {
@@ -93,8 +83,7 @@ export default class App extends Component {
 			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
-			      <Route path='/BaselineData:id' component={BaselineData} />
-            <Route path='/StandardizeSuccessfulProject/:id' component={StandardizeSuccessfulProject} />
+			<Route path='/BaselineData:id' component={BaselineData} />
             <Route path='/PostEventFollowUp/:id' component={PostEventFollowUp} />
 			<Route path='/Project/StandardizeSuccessfulProcess/:id' component={StandardizeSuccessfulProcess} />
 			<Route path='/Project/PostEventFollowUpOverview/:id' component={PostEventFollowUpOverview} />
@@ -106,25 +95,16 @@ export default class App extends Component {
 			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
 			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
 			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
-        </Layout>
-    );
-  }
-}
+			<Route path='/Project/MeetingChampionPpt/:id' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
+			<Route path='/Project/EventCharter/:id' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
+			{/* adding in more routes to test pages */}
+			<Route path='/Project/MeetWithChampion/:id' component={MeetWithChampion} />
+			<Route path='/Project/MeetWithTeamLead/:id' component={MeetWithTeamLead} />
+			<Route path='/Project/DraftCharter/:id' component={DraftCharter} />
 
-
-            <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
-            <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
-
-
-            {/* adding in more routes to test pages */}
-            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
-            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
-            <Route path='/Project/DraftCharter' component={DraftCharter} />
-
-            {/* adding in more routes to test */}
-            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
-            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
-
+			{/* adding in more routes to test */}
+			<Route path='/Project/ClarifyValidateProblem/:id' component={ClarifyValidateProblem} />
+			<Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
         </Layout>
     );
   }

@@ -1,29 +1,42 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Rest, Post } from '../../REST'
 
 export class DataCollection extends Component {
 
 	static contextTypes = {
 		router: PropTypes.object
 	}
-
+	displayName = DataCollection.name;
 	constructor(props) {
 		super(props);
+		this.state = {
+			type: this.props.type || "", loading: true, selectedType: "", ProjectDataCollection: {}
+		}
 
-		this.state = {type: this.props.type || "", loading: true};
-
-		this.handleSelect = this.handleSelect.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-
+		this.redirectPage = this.redirectPage.bind(this);
 	}
+
 	componentDidMount() {
 		fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
 			.then(response => response.json())
-			.then(data => this.setState({ loading: false, type: data.DataCollection.Type }
-			));
+			.then(data => this.setState({ selectedType: data.DataCollection.Type, ProjectDataCollection: data.DataCollection, loading: false }));
 	}
-	handleSelect() {
-		switch (this.state.type) {
+
+	handleSubmit() {
+		var dataCollection = this.state.ProjectDataCollection;
+		dataCollection.Type = this.state.selectedType;
+		this.setState({ DataCollection: dataCollection, loading: true })
+		Post({ _id: this.props.match.params.id, DataCollection: this.state.DataCollection }, "Project", 'UpdateDataCollection')
+			.then((data) => console.info(JSON.stringify(data)))
+			.then(this.redirectPage(this.state.selectedType));
+
+		
+	}
+	redirectPage() {
+		switch (this.state.ProjectDataCollection.Type) {
 			case "NVA":
 				this.context.router.history.push('/Project/NVAData/' + this.props.match.params.id)
 				break;
@@ -32,28 +45,24 @@ export class DataCollection extends Component {
 				break;
 		}
 	}
+
 	handleChange(event) {
-		this.setState({type: event.target.value});
+		this.setState({ selectedType: event.target.value });
 	}
 
 	render() {
-		switch (this.state.type) {
-			case "NVA":
-				this.context.router.history.push('/Project/NVAData/' + this.props.match.params.id)
-				break;
-			case "OnTime":
-				this.context.router.history.push('/Project/OnTimeData/' + this.props.match.params.id)
-				break;
-		}
+
+		this.redirectPage(this.state.ProjectDataCollection.Type);
+
 		return (
 			this.state.loading ? <span>Loading</span> : (
 				<div>
-				<h3> Please Select a project type</h3>
-			    <select onChange={this.handleChange}>
+					<h3> Please Select a project type</h3>
+					<select onChange={this.handleChange} value={this.state.selectedType}>
 				    <option value="OnTime">On Time</option>
 					<option value="NVA">NVA</option>
-				</select>
-					<button onClick={this.handleSelect}>Select</button>
+					</select>
+					<button onClick={this.handleSubmit}>Select</button>
 					</div>
 				)
 			)
