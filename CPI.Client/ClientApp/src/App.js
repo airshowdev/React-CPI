@@ -38,6 +38,7 @@ import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessful
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
 import { OnTimeDataCollection } from './components/ProjectPages/OnTimeDataCollection';
+import { DataCollection } from './components/ProjectPages/DataCollection';
 
 
 export default class App extends Component {
@@ -64,26 +65,27 @@ export default class App extends Component {
             <Route path="/Project/OnTimeData/:id" component={OnTimeDataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
-            <Route exact path='/Projects' component={Projects} />
-			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
-			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
-			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
-			<Route path='/Project/PreEventPlanningOverview/' component={PreEventPlanningOverview} />
-			<Route path='/Project/Validatecharter/' from component={ValidateCharter} />
-			<Route path='/Project/ReviewKPI/' from component={ReviewKPI} />
-			<Route path='/Project/IdentifyEventLocation/' from component={IdentifyEventLocation} />
-			<Route path='/Project/DistributeEventNotification/' from component={DistributeEventNotification} />
-			<Route path='/Project/ScheduleInOutBrief/' from component={ScheduleInOutBrief} />
-			<Route path='/Project/TeamProcessWalk/' from component={TeamProcessWalk} />
-			<Route path='/Project/TeamKickOffAwarenessTraining/' from component={TeamKickOffAwarenessTraining} />
-			<Route path='/Project/ValidateDataCollection/' from component={ValidateDataCollection} />
-			<Route path='/Project/ObtainSupplies/' from component={ObtainSupplies} />
-			<Route path='/Project/EventGoNoGo/' from component={EventGoNoGo} />
-			<Route path='/Project/RoomSetup/' from component={RoomSetup} />
+			<Route exact path='/Projects' component={Projects} />
+			<Route path='/Project/DataCollection/:id' component={DataCollection}/>
+			<Route path='/Project/RequestAMentor/:id' component={RequestAMentor} />
+			<Route path='/Project/PreEventPrepOverview/:id' component={PreEventPrepOverview} />
+			<Route path='/Project/ProcessWalk/:id' component={ProcessWalk} />
+			<Route path='/Project/PreEventPlanningOverview/:id' component={PreEventPlanningOverview} />
+			<Route path='/Project/Validatecharter/:id' component={ValidateCharter} />
+			<Route path='/Project/ReviewKPI/:id' component={ReviewKPI} />
+			<Route path='/Project/IdentifyEventLocation/:id' component={IdentifyEventLocation} />
+			<Route path='/Project/DistributeEventNotification/:id' component={DistributeEventNotification} />
+			<Route path='/Project/ScheduleInOutBrief/:id' component={ScheduleInOutBrief} />
+			<Route path='/Project/TeamProcessWalk/:id' component={TeamProcessWalk} />
+			<Route path='/Project/TeamKickOffAwarenessTraining/:id' component={TeamKickOffAwarenessTraining} />
+			<Route path='/Project/ValidateDataCollection/:id' component={ValidateDataCollection} />
+			<Route path='/Project/ObtainSupplies/:id' component={ObtainSupplies} />
+			<Route path='/Project/EventGoNoGo/:id' from component={EventGoNoGo} />
+			<Route path='/Project/RoomSetup/:id' from component={RoomSetup} />
 			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
-            <Route path='/BaselineData' component={BaselineData} />
+			<Route path='/BaselineData:id' component={BaselineData} />
             <Route path='/StandardizeSuccessfulProject/:id' component={StandardizeSuccessfulProject} />
             <Route path='/PostEventFollowUp/:id' component={PostEventFollowUp} />
 			<Route path='/Project/StandardizeSuccessfulProcess/:id' component={StandardizeSuccessfulProcess} />

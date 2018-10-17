@@ -29,7 +29,7 @@ export class ProjectOverview extends Component {
     render() {
 		return (
 			<div>
-				<NavButtons next="OnTimeData" previous="ProjectInfo" projectId={this.props.match.params.id}/>
+				<NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id}/>
             <div className="usa-grid">
                 <div className="grid-with-border">
                     <h1 className="usa-heading">Pre-Event Planning Overview</h1>

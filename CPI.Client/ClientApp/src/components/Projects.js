@@ -20,8 +20,8 @@ export class Projects extends Component {
             });
     }
     renderProjectsTable(project) {
-        return (
-            <form>
+		return (
+			<form>
 				<table className="usa-table-borderless" style={{width: "70vw"}}>
                         <thead>
                             <tr>
