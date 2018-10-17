@@ -16,6 +16,10 @@ namespace CPI.Client
         [JsonProperty("Type")]
         public string Type { get; set; } = "";
 
+		[JsonProperty("Standard")]
+		[BsonIgnoreIfNull]
+		public string Standard { get; set; }
+
         [JsonIgnore]
         [BsonIgnore]
         public bool GoalMet => CheckGoalMet();

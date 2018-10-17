@@ -21,6 +21,7 @@ export async function Post(data, controller, action) {
         referrer: "no-referrer",
         body: JSON.stringify(data)
     })
-        .then(response => { return response.json(); });
+        .then(response => { return response.json();
+        });
 }
 

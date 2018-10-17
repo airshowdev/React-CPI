@@ -1,15 +1,15 @@
 ﻿import { NavButtons } from "../NavButtons";
 import React, { Component } from 'react';
 import '../css/uswds.css';
-import { Alert } from "reactstrap";
 import { Post } from '../../REST';
+import { DataCollectionStatus } from '../DataCollectionStatus';
 
 export class NVADataCollection extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            Elements: [], newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: false
+            Elements: [], championGoal: "", Type: "" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
         };
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNVAChange = this.handleNVAChange.bind(this);
@@ -24,8 +24,9 @@ export class NVADataCollection extends Component {
 
     componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+            .then(response => response.json())
             .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements || new [], loading: false });
+                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
             });
     }
     
@@ -74,16 +75,19 @@ export class NVADataCollection extends Component {
 
     handleSave() {
 
-        var type = 'NVA';
+        var type = "NVA";
         var elements = this.state.Elements;
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
         var postData = {
             _id: this.props.match.params.id,
             Type: type,
             Elements: elements
-        }
+        };
         alert(JSON.stringify(postData));
-        Post(postData, "Project", "UpdateDataCollection").then(response => alert(JSON.stringify(response)));
+        
+        Post(postData, "Project", "UpdateDataCollection");
+
+        
         
     }
 
@@ -97,15 +101,29 @@ export class NVADataCollection extends Component {
         return goal > this.NVAPercentage(nva, va);
     }
 
-    render() {
-        
+    calculateAverageGoal() {
+        var total = 0;
+        for (var item in this.state.Elements) {
+            total += parseFloat(item.Goal);
+        }
+        return total / this.state.Elements.length;
+    }
+    calculateUnsat() {
+        var unsats = 0;
+        this.state.Elements.forEach(
+            (x) => { (!(parseFloat(x.NVA) / (parseFloat(x.VA) + parseFloat(x.NVA)) > x.Goal) ? unsats++ : unsats) });
+       
+        return unsats;
+    }
 
+    render() {
         if (this.state.loading) {
-            return (<span>Loading UwU</span>);
+            return (<span>Loading Data</span>);
         } else {
             return (
                 <div className="usa-grid">
-					<NavButtons previous="ProjectOverview" next="AnalyzeData" projectId={this.props.match.params.id} />
+                        <NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
+                        <DataCollectionStatus {...this.state} />
 					<table>
                     <thead>
                         <tr>
@@ -147,8 +165,7 @@ export class NVADataCollection extends Component {
                     <div style={{ float: 'right' }}>
                         <button onClick={this.handleSave}>Save Data</button>
                     </div>
-                </div>
-
+                    </div>
             );
         }
     }  
