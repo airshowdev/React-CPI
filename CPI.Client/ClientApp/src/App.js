@@ -23,7 +23,6 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
-import { StandardizeSuccessfulProject } from './components/StandardizeSuccessfulProject';
 import { PostEventFollowUp } from './components/PostEventFollowUp';
 import { EventExecutionOverview } from './components/EventExecutionOverview';
 import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
@@ -37,6 +36,9 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
+import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
+import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
+
 
 //adding in more routes to test pages
 import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
@@ -100,6 +102,10 @@ export default class App extends Component {
             <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
 
+            <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
+            <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
+
+
             {/* adding in more routes to test pages */}
             <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
             <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
@@ -108,11 +114,8 @@ export default class App extends Component {
             {/* adding in more routes to test */}
             <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
             <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
+
         </Layout>
     );
   }
 }
-
-
-
-
