@@ -36,7 +36,7 @@ export class ProjectInfo extends Component {
                 stateProject.Unit = event.target.value;
 				break;
 			case "TeamLead":
-				stateProject.TeamLeads = event.target.value.split('\n')
+                stateProject.TeamLeads = event.target.value.split('\n');
 				break;
             case "Evaluators":
                 stateProject.Evaluators = event.target.value.split('\n');

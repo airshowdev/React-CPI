@@ -9,7 +9,7 @@ export class MeetWithChampion extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, /*WingDirectorate: "", Unit: "", Champion: "", ProcessOwner: "", TeamLeads: [], Facilitators: [], Facilitator: "", CahmpionGoal: "", */loading: true };
+        this.state = { project: {}, loading: true };
 
         this.handleSave = this.handleSave.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
@@ -19,7 +19,7 @@ export class MeetWithChampion extends Component {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ project: data, /*WingDirectorate: data.WingDirectorate, Unit: data.Unit, Champion: data.Champion.Name, ProcessOwner: data.ProcessOwner, TeamLeads: data.TeamLeads, Facilitators: data.Facilitators, Facilitator: data.Facilitator, CahmpionGoal: data.Champion.Goal,*/ loading: false });
+                this.setState({ project: data,  loading: false });
             });
     }
 
