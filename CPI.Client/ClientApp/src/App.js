@@ -24,7 +24,7 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
-import { PostEventFollowUp } from './components/PostEventFollowUp';
+import { PostEventFollowUp } from './components/PostEventFollowUp'; //Added by Cyriac (I believe on 10 Oct 2018)
 import { EventExecutionOverview } from './components/EventExecutionOverview';
 import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
 import { IdentifyPerformanceGaps } from './components/IdentifyPerformanceGaps';
@@ -39,6 +39,7 @@ import { PostEventFollowUpOverview } from './components/PostEventFollowUpOvervie
 import { ChampionResponse } from './components/ChampionResponse';
 import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
+import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use as a template for graphs
 
 
 
@@ -87,7 +88,7 @@ export default class App extends Component {
             <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
             <Route path="/Project/:id/:Page" component={Project} />
             <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/PostEventFollowUp' component={PostEventFollowUp} />
+            <Route path='/Project/PostEventFollowUp' component={PostEventFollowUp} /> {/*Added by Cyriac (I believe on 10 Oct 2018) */}
             <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
             <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
             <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
@@ -100,6 +101,7 @@ export default class App extends Component {
             <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
             <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
             <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
+            <Route path='/Project/Graph/' component={Graph} /> {/*Added by Cyriac 17 Oct 2018 for implementing graphs*/}
         </Layout>
     );
   }
