@@ -65,7 +65,7 @@ export default class App extends Component {
             <Route exact path='/CreateProject' component={CreateProject} />
 			<Route exact path='/Projects' component={Projects} />
 			<Route path='/Project/DataCollection/:id' component={DataCollection}/>
-			<Route path='/Project/RequestAMentor/:id' component={RequestAMentor} />
+			<Route path='/Project/RequestMentor/:id' component={RequestAMentor} />
 			<Route path='/Project/PreEventPrepOverview/:id' component={PreEventPrepOverview} />
 			<Route path='/Project/ProcessWalk/:id' component={ProcessWalk} />
 			<Route path='/Project/PreEventPlanningOverview/:id' component={PreEventPlanningOverview} />
@@ -99,7 +99,7 @@ export default class App extends Component {
 			<Route path='/Project/EventCharter/:id' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
 			{/* adding in more routes to test pages */}
 			<Route path='/Project/MeetWithChampion/:id' component={MeetWithChampion} />
-			<Route path='/Project/MeetWithTeamLead/:id' component={MeetWithTeamLead} />
+			<Route path='/Project/MeetWithTeamLeader/:id' component={MeetWithTeamLead} />
 			<Route path='/Project/DraftCharter/:id' component={DraftCharter} />
 
 			{/* adding in more routes to test */}
