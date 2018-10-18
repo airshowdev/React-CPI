@@ -1,7 +1,11 @@
 ﻿.project-nav > ul li a {
-    display: none;
+	display: none;
 }
 
 .project-nav:focus > ul li a {
-    display: block;
+    /*display: block;*/
+}
+
+.project-nav.selected > ul li a{
+	display: block
 }

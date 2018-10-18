@@ -11,14 +11,14 @@ export class IdentifyPerformanceGaps extends Component {
         this.state = { project: {}, loading: true };
     }
 
-    render(project) {
+    render() {
         return (
             <div className="paragraph">
                 <h1> PPSM Step 2 - Identify Performance Gaps </h1>
                 <div><h3>Chart goes here</h3></div>
                 <p>Identify the performance Gaps in the current process by comparing current performance to the process goal</p>
-                <div className="horizontal-div-left" >
-                        <textarea>Performance Gap:</textarea>   
+                <div className="paragraph" style={{border: "none"}}>
+                    <textarea className="performance-gap-text-area">Performance Gap:</textarea>   
                 </div>
             </div>
         )

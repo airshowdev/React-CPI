@@ -30,7 +30,7 @@ export class CreateProject extends Component {
         return (
             <form className="usa-form" onSubmit={this.handleSubmit}>
             <fieldset>
-                <legend>Create Project</legend>
+					<h2 style={{marginLeft: "0"}}>Create Project</h2>
                     <label htmlFor="ProjectName">Project Name</label>
                     <input id="ProjectName" type="text" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name}required aria-required="true"/>
 

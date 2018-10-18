@@ -2,340 +2,148 @@
 import './css/uswds.css';
 import './css/projectnav.css';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export class SideNav extends Component {
     displayName = SideNav.name
 
-    constructor(props, context) {
-        super(props, context)
-    }
+	static contextTypes = {
+		router: PropTypes.object
+	}
 
+    constructor(props, context) {
+		super(props, context)
+		this.state = { selectedID: ""}
+		this.handleSelect = this.handleSelect.bind(this);
+	}
+
+	handleSelect(event) {
+		if (event.target.id !== this.state.selectedID) {
+			this.setState({ selectedID: event.target.id })
+		} else {
+			this.setState({ selectedID: "" })
+		}
+	}
 
     render() {        
         var navHeight = {
             height: '905px'
         };
-
+		/*
+		 Fix focus of parent <a>'s, add onClick event for each parent a that sets the className or style of itself and the others
+		 */
         
 		return (
 			<div className="sidenav sticky" style={navHeight}>
                 <ul className="usa-sidenav-list ">
-                    <li className="project-nav" tabIndex={1}>
-                        <a >Pre-Event Planning (T-3 Weeks)</a>
+					<li className={"project-nav " + (this.state.selectedID == "PreEventPlanning" ? "selected" : "")} tabIndex={1}>
+						<a onClick={this.handleSelect} id="PreEventPlanning">Pre-Event Planning</a>
                         <ul className="usa-sidenav-sub_list ">
-                            <li>
-                                <a>Initial Data Collection</a>
-                                </li>
-                            <li>
-                                <a>Analyze Data</a>
+							<li>
+								<LinkContainer to={"/Project/DataCollection/" + this.props.match.params.id} ><a> Initial Data Collection</a></LinkContainer>
                             </li>
-                            <li>
-                                <a>Request Mentor</a>
+							<li>
+								<LinkContainer to={"/Project/AnalyzeData/" + this.props.match.params.id}><a>Analyze Data</a></LinkContainer>
                             </li>
-                            <li>
-                                <a>Meet With Champion</a>
+							<li>
+								<LinkContainer to={"/Project/RequestMentor/" + this.props.match.params.id}><a>Request Mentor</a></LinkContainer>
                             </li>
-                            <li>
-                                <a>Meet with Team Leader</a>
+							<li>
+								<LinkContainer to={"/Project/MeetWithChampion/" + this.props.match.params.id}><a>Meet With Champion</a></LinkContainer>
                             </li>
-                            <li>
-                                <a>Draft Charter</a>
+							<li>
+								<LinkContainer to={"/Project/MeetwithTeamLeader/" + this.props.match.params.id}><a>Meet with Team Leader</a></LinkContainer>
                             </li>
-                        </ul>
-                    </li>
-                    <li className="project-nav" tabIndex={2}>
-                        <a>Pre-Event Preparation (T-2 and T-1 Weeks)</a>
-                        <ul className="usa-sidenav-sub_list">
-                            <li>
-                                <a >Process Walk</a>
-                            </li>
-                            <li>
-                                <a >Finalize Charter</a>
-                            </li>
-                            <li>
-                                <a >Review KPI</a>
-                            </li>
-                            <li>
-                                <a >Identify Event Location</a>
-                            </li>
-                            <li>
-                                <a>Distribute Event Notification and Charter</a>
-                            </li>
-                            <li>
-                                <a>Schedule In Brief/Out Brief</a>
-                            </li>
-                            <li>
-                                <a >Team Process Walk</a>
-                            </li>
-                            <li>
-                                <a >Team Kick-Off and Awareness Training</a>
-                            </li>
-                            <li>
-                                <a >Validate Data Collection</a>
-                            </li>
-                            <li>
-                                <a >Obtain Supplies</a>
-                            </li>
-                            <li>
-                                <a >Event Go/No-Go</a>
-                            </li>
-                            <li>
-                                <a >Room Set-Up</a>
+							<li>
+								<LinkContainer to={"/Project/DraftCharter/" + this.props.match.params.id}><a>Draft Charter</a></LinkContainer>
                             </li>
                         </ul>
                     </li>
-                    <li className="project-nav" tabIndex={3}>
-                        <a >Event Execution (T-0 Weeks)</a>    
+					<li className={"project-nav " + (this.state.selectedID == "PreEventPreparation" ? "selected" : "")} tabIndex={2}>
+						<a id="PreEventPreparation" onClick={this.handleSelect} >Pre-Event Preparation</a>
+                        <ul className="usa-sidenav-sub_list">
+							<li>
+								<LinkContainer to={"/Project/Process/" + this.props.match.params.id}><a>Process Walk</a></LinkContainer>
+                            </li>
+							<li>
+								<LinkContainer to={"/Project/FinalizeCharter/" + this.props.match.params.id}><a>Finalize Charter</a></LinkContainer>
+                            </li>
+                            <li>
+								<LinkContainer to={"/Project/ReviewKPI/" + this.props.match.params.id}><a>Review KPI</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/IdentifyEventLocation/" + this.props.match.params.id}><a>Identify Event Location</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/DistributeEventNotification/" + this.props.match.params.id}><a>Distribute Event Notification and Charter</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/ScheduleInOutBrief/" + this.props.match.params.id}><a>Schedule In Brief/Out Brief</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/TeamProcessWalk/" + this.props.match.params.id}><a>Team Process Walk</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/TeamKickOffAwarenessTraining/" + this.props.match.params.id}><a>Team Kick-Off and Awareness Training</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/ValidateDataCollection/" + this.props.match.params.id}><a>Validate Data Collection</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/ObtainSupplies/" + this.props.match.params.id}><a>Obtain Supplies</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/EventGoNoGO/" + this.props.match.params.id}><a>Event Go/No-Go</a></LinkContainer>
+                            </li>
+                            <li>
+							<LinkContainer to={"/Project/RoomSetUp/" + this.props.match.params.id}><a>Room Set-Up</a></LinkContainer>
+                            </li>
+                        </ul>
+                    </li>
+					<li className={"project-nav " + (this.state.selectedID == "EventExecution" ? "selected" : "")} tabIndex={3}>
+						<a id="EventExecution" onClick={this.handleSelect}>Event Execution</a>    
                         <ul className="usa-sidenav-sub_list">
                             <li>
-                                <a >1. Clarify and Validate the Problem</a>
+							<LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><a>1. Clarify and Validate the Problem</a></LinkContainer>
                             </li>
                             <li>
-                                <a >2. Identify Performance Gaps</a>
+							<LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><a>2. Identify Performance Gaps</a></LinkContainer>
+                            </li>
+							<li>
+							<LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><a>3. Set Improvement Targets</a></LinkContainer>
                             </li>
                             <li>
-                                <a >3. Set Improvement</a>
+							<LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
                             </li>
                             <li>
-                                <a >4. Determine Root Cause(s)</a>
-                            </li>
-                            <li>
-                                <a >5. Develope Countermeasures</a>
+							<LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><a>5. Develope Countermeasures</a></LinkContainer>
                             </li>
                             </ul>
                     </li>
-                    <li className="project-nav" tabIndex={4}>
-                        <a >Post-Event Implementation (T-0 Weeks)</a>
+					<li className={"project-nav " + (this.state.selectedID == "PostEventImplementation" ? "selected" : "")} tabIndex={4}>
+						<a id="PostEventImplementation" onClick={this.handleSelect} >Post-Event Implementation</a>
                         <ul className="usa-sidenav-sub_list">
                                 <li>
-                                    <a >6. See Countermeasures Through</a>
+							<LinkContainer to={"/Project/SeeCountermeasuresThrough/" + this.props.match.params.id}><a>6. See Countermeasures Through</a></LinkContainer>
                                 </li>
                                 <li>
-                                    <a > 7. Validate Results</a>
+							<LinkContainer to={"/Project/ValidateResults/" + this.props.match.params.id}><a>7. Validate Results</a></LinkContainer>
                                 </li>
                             </ul>
-                    </li>
-                    <li className="project-nav" tabIndex={5}>
-                        <a >
-                            Post-Event Follow Up(T-0 Weeks)
+					</li>
+					<li className={"project-nav " + (this.state.selectedID == "PostEventFollowUp" ? "selected" : "")} tabIndex={5}>
+						<a id="PostEventFollowUp" onClick={this.handleSelect} >
+                            Post-Event Follow Up
                         </a>
                         <ul className="usa-sidenav-sub_list">
-                            <li>
-                                <a >8. Standardize Successful Process</a>
+							<li>
+							<LinkContainer to={"/Project/StandardizeSuccessfulProcess/" + this.props.match.params.id}><a>8. Standardize Successful Process</a></LinkContainer>
                             </li>
                         </ul>
                     </li>
 				</ul>
 			</div>
-//            <aside className="sidenav sticky" style={navHeight}>
-//                <ul className="usa-sidenav-list">
-//                    <li>
-//                        <a href="/components/" className="usa-current">
-//                            Overview                        
-//                        </a>
-//                     </li>
-
-//                    <li>
-
-
-//                        <a href="/components/typography/">
-
-//                            Typography
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/colors/">
-
-//                            Colors
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/icons/">
-
-//                            Icons
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/grids/">
-
-//                            Grids
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/buttons/">
-
-//                            Buttons
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/labels/">
-
-//                            Labels
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/tables/">
-
-//                            Tables
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/alerts/">
-
-//                            Alerts
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/accordions/">
-
-//                            Accordions
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a>
-
-//                            Form controls
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/form-templates/">
-
-//                            Form templates
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/search-bar/">
-
-//                            Search bar
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/sidenav/">
-
-//                            Side navigation
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/headers/">
-
-//                            Headers
-                         
-//</a>
-
-
-
-//                    </li>
-
-//                    <li>
-
-
-//                        <a href="/components/footers/">
-
-//                            Footers
-                         
-//</a>
-
-
-
-//                    </li>
-
-
-//                </ul>
-
-//            </aside>
-
-
         );
     }
 }

@@ -5,7 +5,7 @@ export class PostEventFollowUp extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="paragraph" style={{ maxWidth:"60vw"}}>
                 <head>
                     <style>{"\
                                 img{\

@@ -3,7 +3,6 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { CreateProject } from './components/CreateProject';
 import { Projects } from './components/Projects';
-import { Project } from './components/Project';
 import { ProjectInfo } from './components/ProjectInfo';
 import { ProjectOverview } from './components/ProjectPages/ProjectOverview';
 import { PreEventPlanningOverview } from './components/ProjectPages/PreEventPlanningOverview';
@@ -37,11 +36,19 @@ import { ConfirmResults } from './components/ConfirmResults';
 import { StandardizeSuccessfulProcess } from './components/StandardizeSuccessfulProcess';
 import { PostEventFollowUpOverview } from './components/PostEventFollowUpOverview';
 import { ChampionResponse } from './components/ChampionResponse';
+
+import { OnTimeDataCollection } from './components/ProjectPages/OnTimeDataCollection';
+import { DataCollection } from './components/ProjectPages/DataCollection';
+
 import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
 import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use as a template for graphs
 
 
+//adding in more routes to test pages
+import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
+import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
+import { DraftCharter } from './components/ProjectPages/DraftCharter';
 
 export default class App extends Component {
     displayName = App.name
@@ -63,45 +70,59 @@ export default class App extends Component {
   render() {
     return (
         <Layout>
-            <Route path="/NVAData/:id" component={NVADataCollection} />
+            <Route path="/Project/NVAData/:id" component={NVADataCollection} />
+            <Route path="/Project/OnTimeData/:id" component={OnTimeDataCollection} />
 			<Route exact path='/' component={Projects} />
             <Route exact path='/CreateProject' component={CreateProject} />
-            <Route exact path='/Projects' component={Projects} />
-            <Route path="/Project/:id" component={Project} />
-			<Route path='/Project/RequestAMentor/' component={RequestAMentor} />
-			<Route path='/Project/PreEventPrepOverview/' component={PreEventPrepOverview} />
-			<Route path='/Project/ProcessWalk/' component={ProcessWalk} />
-			<Route path='/Project/PreEventPlanningOverview/' component={PreEventPlanningOverview} />
-			<Route path='/Project/Validatecharter/' from component={ValidateCharter} />
-			<Route path='/Project/ReviewKPI/' from component={ReviewKPI} />
-			<Route path='/Project/IdentifyEventLocation/' from component={IdentifyEventLocation} />
-			<Route path='/Project/DistributeEventNotification/' from component={DistributeEventNotification} />
-			<Route path='/Project/ScheduleInOutBrief/' from component={ScheduleInOutBrief} />
-			<Route path='/Project/TeamProcessWalk/' from component={TeamProcessWalk} />
-			<Route path='/Project/TeamKickOffAwarenessTraining/' from component={TeamKickOffAwarenessTraining} />
-			<Route path='/Project/ValidateDataCollection/' from component={ValidateDataCollection} />
-			<Route path='/Project/ObtainSupplies/' from component={ObtainSupplies} />
-			<Route path='/Project/EventGoNoGo/' from component={EventGoNoGo} />
-			<Route path='/Project/RoomSetup/' from component={RoomSetup} />
-			<Route path='/Project/ProjectOverview/' component={ProjectOverview}/>
+			<Route exact path='/Projects' component={Projects} />
+			<Route path='/Project/DataCollection/:id' component={DataCollection}/>
+			<Route path='/Project/RequestAMentor/:id' component={RequestAMentor} />
+			<Route path='/Project/PreEventPrepOverview/:id' component={PreEventPrepOverview} />
+			<Route path='/Project/ProcessWalk/:id' component={ProcessWalk} />
+			<Route path='/Project/PreEventPlanningOverview/:id' component={PreEventPlanningOverview} />
+			<Route path='/Project/Validatecharter/:id' component={ValidateCharter} />
+			<Route path='/Project/ReviewKPI/:id' component={ReviewKPI} />
+			<Route path='/Project/IdentifyEventLocation/:id' component={IdentifyEventLocation} />
+			<Route path='/Project/DistributeEventNotification/:id' component={DistributeEventNotification} />
+			<Route path='/Project/ScheduleInOutBrief/:id' component={ScheduleInOutBrief} />
+			<Route path='/Project/TeamProcessWalk/:id' component={TeamProcessWalk} />
+			<Route path='/Project/TeamKickOffAwarenessTraining/:id' component={TeamKickOffAwarenessTraining} />
+			<Route path='/Project/ValidateDataCollection/:id' component={ValidateDataCollection} />
+			<Route path='/Project/ObtainSupplies/:id' component={ObtainSupplies} />
+			<Route path='/Project/EventGoNoGo/:id' from component={EventGoNoGo} />
+			<Route path='/Project/RoomSetup/:id' from component={RoomSetup} />
+			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
-            <Route path='/Project/AnalyzeData/' component={AnalyzeData} />
-            <Route path="/Project/:id/:Page" component={Project} />
-            <Route path='/BaselineData' component={BaselineData} />
-            <Route path='/Project/PostEventFollowUp' component={PostEventFollowUp} /> {/*Added by Cyriac (I believe on 10 Oct 2018) */}
-            <Route path='/Project/StandardizeSuccessfulProcess/' component={StandardizeSuccessfulProcess} />
-            <Route path='/Project/PostEventFollowUpOverview/' component={PostEventFollowUpOverview} />
-            <Route path='/Project/ChampionResponse/' component={ChampionResponse} />
-            <Route path='/Project/ConfirmResults/' component={ConfirmResults} />
-            <Route path='/Project/SeeCountermeasuresThrough/' component={SeeCountermeasuresThrough} />
-            <Route path='/Project/PostEventImplementationOverview/' component={PostEventImplementationOverview} />
-            <Route path='/Project/DevelopCountermeasures/' component={DevelopCountermeasures} />
-            <Route path='/Project/DetermineRootCause/' component={DetermineRootCause} />
-            <Route path='/Project/IdentifyPerformanceGaps/' component={IdentifyPerformanceGaps} />
-            <Route path='/Project/SetImprovementTargets/' component={SetImprovementTargets} />
+            <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />
+			      <Route path='/BaselineData:id' component={BaselineData} />
+            <Route path='/StandardizeSuccessfulProject/:id' component={StandardizeSuccessfulProject} />
+            <Route path='/PostEventFollowUp/:id' component={PostEventFollowUp} />
+			<Route path='/Project/StandardizeSuccessfulProcess/:id' component={StandardizeSuccessfulProcess} />
+			<Route path='/Project/PostEventFollowUpOverview/:id' component={PostEventFollowUpOverview} />
+			<Route path='/Project/ChampionResponse/:id' component={ChampionResponse} />
+			<Route path='/Project/ConfirmResults/:id' component={ConfirmResults} />
+			<Route path='/Project/SeeCountermeasuresThrough/:id' component={SeeCountermeasuresThrough} />
+			<Route path='/Project/PostEventImplementationOverview/:id' component={PostEventImplementationOverview} />
+			<Route path='/Project/DevelopCountermeasures/:id' component={DevelopCountermeasures} />
+			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
+			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
+			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
+        
+
+
             <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
             <Route path='/Project/EventCharter/' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
-            <Route path='/Project/Graph/' component={Graph} /> {/*Added by Cyriac 17 Oct 2018 for implementing graphs*/}
+
+
+            {/* adding in more routes to test pages */}
+            <Route path='/Project/MeetWithChampion' component={MeetWithChampion} />
+            <Route path='/Project/MeetWithTeamLead' component={MeetWithTeamLead} />
+            <Route path='/Project/DraftCharter' component={DraftCharter} />
+
+            {/* adding in more routes to test */}
+            <Route path='/Project/ClarifyValidateProblem' component={ClarifyValidateProblem} />
+            <Route path='/Project/EventExecutionOverview' component={EventExecutionOverview} />
+
         </Layout>
     );
   }
