@@ -43,6 +43,9 @@ namespace CPI.Client.Models
         [JsonProperty("Unit")]
         public string Unit { get; set; } = "";
 
+        [JsonProperty("WingDirectorate")]
+        public string WingDirectorate { get; set; } = "";
+
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new List<string>();
 
@@ -51,6 +54,12 @@ namespace CPI.Client.Models
 
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new List<string>();
+
+        [JsonProperty("Facilitator")]
+        public string Facilitator { get; set; } = "";
+
+        [JsonProperty("ProcessOwner")]
+        public string ProcessOwner { get; set; } = "";
 
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
