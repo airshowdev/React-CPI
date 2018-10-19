@@ -68,9 +68,11 @@ export class OnTimeDataCollection extends Component {
         var type = "OnTime";
         var elements = this.state.Elements;
         var postData = {
-            _id: this.props.match.params.id,
-            Type: type,
-            Elements: elements
+			_id: this.props.match.params.id,
+			DataCollection: {
+				Type: type,
+				Elements: elements
+			}
         };
         alert(JSON.stringify(postData));
 
@@ -119,7 +121,7 @@ export class OnTimeDataCollection extends Component {
             return (
                 <div className="usa-grid">
                     <NavButtons previous="ProjectOverview" title="On-Time Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
-                    <DataCollectionStatus {...this.state} />
+                    <DataCollectionStatus {...this.state}  />
                     <label>*All dates should be formatted as DD-MM-YYYY</label>
                     <table>
                         <thead>

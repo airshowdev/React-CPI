@@ -25,8 +25,7 @@ namespace CPI.Client.Models
         public string PasswordHash { get; set; } = "";
 
         [JsonProperty("Permissions")]
-        public IList<string> Permissions { get; set; } = new List<string>();
-
+        public IList<string> Permissions { get; set; } = new string[0];
         [JsonIgnore]
         [BsonIgnore]
         public string AuthToken { get { return authToken ?? GetAuthToken(); } }
@@ -57,6 +56,8 @@ namespace CPI.Client.Models
             return authToken;
         }
 
+        [JsonIgnore]
+        [BsonIgnore]
         private Aes aes = Aes.Create();
 
         private string EncryptToken(string token)

@@ -7,13 +7,85 @@ export class MeetWithTeamLead extends Component {
     displayName = MeetWithTeamLead.name
 
     constructor(props, context) {
-        super(props, context)
-        this.state = { project: {}, loading: true };
+        super(props, context);
+        this.state = { project: {}, dateBeginTemp: "", dateEndTemp: "", loading: true };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.isDate = this.isDate.bind(this);
+        this.formatDateBegin = this.formatDateBegin.bind(this);
+        this.formatDateEnd = this.formatDateEnd.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
-    render(project) {
+    componentDidMount() {
+        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false });
+            });
+    }
+    
+
+    handleChange(event) {
+        var stateProject = this.state.project;
+        switch (event.target.id) {
+            case 'Members':
+                stateProject.TeamLeadMeeting.MembersIdentified = event.target.value.split('\n');
+                break;
+        }
+        this.setState({ project: stateProject });
+    }
+
+
+    formatDateBegin() {
+        
+        alert(this.state.dateBeginTemp);
+        if (this.isDate(this.state.dateBeginTemp)) {
+            var stateProject = this.state.project;
+            stateProject.TeamLeadMeeting.DateRange.begin = this.state.dateBeginTemp;
+            this.setState({ project: stateProject });
+        } else {
+            alert("Please Enter a valid date for the new element's \"begin\" value ");
+        }
+    }
+
+    formatDateEnd() {
+        if (this.isDate(this.state.dateEndTemp)) {
+            var stateProject = this.state.project;
+            stateProject.TeamLeadMeeting.DateRange.end = this.state.dateEndTemp;
+            this.setState({ project: stateProject });
+            alert(this.state.dateEndTemp);
+        } else {
+            alert("Please Enter a valid date for the new element's \"end\" value ");
+        }
+    }
+
+    handleDateChange(event) {
+        switch (event.target.id) {
+            case "startDate":
+                this.setState({ dateBeginTemp: event.target.value });
+                break;
+            case "endDate":
+                this.setState({ dateEndTemp: event.target.value });
+                break;
+            default:
+                alert("oh no, this is the problem");
+                break;
+        }
+    }
+
+    isDate(date) {
+        console.log(Date.parse(date));
+        return !isNaN(Date.parse(date));
+    }
+
+
+    render() {
+        if (this.state.loading) {
+            return <span>Loading</span>;
+        } else {
         return (
-            <div className="paragraph" style={{ border: "hidden", float: "none", marginLeft: "auto", marginRight: "auto", minWidth: "1000px", maxWidth:  "1200px"}}>
+            <div className="paragraph" style={{ border: "hidden", float: "none", marginLeft: "auto", marginRight: "auto", minWidth: "1000px", maxWidth: "1200px" }}>
                 <h1 style={{ marginLeft: "30%" }}> Meet With Team Lead </h1>
                 <table>
                     <tbody>
@@ -23,7 +95,7 @@ export class MeetWithTeamLead extends Component {
                         </tr>
                         <tr>
                             <td style={{ minWidth: "400px" }}>
-                                <p><u>Schedule Meeting with Team</u><br />At this point in the process you have already met with the Champion 
+                                <p><u>Schedule Meeting with Team</u><br />At this point in the process you have already met with the Champion
                                     in order to get support for the event and to identify who will be the Team Lead.<br /> <br />
                                     The next step in the process will be to work with the team lead in order to get additional information required to complete the event charter.
                                 </p>
@@ -32,19 +104,15 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                    <table style={{ marginLeft: "auto", marginRight: "auto"}}>
-                                        <tbody>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" placeholder="x" /></td></tr>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" placeholder="x" /></td></tr>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" placeholder="x" /></td></tr>
-                                        </tbody>
-                                    </table>
+                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n')} onChange={this.handleChange} />
+
                                 </div>
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                                         <tbody>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" placeholder="x" /></td></tr>
+                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp}  /></td>
+                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp} /></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -123,5 +191,6 @@ export class MeetWithTeamLead extends Component {
                 </table>
             </div>
             )
+        }
     }
 }

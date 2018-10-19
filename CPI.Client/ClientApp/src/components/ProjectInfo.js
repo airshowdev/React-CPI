@@ -36,7 +36,7 @@ export class ProjectInfo extends Component {
                 stateProject.Unit = event.target.value;
 				break;
 			case "TeamLead":
-				stateProject.TeamLeads = event.target.value.split('\n')
+                stateProject.TeamLeads = event.target.value.split('\n');
 				break;
             case "Evaluators":
                 stateProject.Evaluators = event.target.value.split('\n');
@@ -69,7 +69,6 @@ export class ProjectInfo extends Component {
 
     
     render() {
-
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
@@ -91,8 +90,8 @@ export class ProjectInfo extends Component {
 								<textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators.join('\n')} />
                         </div>
                         <div className="usa-width-one-half" style={{ float: 'right', margin: 'auto' }}>
-                            <label htmlFor="Type">Type</label>
-                            <input id="Type" name="Type" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.DataCollection.Type} />
+								<label htmlFor="Type">Type</label>
+								<input id="Type" name="Type" type="text" placeholder="Not Defined" value={this.state.project.DataCollection.Type} />
                             <label htmlFor="Creator">Creator</label>
                             <input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.Creator} />
                             <label htmlFor="Champion">Champion</label>

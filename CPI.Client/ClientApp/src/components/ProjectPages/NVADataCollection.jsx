@@ -23,8 +23,8 @@ export class NVADataCollection extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
+		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+			.then(response => response.json())
             .then(data => {
                 this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
             });
@@ -44,7 +44,9 @@ export class NVADataCollection extends Component {
 
     handleNVAChange(event) {
         this.setState({newElementNVA: event.target.value });
-    }
+	}
+
+
     handleAdd() {
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
             var elements = this.state.Elements;
@@ -78,14 +80,16 @@ export class NVADataCollection extends Component {
         var type = "NVA";
         var elements = this.state.Elements;
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
-        var postData = {
-            _id: this.props.match.params.id,
-            Type: type,
-            Elements: elements
+		var postData = {
+			_id: this.props.match.params.id,
+			DataCollection: {
+				Type: type,
+				Elements: elements
+			}
         };
         alert(JSON.stringify(postData));
-        
-        Post(postData, "Project", "UpdateDataCollection");
+
+		Post(postData, "Project", "UpdateDataCollection");
 
         
         
@@ -122,8 +126,8 @@ export class NVADataCollection extends Component {
         } else {
             return (
                 <div className="usa-grid">
-                        <NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
-                        <DataCollectionStatus {...this.state} />
+					<NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
+					<DataCollectionStatus {...this.state} Type="NVA" />
 					<table>
                     <thead>
                         <tr>
