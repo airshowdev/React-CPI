@@ -41,6 +41,8 @@ namespace CPI.Client
         private decimal GetPercentAverage()
         {
             decimal total = 0m;
+			if (Elements.Count == 0)
+				return 0;
             foreach (Element element in Elements)
             {
                 switch (Type)

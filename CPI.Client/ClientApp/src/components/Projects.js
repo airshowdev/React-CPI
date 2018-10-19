@@ -18,7 +18,8 @@ export class Projects extends Component {
             .then(data => {
                 this.setState({ project: data, loading: false });
             });
-    }
+	}
+
     renderProjectsTable(project) {
 		return (
 			<form>
