@@ -85,9 +85,11 @@ namespace CPI.Client.Controllers
 
             json = json.Replace("\"_id\":\"," + projID + "\",", "");
 
+
 			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
 
             DataCollection collection = Client.DataCollection.FromJson(jCollection.ToString());
+
 
             try
             {
@@ -137,6 +139,8 @@ namespace CPI.Client.Controllers
             {
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
 
+                connection.ConnectDatabase("CPI_Database");
+
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
@@ -179,6 +183,8 @@ namespace CPI.Client.Controllers
             {
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
 
+                connection.ConnectDatabase("CPI_Database");
+
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
@@ -216,6 +222,8 @@ namespace CPI.Client.Controllers
             try
             {
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                connection.ConnectDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -261,12 +269,14 @@ namespace CPI.Client.Controllers
             string projID = jObj.GetValue("_id").ToString();
 
             json = json.Replace("\"_id\":\"" + projID + "\",", "");
-            
+
             RootCause rootCause = RootCause.FromJson(json);
 
             try
             {
                 MongoConnection connection = new MongoConnection(await GetConnectionString());
+
+                connection.ConnectDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
@@ -350,7 +360,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
                 throw;
             }
         }
