@@ -23,7 +23,7 @@ import { ObtainSupplies } from './components/ProjectPages/ObtainSupplies';
 import { EventGoNoGo } from './components/ProjectPages/EventGoNoGo';
 import { RoomSetup } from './components/ProjectPages/RoomSetup';
 import { NVADataCollection } from './components/ProjectPages/NVADataCollection';
-import { PostEventFollowUp } from './components/PostEventFollowUp';
+import { PostEventFollowUp } from './components/PostEventFollowUp'; //Added by Cyriac (I believe on 10 Oct 2018)
 import { EventExecutionOverview } from './components/EventExecutionOverview';
 import { ClarifyValidateProblem } from './components/ClarifyValidateProblem';
 import { IdentifyPerformanceGaps } from './components/IdentifyPerformanceGaps';
@@ -42,6 +42,7 @@ import { DataCollection } from './components/ProjectPages/DataCollection';
 
 import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
+import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use as a template for graphs
 
 
 //adding in more routes to test pages
@@ -95,6 +96,7 @@ export default class App extends Component {
 			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
 			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
 			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
+
 			<Route path='/Project/MeetingChampionPpt/:id' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
 			<Route path='/Project/EventCharter/:id' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
 			{/* adding in more routes to test pages */}
