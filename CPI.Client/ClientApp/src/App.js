@@ -106,7 +106,7 @@ export default class App extends Component {
 
 			{/* adding in more routes to test */}
 			<Route path='/Project/ClarifyValidateProblem/:id' component={ClarifyValidateProblem} />
-			<Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} /
+			<Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
         </Layout>
     );
   }
