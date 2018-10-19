@@ -213,16 +213,17 @@ namespace CPI.Client.Models
         [BsonIgnoreIfDefault]
         [JsonProperty("MembersIdentified")]
         public IList<string> MembersIdentified { get; set; } = new string[0];
-
-        [BsonDefaultValue(null)]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("SIPOC")]
-        public Sipoc Sipoc { get; set; } = null;
+		
 
         [BsonDefaultValue(null)]
         [BsonIgnoreIfDefault]
         [JsonProperty("DateRange")]
         public DateRange DateRange { get; set; } = null;
+
+		[BsonDefaultValue(null)]
+		[BsonIgnoreIfDefault]
+		[JsonProperty("SipocRows")]
+		public IList<SipocRow> SipocRows { get; set; }
     }
 
     public partial class DateRange
@@ -237,36 +238,28 @@ namespace CPI.Client.Models
         [JsonProperty("end")]
         public string End { get; set; } = "";
     }
+	
 
-    public partial class Sipoc
-    {
-        [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Suppliers")]
-        public IList<string> Suppliers { get; set; } = new string[0];
+	public partial class SipocRow
+	{
+		[JsonProperty("Supplier")]
+		public string Supplier { get; set; } = "";
 
-        [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Inputs")]
-        public IList<string> Inputs { get; set; } = new string[0];
+		[JsonProperty("Input")]
+		public string Input { get; set; } = "";
 
-        [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Process")]
-        public IList<string> Process { get; set; } = new string[0];
+		[JsonProperty("Process")]
+		public string Process { get; set; } = "";
 
-        [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Outputs")]
-        public IList<string> Outputs { get; set; } = new string[0];
+		[JsonProperty("Output")]
+		public string Output { get; set; } = "";
 
-        [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Customers")]
-        public IList<string> Customers { get; set; } = new string[0];
-    }
+		[JsonProperty("Customer")]
+		public string Customer { get; set; } = "";
 
-    public partial class Project
+	}
+
+	public partial class Project
     {
         public static Project FromJson(string json) => JsonConvert.DeserializeObject<Project>(json, Converter.Settings);
     }

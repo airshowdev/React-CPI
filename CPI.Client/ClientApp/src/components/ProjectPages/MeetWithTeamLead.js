@@ -8,20 +8,22 @@ export class MeetWithTeamLead extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { project: {}, dateBeginTemp: "", dateEndTemp: "", loading: true };
+		this.state = {
+			project: {}, dateBeginTemp: "", dateEndTemp: "", SIPOC: [], loading: true };
 
         this.handleChange = this.handleChange.bind(this);
         this.isDate = this.isDate.bind(this);
         this.formatDateBegin = this.formatDateBegin.bind(this);
         this.formatDateEnd = this.formatDateEnd.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
+		this.handleDateChange = this.handleDateChange.bind(this);
+		this.handleSipocChange = this.handleSipocChange.bind(this);
     }
 
     componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false });
+			.then(data => {
+				this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false, SIPOC: data.TeamLeadMeeting.SipocRows });
             });
     }
     
@@ -74,11 +76,34 @@ export class MeetWithTeamLead extends Component {
         }
     }
 
+
     isDate(date) {
         console.log(Date.parse(date));
         return !isNaN(Date.parse(date));
     }
 
+	handleSipocChange(event) {
+		var Sipoc = this.state.SIPOC;
+		switch (event.target.name) {
+			case "Supplier":
+				Sipoc[parseInt(event.target.id)].Supplier = event.target.value;
+				break;
+			case "Input":
+				Sipoc[parseInt(event.target.id)].Input = event.target.value;
+				break;
+			case "Process":
+				Sipoc[parseInt(event.target.id)].Process = event.target.value;
+				break;
+			case "Output":
+				Sipoc[parseInt(event.target.id)].Output = event.target.value;
+				break;
+			case "Customer":
+				Sipoc[parseInt(event.target.id)].Customer = event.target.value;
+				break;
+		}
+		
+
+	}
 
     render() {
         if (this.state.loading) {
@@ -133,56 +158,16 @@ export class MeetWithTeamLead extends Component {
                                             <td>What are the 5-7 high level steps in the process?</td>
                                             <td>What products/services are generated from the process?</td>
                                             <td>Who receives the outputs of the process?</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
+										</tr>	
+										{
+											this.state.SIPOC.map((el, i) => (
+												<tr>
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Process" onChange={this.handleSipocChange} value={el.Process} /></td>{/*Process*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Output" onChange={this.handleSipocChange} value={el.Output} /></td>{/*Outputs*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
+											</tr>)) }
                                     </tbody>
                                 </table>
                             </td>
