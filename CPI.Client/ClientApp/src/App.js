@@ -106,10 +106,7 @@ export default class App extends Component {
 			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
 			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
 			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
-        </Layout>
-    );
-  }
-}
+
 
 
             <Route path='/Project/MeetingChampionPpt/' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
