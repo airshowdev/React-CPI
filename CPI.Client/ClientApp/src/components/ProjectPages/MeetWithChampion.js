@@ -2,10 +2,16 @@
 import '../css/uswds.css';
 import '../css/HallMartino.css';
 import { Post } from '../../REST';
+import PropTypes from 'prop-types';
+import { NavButtons } from '../NavButtons';
 
 export class MeetWithChampion extends Component {
 
-    displayName = MeetWithChampion.name
+    displayName = MeetWithChampion.name;
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     constructor(props, context) {
         super(props, context)
@@ -68,6 +74,8 @@ export class MeetWithChampion extends Component {
             return <span>Loading</span>;
         } else {
             return (
+                <div>
+                    <NavButtons next="MeetWithTeamLeader" previous="RequestMentor" title="Meet With Champion" projectId={this.props.match.params.id} />
                 <div className="paragraph" style={{ border: "hidden", minWidth: "687px" }}>
                     <h1> Meet With Champion </h1>
                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -129,7 +137,8 @@ export class MeetWithChampion extends Component {
                         </tbody>
                     </table>
 
-                </div>
+                    </div>
+                    </div>
             );
         }
     }

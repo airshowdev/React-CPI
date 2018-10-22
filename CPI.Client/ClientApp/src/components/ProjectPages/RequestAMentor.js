@@ -2,8 +2,11 @@
 import '../css/uswds.css';
 import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
-
+import PropTypes from 'prop-types';
 export class RequestAMentor extends Component {
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     displayName = RequestAMentor.name
 
@@ -15,7 +18,7 @@ export class RequestAMentor extends Component {
     render(project) {
         return (
             <div>
-                <NavButtons next="" previous="" title="Request Mentor" id={this.props.match.params} />
+                <NavButtons next="MeetWithChampion" previous="AnalyzeData" title="Request Mentor" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> Request a Mentor </h1>
                 <p>The assumption is that you have recently completed Green Belt Academics and are looking for an event to hone your newly aquired skills. If the results of the intial review of data collected in the previous step points to continuing with this event, now is a good time to reach out to find a mentor to help walk you through this process.  A mentor can look through the data with you and answer any questions you have about how to proceed.  A good place to start is contacting your GB Academics Instructor.  Another good place to find a mentor is your local Manpower and Organization office. If you are still having difficulty locating a mentor, use the AF CPI Portal to find a Black Belt practioner. </p>

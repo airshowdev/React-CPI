@@ -18,7 +18,7 @@ export class AnalyzeData extends Component {
     render() {
         return (
             <div>
-                <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Project Overview" />
+                <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
                 <div className="paragraph">
                 <h1> Analyze Data </h1>
                 <div className="one-half-left">

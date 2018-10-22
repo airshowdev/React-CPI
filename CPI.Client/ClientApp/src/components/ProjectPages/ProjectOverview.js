@@ -1,16 +1,14 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import querystring from 'query-string';
-import PropTypes from 'prop-types';
 import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
+import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export class ProjectOverview extends Component {
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
+   
 
     displayName = ProjectOverview.name
 

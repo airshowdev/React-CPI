@@ -2,11 +2,16 @@
 import '../css/uswds.css';
 import '../css/HallMartino.css';
 import { Post } from '../../REST';
+import { NavButtons } from '../NavButtons';
+import PropTypes from 'prop-types';
 
 export class MeetWithTeamLead extends Component {
 
-    displayName = MeetWithTeamLead.name
 
+    displayName = MeetWithTeamLead.name
+    static contextTypes = {
+        router: PropTypes.object
+    }
     constructor(props, context) {
         super(props, context);
 		this.state = {
@@ -118,7 +123,9 @@ export class MeetWithTeamLead extends Component {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
-        return (
+            return (
+                <div>
+                    <NavButtons next="DraftCharter" previous="MeetWithChampion" title="Meet with Team Lead" projectId={this.props.match.params.id}/>
             <div className="paragraph" style={{ border: "hidden", float: "none", marginLeft: "auto", marginRight: "auto", minWidth: "1000px", maxWidth: "1200px" }}>
                 <h1 style={{ marginLeft: "30%" }}> Meet With Team Lead </h1>
                 <table>
@@ -184,7 +191,8 @@ export class MeetWithTeamLead extends Component {
                     </tbody>
                 </table>
                 <button onClick={this.handleSave}>SAVE!</button>
-            </div>
+                    </div>
+                    </div>
             )
         }
     }
