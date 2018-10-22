@@ -115,8 +115,10 @@ namespace CPI.Client.Models
 
         [BsonIgnoreIfNull]
         [JsonProperty("DateRange")]
-
         public DateRange Dates { get; set; } = new DateRange();
+
+        [JsonProperty("ProblemStatement")]
+        public string ProblemStatement { get; set; } = "";
     }
 
     public partial class DesiredEffects
