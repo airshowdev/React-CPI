@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
+import { Post } from '../../REST';
 
 export class MeetWithTeamLead extends Component {
 
@@ -15,8 +16,11 @@ export class MeetWithTeamLead extends Component {
         this.isDate = this.isDate.bind(this);
         this.formatDateBegin = this.formatDateBegin.bind(this);
         this.formatDateEnd = this.formatDateEnd.bind(this);
-		this.handleDateChange = this.handleDateChange.bind(this);
-		this.handleSipocChange = this.handleSipocChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+
+        this.handleSipocChange = this.handleSipocChange.bind(this);
+
+        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
@@ -57,8 +61,6 @@ export class MeetWithTeamLead extends Component {
             stateProject.TeamLeadMeeting.DateRange.end = this.state.dateEndTemp;
             this.setState({ project: stateProject });
             alert(this.state.dateEndTemp);
-        } else {
-            alert("Please Enter a valid date for the new element's \"end\" value ");
         }
     }
 
@@ -76,6 +78,13 @@ export class MeetWithTeamLead extends Component {
         }
     }
 
+    handleSave() {
+        var tempProject = this.state.project;
+        tempProject.TeamLeadMeeting.SipocRows = this.state.SIPOC;
+        this.setState({ project: tempProject });
+
+        Post(this.state.project, "Project", "UpdateProject");
+    }
 
     isDate(date) {
         console.log(Date.parse(date));
@@ -101,8 +110,8 @@ export class MeetWithTeamLead extends Component {
 				Sipoc[parseInt(event.target.id)].Customer = event.target.value;
 				break;
 		}
-		
 
+        this.setState({ SIPOC: Sipoc });
 	}
 
     render() {
@@ -129,15 +138,15 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n')} onChange={this.handleChange} />
+                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n') || ""} onChange={this.handleChange} />
 
                                 </div>
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                                         <tbody>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp}  /></td>
-                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp} /></td></tr>
+                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp || ""}  /></td>
+                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp || ""} /></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -159,8 +168,8 @@ export class MeetWithTeamLead extends Component {
                                             <td>What products/services are generated from the process?</td>
                                             <td>Who receives the outputs of the process?</td>
 										</tr>	
-										{
-											this.state.SIPOC.map((el, i) => (
+                                        {
+                                            this.state.SIPOC.map((el, i) => (
 												<tr>
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
@@ -174,6 +183,7 @@ export class MeetWithTeamLead extends Component {
                         </tr>
                     </tbody>
                 </table>
+                <button onClick={this.handleSave}>SAVE!</button>
             </div>
             )
         }
