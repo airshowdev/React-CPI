@@ -509,8 +509,34 @@ namespace CPI.Client.Controllers
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
-                
-                ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.id == updateProject.id, updateProject);
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
+
+                Project oldProj = await projects.Find(filter).FirstAsync();
+
+                UpdateDefinition<Project> updateDef = Builders<Project>.Update
+                    .Set(x => x.MajCom, updateProject.MajCom)
+                    .Set(x => x.Base, updateProject.Base)
+                    .Set(x => x.Creator, updateProject.Creator)
+                    .Set(x => x.Unit, updateProject.Unit)
+                    .Set(x => x.WingDirectorate, updateProject.WingDirectorate)
+                    .Set(x => x.Evaluators, updateProject.Evaluators)
+                    .Set(x => x.TeamLeads, updateProject.TeamLeads)
+                    .Set(x => x.Facilitators, updateProject.Facilitators)
+                    .Set(x => x.ProcessOwner, updateProject.ProcessOwner)
+                    .Set(x => x.Mentor, updateProject.Mentor)
+                    .Set(x => x.DataCollection, updateProject.DataCollection)
+                    .Set(x => x.Champion, updateProject.Champion)
+                    .Set(x => x.TeamLeadMeeting, updateProject.TeamLeadMeeting)
+                    .Set(x => x.DraftCharter, updateProject.DraftCharter)
+                    .Set(x => x.RootCauses, updateProject.RootCauses)
+                    .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
+                    .Set(x => x.Dates, updateProject.Dates)
+                    .Set(x => x.Name, updateProject.Name);
+
+                UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
+
+                //ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.id == updateProject.id, updateProject);
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 
