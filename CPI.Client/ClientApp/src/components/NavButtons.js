@@ -13,8 +13,8 @@ export class NavButtons extends Component {
 			<div className="button-nav">
 				<span id="left">
 					<button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button">Previous</button>
-				</span>
-				<span id="center">{this.props.title}</span>
+                </span>
+                <span id="center"><label style={{ fontSize: '30px' }}>{this.props.title}</label></span>
 
 				<span id="right">
 					<button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button">Next</button>
