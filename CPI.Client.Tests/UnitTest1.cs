@@ -6,27 +6,32 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using System.Threading.Tasks;
 using System.IO;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+
+using Moq;
+
+using CPI.Client.Testing;
 
 namespace CPI.Client.Tests
 {
     [TestClass]
-    public class ProjectControllerTestd
+    public class ProjectControllerTest
     {
         [TestMethod]
         public void TestAllProjects()
         {
-            ProjectController controller = new ProjectController();
-            string expected = "[{ \"ID\":\"5bb230c5d346df46e89dcb43\",\"Unit\":\"595 SCS\",\"Creator\":\"Gabriel Stines\",\"Name\":\"The CPI Project itself\"},{ \"ID\":\"5bb639f3cdec7e5208aa30cc\",\"Unit\":\"U\",\"Creator\":\"FN LN\",\"Name\":\"PN\"},{ \"ID\":\"5bb63f70cdec7e5208aa30cd\",\"Unit\":\"absolute\",\"Creator\":\"First Last\",\"Name\":\"Namb\"},{ \"ID\":\"5bb640b3a14ab08d9448f181\",\"Unit\":\"5cs\",\"Creator\":\"gab stinz\",\"Name\":\"yahyeet\"}]";
+
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            IProjectController controller = new ProjectController();
+
+            IEnumerable<Stub> list = new List<Stub>() { new Project().ToStub() };
+
+            mock.Setup(x => x.AllProjectsAsync()).Returns(Task.FromResult(list));
 
             Task<IEnumerable<Stub>> task = controller.AllProjectsAsync();
             task.Wait();
             IEnumerable<Stub> projectList = task.Result;
 
-            Assert.AreNotEqual(null, projectList.ToString());
-            Assert.AreEqual(expected.Replace(" ", ""), projectList.ToJson().Replace(" ", ""));
+            mock.VerifyAll();
         }
 
         [TestMethod]
@@ -36,9 +41,9 @@ namespace CPI.Client.Tests
             string id = "5bb230c5d346df46e89dcb43";
 
             string expected = GetContents("./project.json");
-            Task<string> task = controller.GetProjectAsync(id);
+            Task<Project> task = controller.GetProjectAsync(id);
             task.Wait();
-            string actual = task.Result;
+            Project actual = task.Result;
 
             Assert.IsNotNull(actual);
             Assert.AreNotEqual("", actual);
@@ -49,32 +54,26 @@ namespace CPI.Client.Tests
         public void TestGetProjectWithEmptyID()
         {
             ProjectController controller = new ProjectController();
-            string expected = "404";
-            string id = "";
+            string id = null;
 
-            Task<string> task = controller.GetProjectAsync(id);
+            Task<Project> task = controller.GetProjectAsync(id);
             task.Wait();
-            string actual = task.Result;
+            Project actual = task.Result;
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
         public void TestGetProjectWithNullID()
         {
             ProjectController controller = new ProjectController();
-            string expected = "404"; 
             string id = null;
 
-            Task<string> task = controller.GetProjectAsync(id);
+            Task<Project> task = controller.GetProjectAsync(id);
             task.Wait();
-            string actual = task.Result;
+            Project actual = task.Result;
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]

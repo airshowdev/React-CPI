@@ -19,54 +19,17 @@ using Microsoft.AspNetCore.Mvc;
 
 using CPI.Client.Models;
 using CPI.Client;
+using CPI.Client.Testing;
 
 
 namespace CPI.Client.Controllers
 {
 
-
     [Route("api/[controller]")]
-    public class ProjectController : Controller
+    public class ProjectController :  Controller , IProjectController
     {
 
-        
-        [HttpGet("[action]")]
-        public async Task<string> Test(string function = "getAll", string ID = "", string json = "")
-        {
-
-            string Host = "https://" + HttpContext.Request.Host;
-
-            ServicePointManager.ServerCertificateValidationCallback += (send, certificate, chain, sslPolicyErrors) => { return true; };
-
-            HttpClient client = new HttpClient();
-
-            HttpResponseMessage response = null;
-
-            if (function.ToUpper() == "create".ToUpper())
-            {
-                HttpContent content = new StringContent(new Project().ToJson());
-                response = await client.PostAsync(Host + "/api/Project/CreateProject", content);
-            }
-            else if (function.ToUpper() == "getAll".ToUpper())
-            {
-                response = await client.GetAsync(Host + "/api/Project/AllProjectsAsync");
-            }
-            else if (function.ToUpper() == "getId".ToUpper())
-            {
-                string idJson = new { id = ID }.ToJson();
-                HttpContent content = new StringContent(idJson);
-                response = await client.PostAsync(Host + "/api/Project/GetProjectAsync", content);
-            }
-            else if (function.ToUpper() == "update".ToUpper())
-            {
-                HttpContent content = new StringContent(json);
-                response = await client.PatchAsync(Host + "/api/Project/UpdateProject", content);
-            }
-
-            return (response == null) ? null : await response.Content.ReadAsStringAsync();
-
-        }
-
+        MongoClient Client = null;
         [HttpPost("[action]")]
         public async Task<string> UpdateDataCollection()
         {
@@ -83,22 +46,25 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"," + projID + "\",", "");
-
 
 			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
 
-            DataCollection collection = Client.DataCollection.FromJson(jCollection.ToString());
+            DataCollection collection = CPI.Client.DataCollection.FromJson(jCollection.ToString());
 
 
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
 
-                connection.ConnectDatabase("CPI_Database");
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
 
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
                 Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
@@ -111,7 +77,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
             
@@ -131,18 +97,23 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+            JObject jChamp = (JObject)jObj.GetValue("Champion");
 
-            Champion champion = Champion.FromJson(json);
+            Champion champion = Champion.FromJson(jChamp.ToString());
 
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
 
-                connection.ConnectDatabase("CPI_Database");
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
 
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
                 Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
@@ -156,7 +127,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -175,17 +146,23 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+            JObject jMeeting = (JObject)jObj.GetValue("TeamLeadMeeting");
 
-            TeamLeadMeeting meeting = TeamLeadMeeting.FromJson(json);
+            TeamLeadMeeting meeting = TeamLeadMeeting.FromJson(jMeeting.ToString());
 
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient( await GetConnectionString());
+                }
+                 client = Client;
+                
 
-                connection.ConnectDatabase("CPI_Database");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
@@ -200,7 +177,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -221,11 +198,17 @@ namespace CPI.Client.Controllers
 
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
 
-                connection.ConnectDatabase("CPI_Database");
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
@@ -249,7 +232,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -268,17 +251,23 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+            JObject jCauses = (JObject)jObj.GetValue("RootCauses");
 
-            RootCause rootCause = RootCause.FromJson(json);
+            RootCause rootCause = RootCause.FromJson(jCauses.ToString());
 
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
 
-                connection.ConnectDatabase("CPI_Database");
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
@@ -293,7 +282,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -303,15 +292,21 @@ namespace CPI.Client.Controllers
         public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
 
-            Log4NetLogger.Info("Get all projects process started");
+            //Log4NetLogger.Info("Get all projects process started");
 
-
-            
             try
             {
-                MongoConnection connection = new MongoConnection( await GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
+
+
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 IList<Project> returnProjects = await (await projects.FindAsync(_ => true)).ToListAsync();
 
@@ -322,13 +317,12 @@ namespace CPI.Client.Controllers
                     stubs.Add(proj.ToStub());
                 }
 
-
-                Log4NetLogger.Info("Get all projects process completed succesfully");
+                //Log4NetLogger.Info("Get all projects process completed succesfully");
                 return stubs;
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -338,62 +332,45 @@ namespace CPI.Client.Controllers
         public async Task<Project> GetProjectAsync(string id)
         {
 
-            Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
+            //Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
             try
             {
 
-                if (id == null || id == "")
+                if (String.IsNullOrEmpty(id))
                 {
                     return null;
                 }
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
+
+
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
                 IAsyncCursor<Project> cursor = await projects.FindAsync<Project>(filter);
 
-                Log4NetLogger.Info("Get project process completed succesfully");
+                //Log4NetLogger.Info("Get project process completed succesfully");
 
                 return (await cursor.FirstAsync());
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
+                //Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
                 throw;
             }
-        }
-
-        [HttpGet("[action]")]
-
-        public string PKIAuth()
-        {
-
-            try
-            {
-                List<X509Certificate2> certs = BaseSmartCardCryptoProvider.GetCertificates();
-
-                X509Certificate2 cert = certs[0];
-                return "Authenticated";
-            }
-            catch (Win32Exception win)
-            {
-
-                Log4NetLogger.Error(win.ToString());
-                if (win.ErrorCode == -2147467259)
-                {
-                    return "Error";
-                }
-            }
-
-            return "Not Authenticated";
         }
 
         [HttpPost("[action]")]
         public async Task<string> CreateProject()
         {
-            Log4NetLogger.Info("Create project process started");
+            //Log4NetLogger.Info("Create project process started");
             try
             {
                 string json = "";
@@ -432,20 +409,27 @@ namespace CPI.Client.Controllers
 
                     Project newProject = Project.FromJson(json);
 
-                    MongoConnection connection = new MongoConnection( await GetConnectionString());
-                    connection.ConnectDatabase("CPI_Database");
-                    IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                    MongoClient client;
+                    if (Client == null)
+                    {
+                        Client = new MongoClient(await GetConnectionString());
+                    }
+                    client = Client;
 
+
+                    IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                    IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
                     await projects.InsertOneAsync(newProject);
 
-                    Log4NetLogger.Info("Create project process completed succesfully");
+                    //Log4NetLogger.Info("Create project process completed succesfully");
 
                     return newProject.ID;
                 }
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -459,9 +443,17 @@ namespace CPI.Client.Controllers
                 {
                     return " 404 ";
                 }
-                MongoConnection connection = new MongoConnection( await GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                MongoClient client;
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
+
+
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
@@ -474,7 +466,7 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 return E.ToString();
             }
         }
@@ -483,7 +475,7 @@ namespace CPI.Client.Controllers
         public async Task<long> UpdateProject()
         {
 
-            Log4NetLogger.Info("Update project process started");
+            //Log4NetLogger.Info("Update project process started");
 
             try
             {
@@ -506,11 +498,20 @@ namespace CPI.Client.Controllers
 
                 Project updateProject = Project.FromJson(json);
                 updateProject.ID = id;
-                MongoConnection connection = new MongoConnection( await GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+                MongoClient client;
 
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
+                if (Client == null)
+                {
+                    Client = new MongoClient(await GetConnectionString());
+                }
+                client = Client;
+
+
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
+
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
                 Project oldProj = await projects.Find(filter).FirstAsync();
 
@@ -537,13 +538,13 @@ namespace CPI.Client.Controllers
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
 
-                Log4NetLogger.Info("Update project process completed succesfully");
+                //Log4NetLogger.Info("Update project process completed succesfully");
 
                 return result.ModifiedCount;
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -558,7 +559,7 @@ namespace CPI.Client.Controllers
             {
                 return "404 Page not found";
             }
-            Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
+            //Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
 
             object returnObj = null;
             try
@@ -604,11 +605,11 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                Log4NetLogger.Error(E);
+                //Log4NetLogger.Error(E);
                 throw;
             }
 
-            Log4NetLogger.Info("Get page process completed succesfully");
+            //Log4NetLogger.Info("Get page process completed succesfully");
 
             return returnObj;
         }
@@ -642,28 +643,28 @@ namespace CPI.Client.Controllers
         {
             try
             {
-                Log4NetLogger.Info("Get connection string process started");
+                //Log4NetLogger.Info("Get connection string process started");
                 using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
                 using (TextReader tr = new StreamReader(stream))
                 {
 
-                    Log4NetLogger.Info("Get connection string process completed succesfully");
+                    //Log4NetLogger.Info("Get connection string process completed succesfully");
                     return await tr.ReadLineAsync();
                 }
             }
             catch (ArgumentOutOfRangeException oorEx)
             {
-                Log4NetLogger.Error(oorEx);
+                //Log4NetLogger.Error(oorEx);
                 return null;
             }
             catch (ObjectDisposedException odEx)
             {
-                Log4NetLogger.Error(odEx);
+                //Log4NetLogger.Error(odEx);
                 return null;
             }
             catch (InvalidOperationException invalidOpEx)
             {
-                Log4NetLogger.Error(invalidOpEx);
+                //Log4NetLogger.Error(invalidOpEx);
                 return null;
             }
         }

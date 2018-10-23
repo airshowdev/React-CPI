@@ -174,7 +174,7 @@ namespace CPI.Client.Models
         [BsonDefaultValue("")]
         [BsonIgnoreIfDefault]
         [JsonProperty("Goal")]
-        public int Goal { get; set; } = 0;
+        public string Goal { get; set; } = "";
 
         [BsonDefaultValue(null)]
         [BsonIgnoreIfDefault]
@@ -218,7 +218,7 @@ namespace CPI.Client.Models
 
         [BsonDefaultValue(null)]
         [BsonIgnoreIfDefault]
-        [JsonProperty("SIPOC")]
+        [JsonProperty("SipocRows")]
         public Sipoc Sipoc { get; set; } = null;
 
         [BsonDefaultValue(null)]
