@@ -9,7 +9,7 @@ export class DetermineRootCause extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true, rootCauses: [], tempCauseDescription: "" };
+        this.state = { project: {}, rootCauses: [], tempCauseDescription: "", loading: true};
         
         this.handleAdd = this.handleAdd.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -75,7 +75,7 @@ export class DetermineRootCause extends Component {
                         </ul>
                     </div>
                     <div>
-                        <table className="root-cause-table">
+                        <table className="root-cause-table" >
                             <tbody>
                                 {this.state.rootCauses.map((Cause, i) => (
                                     <tr>

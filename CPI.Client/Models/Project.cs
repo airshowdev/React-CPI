@@ -188,7 +188,7 @@ namespace CPI.Client.Models
 
         [BsonIgnoreIfNull]
         [JsonProperty("Countermeasures")]
-        IList<string> Countermeasures { get; set; } = new List<string>();
+        public IList<string> Countermeasures { get; set; } = new List<string>();
         
     }
 
