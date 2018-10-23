@@ -83,7 +83,10 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"," + projID + "\",", "");
+            /*
+             id: "",
+             DataCollection: {}
+             */
 
 
 			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
@@ -131,6 +134,8 @@ namespace CPI.Client.Controllers
             }
 
             string projID = jObj.GetValue("_id").ToString();
+
+            //Change to get object from JObject
 
             json = json.Replace("\"_id\":\"" + projID + "\",", "");
 
@@ -344,7 +349,7 @@ namespace CPI.Client.Controllers
             try
             {
 
-                if (id == null || id == "")
+                if (String.IsNullOrEmpty(id))
                 {
                     return null;
                 }
@@ -365,31 +370,6 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
                 throw;
             }
-        }
-
-        [HttpGet("[action]")]
-
-        public string PKIAuth()
-        {
-
-            try
-            {
-                List<X509Certificate2> certs = BaseSmartCardCryptoProvider.GetCertificates();
-
-                X509Certificate2 cert = certs[0];
-                return "Authenticated";
-            }
-            catch (Win32Exception win)
-            {
-
-                Log4NetLogger.Error(win.ToString());
-                if (win.ErrorCode == -2147467259)
-                {
-                    return "Error";
-                }
-            }
-
-            return "Not Authenticated";
         }
 
         [HttpPost("[action]")]
@@ -413,6 +393,7 @@ namespace CPI.Client.Controllers
                 string unit = project.GetValue("Unit").ToString();
                 string projectName = project.GetValue("Name").ToString();
 
+                //Change to is null or empty
                 if (name == "" || name == null)
                 {
                     return "Name cannot be null or empty";
@@ -511,7 +492,34 @@ namespace CPI.Client.Controllers
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
-                ReplaceOneResult result = await projects.ReplaceOneAsync(x => x.id == updateProject.id, updateProject);
+
+
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
+
+                //Project oldProj = await projects.Find(filter).FirstAsync();
+
+                UpdateDefinition<Project> updateDef = Builders<Project>.Update
+                    .Set(x => x.MajCom, updateProject.MajCom)
+                    .Set(x => x.Base, updateProject.Base)
+                    .Set(x => x.Creator, updateProject.Creator)
+                    .Set(x => x.Unit, updateProject.Unit)
+                    .Set(x => x.WingDirectorate, updateProject.WingDirectorate)
+                    .Set(x => x.Evaluators, updateProject.Evaluators)
+                    .Set(x => x.TeamLeads, updateProject.TeamLeads)
+                    .Set(x => x.Facilitators, updateProject.Facilitators)
+                    .Set(x => x.ProcessOwner, updateProject.ProcessOwner)
+                    .Set(x => x.Mentor, updateProject.Mentor)
+                    .Set(x => x.DataCollection, updateProject.DataCollection)
+                    .Set(x => x.Champion, updateProject.Champion)
+                    .Set(x => x.TeamLeadMeeting, updateProject.TeamLeadMeeting)
+                    .Set(x => x.DraftCharter, updateProject.DraftCharter)
+                    .Set(x => x.RootCauses, updateProject.RootCauses)
+                    .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
+                    .Set(x => x.Dates, updateProject.Dates)
+                    .Set(x => x.Name, updateProject.Name);
+
+                UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
+
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 
@@ -614,85 +622,6 @@ namespace CPI.Client.Controllers
         {
             return await GetPage(id, "CauseAndCounters");
         }
-
-        [HttpPost("[action]")]
-        public async Task<bool> Authenticate()
-        {
-
-            Log4NetLogger.Info("Authentication process started");
-
-            try
-            {
-                JObject authToken;
-
-                string tokenJson = "";
-
-                using (Stream body = Request.Body)
-                using (StreamReader reader = new StreamReader(body))
-                {
-                    tokenJson = reader.ReadToEnd();
-                }
-
-                authToken = (JObject)JsonConvert.DeserializeObject(tokenJson);
-
-
-                string username = authToken.GetValue("username").ToString();
-                string pass = authToken.GetValue("password").ToString();
-
-                User authUser = await GetUserDetails(username);
-
-                string hash = GenerateHash(pass);
-
-                bool authenticated = VerifiyHash(pass, authUser.PasswordHash);
-
-                Models.User.CurrentUser = (authenticated) ? authUser : null;
-
-                Log4NetLogger.Info($"Authentication attempt by {username} was {(authenticated ? "successful":"unsuccessful")}.");
-
-                Log4NetLogger.Info("Authentication process completed succesfully");
-
-                return authenticated;
-            }
-            catch (OutOfMemoryException memEx)
-            {
-                Log4NetLogger.Error(memEx);
-                return false;
-            }
-            catch (IOException ioEx)
-            {
-                Log4NetLogger.Error(ioEx);
-                return false;
-            }
-            catch (Exception E)
-            {
-                Log4NetLogger.Fatal(E);
-                throw;
-            }
-        }
-
-        private async Task<User> GetUserDetails(string username)
-        {
-            Log4NetLogger.Info($"Get user details process started with parameters username = {username}");
-            try
-            {
-                MongoConnection connection = new MongoConnection( await GetConnectionString());
-                connection.ConnectDatabase("CPI_Database");
-                IMongoCollection<User> users = connection.GetCollection<User>("User");
-
-                FilterDefinition<User> filter = Builders<User>.Filter.Eq("Username", username);
-
-                IAsyncCursor<User> cursor = await users.FindAsync<User>(filter);
-
-                Log4NetLogger.Info("Get user details process completed succesfully");
-
-                return await cursor.FirstAsync();
-            }
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                return null;
-            }
-        }
         private async Task<string> GetConnectionString()
         {
             try
@@ -723,84 +652,6 @@ namespace CPI.Client.Controllers
             }
         }
 
-        private string GenerateHash(string pass)
-        {
-            Log4NetLogger.Info("Generate hash process started");
-            try
-            {
-                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                HashAlgorithm algo = new SHA512Managed();
-
-                byte[] bytes = Encoding.ASCII.GetBytes(pass);
-
-                byte[] salt = new byte[8];
-
-                rng.GetBytes(salt);
-
-                bytes = algo.ComputeHash(bytes);
-
-                byte[] hashWithSalt = new byte[bytes.Length + salt.Length];
-
-                Array.Copy(bytes, hashWithSalt, bytes.Length);
-
-                for (int i = 0; i < salt.Length; i++)
-                {
-                    hashWithSalt[bytes.Length + i] = salt[i];
-                }
-
-                Log4NetLogger.Info("Generate hash process completed succesfully");
-                return Convert.ToBase64String(hashWithSalt);
-            }
-            catch (ArgumentNullException nullEx)
-            {
-                Log4NetLogger.Error(nullEx);
-                return "";
-            }
-            catch (EncoderFallbackException encodingEx)
-            {
-                Log4NetLogger.Error(encodingEx);
-                return "";
-            }
-        }
-
-        private bool VerifiyHash(string pass, string hash)
-        {
-
-            byte[] hashBytes = Convert.FromBase64String(hash);
-
-            byte[] salt = new byte[8];
-
-            for (int i = 8; i > 0; i--)
-            {
-                salt[i - 1] = hashBytes[hashBytes.Length - i];
-            }
-
-            Array.Reverse(salt);
-
-            HashAlgorithm algo = new SHA512Managed();
-
-            byte[] passBytes = Encoding.ASCII.GetBytes(pass);
-
-            byte[] passHash = algo.ComputeHash(passBytes);
-
-            byte[] passWithSalt = new byte[passHash.Length + salt.Length];
-
-            Array.Copy(passHash, passWithSalt, passHash.Length);
-
-            for (int i = 0; i < salt.Length; i++)
-            {
-                passWithSalt[passHash.Length + i] = salt[i];
-            }
-
-            string verifyingPass = Convert.ToBase64String(passWithSalt);
-
-            if (verifyingPass == hash)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
+       
     }
 }
