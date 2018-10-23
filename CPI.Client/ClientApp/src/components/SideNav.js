@@ -114,7 +114,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><a>3. Set Improvement Targets</a></LinkContainer>
                             </li>
                             <li>
-							<LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
+							<LinkContainer to={"/Project/DetermineRootCause/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
                             </li>
                             <li>
 							<LinkContainer to={"/Project/DevelopCountermeasures/" + this.props.match.params.id}><a>5. Develop Countermeasures</a></LinkContainer>
