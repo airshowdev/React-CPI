@@ -9,17 +9,17 @@ export class NavButtons extends Component {
 
     displayName = NavButtons.name
     render() {
-        return (
-            <div className="button-nav">
-                <div id="left">
-                    <button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button">Previous</button>
-				</div>
-				<span id="center">{this.props.title}</span>
+		return (
+			<div className="button-nav">
+				<span id="left">
+					<button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button">Previous</button>
+                </span>
+                <span id="center"><label style={{ fontSize: '30px' }}>{this.props.title}</label></span>
 
-				<div id="right">
-                    <button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button">Next</button>
-                </div>
-            </div>
+				<span id="right">
+					<button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button">Next</button>
+				</span>
+			</div>
         );
     }
 }

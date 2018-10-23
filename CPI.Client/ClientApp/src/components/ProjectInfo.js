@@ -17,8 +17,12 @@ export class ProjectInfo extends Component {
 		console.log(this.props.match.params.id);
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false });
+			.then(data => {
+				if (data.TeamLeads) {
+					this.setState({ project: data, loading: false });
+				} else {
+					
+				}
             });
     }
 
@@ -35,8 +39,6 @@ export class ProjectInfo extends Component {
 			case "Unit":
                 stateProject.Unit = event.target.value;
 				break;
-			case "TeamLead":
-                stateProject.TeamLeads = event.target.value.split('\n');
 				break;
             case "Evaluators":
                 stateProject.Evaluators = event.target.value.split('\n');
@@ -46,15 +48,6 @@ export class ProjectInfo extends Component {
                 break;
 			case "Creator":
 				stateProject.Creator = event.target.value;
-                break;
-            case "Champion":
-                stateProject.Champion.Name = event.target.value;
-                break;
-            case "Teamlead":
-                stateProject.TeamLeads = event.target.value.split('\n');
-                break;
-			case "Mentor":
-				stateProject.Mentor = event.target.value;
                 break;
             default:
                 break;
@@ -86,20 +79,21 @@ export class ProjectInfo extends Component {
                             <input id="Base" name="Base" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Base} />
                             <label htmlFor="Unit">Unit</label>
                             <input id="Unit" name="Unit" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Unit} />
-                            <label htmlFor="Evaluators">Evaluators</label>
-								<textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators.join('\n')} />
+								{/*<label htmlFor="Type">Type</label>
+							<input id="Type" name="Type" type="text" placeholder="Not Defined" value={this.state.project.DataCollection.Type || ""} /> */}
                         </div>
                         <div className="usa-width-one-half" style={{ float: 'right', margin: 'auto' }}>
-								<label htmlFor="Type">Type</label>
-								<input id="Type" name="Type" type="text" placeholder="Not Defined" value={this.state.project.DataCollection.Type} />
-                            <label htmlFor="Creator">Creator</label>
-                            <input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.Creator} />
-                            <label htmlFor="Champion">Champion</label>
+								
+							<label htmlFor="Creator">Creator</label>
+							<input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Creator} />
+                            <label htmlFor="Evaluators">Evaluators</label>
+								<textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators.join('\n')} />
+                          {/*  <label htmlFor="Champion">Champion</label>
                             <input id="Champion" name="Champion" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Champion.Name} />
                             <label htmlFor="TeamLead">TeamLead</label>
                             <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.TeamLeads.join("\n")} />
 								<label htmlFor="Mentor">Mentor</label>
-								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} />
+								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} /> */}
                             <button id="Submit">Save Changes</button>
                         </div>
                     </div>
