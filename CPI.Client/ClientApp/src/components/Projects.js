@@ -13,11 +13,16 @@ export class Projects extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = { project: [], loading: true };
-        fetch('api/Project/AllProjectsAsync')
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false });
-            });
+	}
+
+	componentDidMount() {
+
+		fetch('api/Project/AllProjectsAsync')
+			.then(response => response.json())
+			.then(data => {
+				this.setState({ project: data, loading: false });
+			});
+
 	}
 
     renderProjectsTable(project) {

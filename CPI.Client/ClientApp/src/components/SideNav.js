@@ -105,7 +105,7 @@ export class SideNav extends Component {
 						<a id="EventExecution" onClick={this.handleSelect}>Event Execution</a>    
                         <ul className="usa-sidenav-sub_list">
                             <li>
-							<LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><a>1. Clarify and Validate the Problem</a></LinkContainer>
+							<LinkContainer to={"/Project/ClarifyValidateProblem/" + this.props.match.params.id}><a>1. Clarify and Validate the Problem</a></LinkContainer>
                             </li>
                             <li>
 							<LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><a>2. Identify Performance Gaps</a></LinkContainer>
@@ -117,7 +117,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
                             </li>
                             <li>
-							<LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><a>5. Develope Countermeasures</a></LinkContainer>
+							<LinkContainer to={"/Project/DevelopCountermeasures/" + this.props.match.params.id}><a>5. Develop Countermeasures</a></LinkContainer>
                             </li>
                             </ul>
                     </li>

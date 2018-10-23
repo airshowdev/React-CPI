@@ -46,7 +46,6 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-
 			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
 
             DataCollection collection = CPI.Client.DataCollection.FromJson(jCollection.ToString());
@@ -83,6 +82,7 @@ namespace CPI.Client.Controllers
             
         }
 
+        [HttpPost("[action]")]
         public async Task<string> UpdateChampMeet()
         {
             string json = "";
@@ -97,7 +97,13 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
+<<<<<<< HEAD
             JObject jChamp = (JObject)jObj.GetValue("Champion");
+=======
+            //Change to get object from JObject
+
+            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+>>>>>>> 0474783dabec62135b17e3927906f80b56d9a01d
 
             Champion champion = Champion.FromJson(jChamp.ToString());
 
@@ -131,7 +137,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateTeamLeadMeet()
         {
             string json = "";
@@ -181,7 +187,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateDraftCharter()
         {
             string json = "";
@@ -236,7 +242,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateRootCauses()
         {
             string json = "";
@@ -388,6 +394,7 @@ namespace CPI.Client.Controllers
                 string unit = project.GetValue("Unit").ToString();
                 string projectName = project.GetValue("Name").ToString();
 
+                //Change to is null or empty
                 if (name == "" || name == null)
                 {
                     return "Name cannot be null or empty";
@@ -408,6 +415,7 @@ namespace CPI.Client.Controllers
                 {
 
                     Project newProject = Project.FromJson(json);
+<<<<<<< HEAD
 
                     MongoClient client;
                     if (Client == null)
@@ -415,6 +423,12 @@ namespace CPI.Client.Controllers
                         Client = new MongoClient(await GetConnectionString());
                     }
                     client = Client;
+=======
+                    newProject.TeamLeadMeeting.SipocRows = new SipocRow[7];
+                    MongoConnection connection = new MongoConnection( await GetConnectionString());
+                    connection.ConnectDatabase("CPI_Database");
+                    IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+>>>>>>> 0474783dabec62135b17e3927906f80b56d9a01d
 
 
                     IMongoDatabase database = client.GetDatabase("CPI_Database");
@@ -507,13 +521,17 @@ namespace CPI.Client.Controllers
                 client = Client;
 
 
+<<<<<<< HEAD
                 IMongoDatabase database = client.GetDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
+=======
+                FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
+>>>>>>> 0474783dabec62135b17e3927906f80b56d9a01d
 
-                Project oldProj = await projects.Find(filter).FirstAsync();
+                //Project oldProj = await projects.Find(filter).FirstAsync();
 
                 UpdateDefinition<Project> updateDef = Builders<Project>.Update
                     .Set(x => x.MajCom, updateProject.MajCom)
