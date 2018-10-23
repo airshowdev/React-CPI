@@ -216,11 +216,6 @@ namespace CPI.Client.Models
         [JsonProperty("MembersIdentified")]
         public IList<string> MembersIdentified { get; set; } = new string[0];
 
-        [BsonDefaultValue(null)]
-        [BsonIgnoreIfDefault]
-        [JsonProperty("SipocRows")]
-        public Sipoc Sipoc { get; set; } = null;
-
         [BsonIgnoreIfDefault]
         [JsonProperty("DateRange")]
         public DateRange DateRange { get; set; } = new DateRange();
