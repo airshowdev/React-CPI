@@ -79,8 +79,8 @@ export default class App extends Component {
 			<Route path='/Project/TeamKickOffAwarenessTraining/:id' component={TeamKickOffAwarenessTraining} />
 			<Route path='/Project/ValidateDataCollection/:id' component={ValidateDataCollection} />
 			<Route path='/Project/ObtainSupplies/:id' component={ObtainSupplies} />
-			<Route path='/Project/EventGoNoGo/:id' from component={EventGoNoGo} />
-			<Route path='/Project/RoomSetup/:id' from component={RoomSetup} />
+			<Route path='/Project/EventGoNoGo/:id' component={EventGoNoGo} />
+			<Route path='/Project/RoomSetup/:id' component={RoomSetup} />
 			<Route path='/Project/ProjectOverview/:id' component={ProjectOverview}/>
             <Route path='/Project/ProjectInfo/:id' component={ProjectInfo} />
             <Route path='/Project/AnalyzeData/:id' component={AnalyzeData} />

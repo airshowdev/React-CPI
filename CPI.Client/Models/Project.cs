@@ -69,8 +69,7 @@ namespace CPI.Client.Models
         public IList<string> TeamLeads { get; set; } = new string[0];
 
 
-        [JsonProperty("ProblemStatement")]
-        public string ProblemStatement { get; set; } = "";
+      
 
         [BsonIgnoreIfDefault]
         [JsonProperty("Facilitators")]

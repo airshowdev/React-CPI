@@ -83,7 +83,10 @@ namespace CPI.Client.Controllers
 
             string projID = jObj.GetValue("_id").ToString();
 
-            json = json.Replace("\"_id\":\"," + projID + "\",", "");
+            /*
+             id: "",
+             DataCollection: {}
+             */
 
 
 			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
@@ -131,6 +134,8 @@ namespace CPI.Client.Controllers
             }
 
             string projID = jObj.GetValue("_id").ToString();
+
+            //Change to get object from JObject
 
             json = json.Replace("\"_id\":\"" + projID + "\",", "");
 
@@ -343,7 +348,7 @@ namespace CPI.Client.Controllers
             try
             {
 
-                if (id == null || id == "")
+                if (String.IsNullOrEmpty(id))
                 {
                     return null;
                 }
@@ -364,31 +369,6 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
                 throw;
             }
-        }
-
-        [HttpGet("[action]")]
-
-        public string PKIAuth()
-        {
-
-            try
-            {
-                List<X509Certificate2> certs = BaseSmartCardCryptoProvider.GetCertificates();
-
-                X509Certificate2 cert = certs[0];
-                return "Authenticated";
-            }
-            catch (Win32Exception win)
-            {
-
-                Log4NetLogger.Error(win.ToString());
-                if (win.ErrorCode == -2147467259)
-                {
-                    return "Error";
-                }
-            }
-
-            return "Not Authenticated";
         }
 
         [HttpPost("[action]")]
@@ -412,6 +392,7 @@ namespace CPI.Client.Controllers
                 string unit = project.GetValue("Unit").ToString();
                 string projectName = project.GetValue("Name").ToString();
 
+                //Change to is null or empty
                 if (name == "" || name == null)
                 {
                     return "Name cannot be null or empty";
@@ -514,7 +495,7 @@ namespace CPI.Client.Controllers
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
 
-                Project oldProj = await projects.Find(filter).FirstAsync();
+                //Project oldProj = await projects.Find(filter).FirstAsync();
 
                 UpdateDefinition<Project> updateDef = Builders<Project>.Update
                     .Set(x => x.MajCom, updateProject.MajCom)
