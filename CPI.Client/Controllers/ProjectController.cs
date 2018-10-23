@@ -254,50 +254,51 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-        [HttpPost("[action]")]
-        public async Task<string> UpdateRootCauses()
-        {
-            string json = "";
 
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
+        //[HttpPost("[action]")]
+        //public async Task<string> UpdateRootCauses()
+        //{
+        //    string json = "";
 
-                jObj = (JObject)JsonConvert.DeserializeObject(json);
-            }
+        //    JObject jObj;
+        //    using (StreamReader reader = new StreamReader(Request.Body))
+        //    {
+        //        json = reader.ReadToEnd();
 
-            string projID = jObj.GetValue("_id").ToString();
+        //        jObj = (JObject)JsonConvert.DeserializeObject(json);
+        //    }
 
-            json = json.Replace("\"_id\":\"" + projID + "\",", "");
+        //    string projID = jObj.GetValue("_id").ToString();
 
-            RootCause rootCause = RootCause.FromJson(json);
+        //    json = json.Replace("\"_id\":\"" + projID + "\",", "");
 
-            try
-            {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+        //    RootCause rootCause = RootCause.FromJson(json);
 
-                connection.ConnectDatabase("CPI_Database");
+        //    try
+        //    {
+        //        MongoConnection connection = new MongoConnection(await GetConnectionString());
 
-                IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+        //        connection.ConnectDatabase("CPI_Database");
 
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+        //        IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
 
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+        //        FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
+        //        Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
 
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
+        //        UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
 
-                return result.ToString();
-            }
+        //        UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                return E.ToString();
-            }
-        }
+        //        return result.ToString();
+        //    }
+
+        //    catch (Exception E)
+        //    {
+        //        Log4NetLogger.Error(E);
+        //        return E.ToString();
+        //    }
+        //}
 
 
         [HttpGet("[action]")]

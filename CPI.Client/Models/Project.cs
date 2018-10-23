@@ -104,7 +104,7 @@ namespace CPI.Client.Models
 
         [BsonIgnoreIfNull]
         [JsonProperty("RootCauses")]
-        public RootCause RootCauses { get; set; } = new RootCause();
+        public IList<RootCause> RootCauses { get; set; } = new List<RootCause>();
 
         [BsonIgnoreIfNull]
         [JsonProperty("DesiredEffects")]
@@ -177,6 +177,18 @@ namespace CPI.Client.Models
         [BsonIgnoreIfDefault]
         [JsonProperty("Response")]
         public Response Response { get; set; } = new Response();
+    }
+
+    public partial class RootCause
+    {
+        [BsonIgnoreIfNull]
+        [JsonProperty("Description")]
+        public string Description { get; set; } = "";
+
+        [BsonIgnoreIfNull]
+        [JsonProperty("Countermeasures")]
+        IList<string> Countermeasures { get; set; } = new List<string>();
+        
     }
 
     public partial class Response
@@ -333,25 +345,5 @@ namespace CPI.Client.Models
                 new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AssumeUniversal }
             },
         };
-    }
-
-    public partial class RootCause
-    {
-        [BsonIgnoreIfNull]
-        [JsonProperty("FishboneBranch")]
-        IList<FishboneBranch> FishboneBranches { get; set; } = new List<FishboneBranch>();
-
-        [BsonIgnoreIfNull]
-        [JsonProperty("RootCausesAndCounters")]
-        IDictionary<string, string> CausesAndCounters { get; set; } = new Dictionary<string, string>();
-        
-    }
-
-    public partial class FishboneBranch
-    {
-        
-        [BsonIgnoreIfDefault]
-        [JsonProperty("Nodes")]
-        IList<string> Nodes { get; set; } = new string[0];
     }
 }
