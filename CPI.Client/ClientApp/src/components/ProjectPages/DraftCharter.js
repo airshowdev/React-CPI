@@ -3,10 +3,16 @@ import '../css/uswds.css';
 import '../css/HallMartino.css';
 import { Checkbox } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import { NavButtons } from '../NavButtons';
 
 export class DraftCharter extends Component {
 
-    displayName = DraftCharter.name
+    displayName = DraftCharter.name;
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     constructor(props, context) {
         super(props, context)
@@ -63,8 +69,10 @@ export class DraftCharter extends Component {
         this.setState({ content: labelContent });
     };
 
-    render(project) {
+    render() {
         return (
+            <div>
+                <NavButtons next="ProcessWalk" previous="MeetWithTeamLeader" title="CPI Event Charter" projectId={this.props.match.params.id}/>
             <div className="paragraph" style={{ border: "hidden", minWidth: "687px" }}>
                 <h1> CPI Event Charter </h1><button>Print Charter</button>
                 <table style={{ textAlign: "center", padding: "0px", minWidth: "1000px", maxWidth: "1000px" }}>
@@ -305,7 +313,8 @@ export class DraftCharter extends Component {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+                </div>
+                </div>
         )
     }
 }

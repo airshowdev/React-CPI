@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\components\ProjectPages\NVADataCollection.jsx" />
+    <None Remove="ClientApp\src\components\ProjectPages\NVADataCollection.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\components\ProjectPages\NVADataCollection.jsx" />
+    <TypeScriptCompile Include="ClientApp\src\components\ProjectPages\NVADataCollection.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

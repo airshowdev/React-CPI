@@ -1,27 +1,38 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
+import { Post } from '../../REST';
+import { NavButtons } from '../NavButtons';
+import PropTypes from 'prop-types';
 
 export class MeetWithTeamLead extends Component {
 
-    displayName = MeetWithTeamLead.name
 
+    displayName = MeetWithTeamLead.name
+    static contextTypes = {
+        router: PropTypes.object
+    }
     constructor(props, context) {
         super(props, context);
-        this.state = { project: {}, dateBeginTemp: "", dateEndTemp: "", loading: true };
+		this.state = {
+			project: {}, dateBeginTemp: "", dateEndTemp: "", SIPOC: [], loading: true };
 
         this.handleChange = this.handleChange.bind(this);
         this.isDate = this.isDate.bind(this);
         this.formatDateBegin = this.formatDateBegin.bind(this);
         this.formatDateEnd = this.formatDateEnd.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+
+        this.handleSipocChange = this.handleSipocChange.bind(this);
+
+        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false });
+			.then(data => {
+				this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false, SIPOC: data.TeamLeadMeeting.SipocRows });
             });
     }
     
@@ -55,8 +66,6 @@ export class MeetWithTeamLead extends Component {
             stateProject.TeamLeadMeeting.DateRange.end = this.state.dateEndTemp;
             this.setState({ project: stateProject });
             alert(this.state.dateEndTemp);
-        } else {
-            alert("Please Enter a valid date for the new element's \"end\" value ");
         }
     }
 
@@ -74,17 +83,49 @@ export class MeetWithTeamLead extends Component {
         }
     }
 
+    handleSave() {
+        var tempProject = this.state.project;
+        tempProject.TeamLeadMeeting.SipocRows = this.state.SIPOC;
+        this.setState({ project: tempProject });
+
+        Post(this.state.project, "Project", "UpdateProject");
+    }
+
     isDate(date) {
         console.log(Date.parse(date));
         return !isNaN(Date.parse(date));
     }
 
+	handleSipocChange(event) {
+		var Sipoc = this.state.SIPOC;
+		switch (event.target.name) {
+			case "Supplier":
+				Sipoc[parseInt(event.target.id)].Supplier = event.target.value;
+				break;
+			case "Input":
+				Sipoc[parseInt(event.target.id)].Input = event.target.value;
+				break;
+			case "Process":
+				Sipoc[parseInt(event.target.id)].Process = event.target.value;
+				break;
+			case "Output":
+				Sipoc[parseInt(event.target.id)].Output = event.target.value;
+				break;
+			case "Customer":
+				Sipoc[parseInt(event.target.id)].Customer = event.target.value;
+				break;
+		}
+
+        this.setState({ SIPOC: Sipoc });
+	}
 
     render() {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
-        return (
+            return (
+                <div>
+                    <NavButtons next="DraftCharter" previous="MeetWithChampion" title="Meet with Team Lead" projectId={this.props.match.params.id}/>
             <div className="paragraph" style={{ border: "hidden", float: "none", marginLeft: "auto", marginRight: "auto", minWidth: "1000px", maxWidth: "1200px" }}>
                 <h1 style={{ marginLeft: "30%" }}> Meet With Team Lead </h1>
                 <table>
@@ -104,15 +145,15 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n')} onChange={this.handleChange} />
+                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n') || ""} onChange={this.handleChange} />
 
                                 </div>
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                                         <tbody>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp}  /></td>
-                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp} /></td></tr>
+                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp || ""}  /></td>
+                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp || ""} /></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -133,63 +174,25 @@ export class MeetWithTeamLead extends Component {
                                             <td>What are the 5-7 high level steps in the process?</td>
                                             <td>What products/services are generated from the process?</td>
                                             <td>Who receives the outputs of the process?</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                        </tr>
+										</tr>	
+                                        {
+                                            this.state.SIPOC.map((el, i) => (
+												<tr>
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Process" onChange={this.handleSipocChange} value={el.Process} /></td>{/*Process*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Output" onChange={this.handleSipocChange} value={el.Output} /></td>{/*Outputs*/}
+												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
+											</tr>)) }
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
+                <button onClick={this.handleSave}>SAVE!</button>
+                    </div>
+                    </div>
             )
         }
     }

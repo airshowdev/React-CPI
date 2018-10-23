@@ -117,6 +117,7 @@ namespace CPI.Client.Controllers
             
         }
 
+        [HttpPost("[action]")]
         public async Task<string> UpdateChampMeet()
         {
             string json = "";
@@ -160,7 +161,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateTeamLeadMeet()
         {
             string json = "";
@@ -204,7 +205,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateDraftCharter()
         {
             string json = "";
@@ -253,7 +254,7 @@ namespace CPI.Client.Controllers
                 return E.ToString();
             }
         }
-
+        [HttpPost("[action]")]
         public async Task<string> UpdateRootCauses()
         {
             string json = "";
@@ -431,7 +432,7 @@ namespace CPI.Client.Controllers
                 {
 
                     Project newProject = Project.FromJson(json);
-
+                    newProject.TeamLeadMeeting.SipocRows = new SipocRow[7];
                     MongoConnection connection = new MongoConnection( await GetConnectionString());
                     connection.ConnectDatabase("CPI_Database");
                     IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
@@ -509,6 +510,7 @@ namespace CPI.Client.Controllers
                 MongoConnection connection = new MongoConnection( await GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<Project> projects = connection.GetCollection<Project>("Projects");
+
 
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Where(x => x.id == updateProject.id);
 
