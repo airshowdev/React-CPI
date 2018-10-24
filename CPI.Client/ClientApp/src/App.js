@@ -96,17 +96,16 @@ export default class App extends Component {
 			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
 			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
 			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
-
-			<Route path='/Project/MeetingChampionPpt/:id' component={MeetingChampionPpt} /> {/*Added by Cyriac 11 Oct 2018 for viewing the Meeting Champion PowerPoint*/}
-			<Route path='/Project/EventCharter/:id' component={EventCharter} /> {/*Added by Cyriac 15 Oct 2018 for viewing the Event Charter*/}
-			{/* adding in more routes to test pages */}
+			<Route path='/Project/MeetingChampionPpt/:id' component={MeetingChampionPpt} /> 
+			<Route path='/Project/EventCharter/:id' component={EventCharter} />
 			<Route path='/Project/MeetWithChampion/:id' component={MeetWithChampion} />
 			<Route path='/Project/MeetWithTeamLeader/:id' component={MeetWithTeamLead} />
 			<Route path='/Project/DraftCharter/:id' component={DraftCharter} />
-
-			{/* adding in more routes to test */}
 			<Route path='/Project/ClarifyValidateProblem/:id' component={ClarifyValidateProblem} />
-			<Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
+            <Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
+
+            {/*Test Route for chart */}
+            <Route path='/Project/Graph' component={Graph} />
         </Layout>
     );
   }

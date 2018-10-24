@@ -1,5 +1,8 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
+import { BarChart } from './ProjectPages/BarChart.js';
+import { PieChart, colorGenerator } from './ProjectPages/PieChart';
+import { PieChartLegend } from './ProjectPages/PieChartLegend';
 
 //4 classes/components/functions that are used in the graph class. The bars and lines are drawn using a mapped array. 
 const XBarTextContainer = () => {
@@ -42,6 +45,52 @@ const Bar = ({ percent, index }) => {
     )
 }
 
+const barChartData = {
+    data: [
+        { x: 'A', y: 10 },
+        { x: 'B', y: 5 },
+        { x: 'C', y: 4 },
+        { x: 'D', y: 9 },
+        { x: 'F', y: 1 },
+        { x: 'E', y: 7 },
+        { x: 'G', y: 6 }
+    ],
+    height: 600,
+    width: 600,
+}
+
+let counter = 0;
+
+const pieChartArray = [
+    { angle: 1, label: 'stuff', color: colorGenerator[0] },
+    { angle: 2, label: 'things', color: colorGenerator[1] },
+    { angle: 2, label: 'more stuff', color: colorGenerator[2] },
+    { angle: 3, label: 'stuff2', color: colorGenerator[3] },
+    { angle: 1, label: 'tl', color: colorGenerator[4] }
+];
+
+const pieChartData = {
+    data: pieChartArray,
+    height: 400,
+    width: 400,
+    radius: 180,
+    innerRadius: 140,
+}
+
+const pieChartLegend = {
+
+    legendItems: [
+        { title: 'One', color: pieChartData.data[0].color },
+        { title: 'Two', color: pieChartData.data[1].color },
+        { title: 'Three', color: pieChartData.data[2].color },
+        { title: 'Four', color: pieChartData.data[3].color },
+        { title: 'Five', color: pieChartData.data[4].color }
+    ],
+    height: 200,
+    width: 100,
+}
+
+
 export class Graph extends Component {
 
     constructor() {
@@ -54,12 +103,20 @@ export class Graph extends Component {
         }
     }
 
-    render() {
-
-
-
+    
+    render(props) {
         return (
             <div className='graph-wrapper'>
+                <BarChart data={barChartData.data} height={barChartData.height} width={barChartData.width} />
+                <div style={{width: "530px"}}>
+                    <div style={{ display: "inline-block" }}>
+                        <PieChart data={pieChartData.data} height={pieChartData.height} width={pieChartData.width} radius={pieChartData.radius} innerRadius={pieChartData.innerRadius} />
+                    </div>
+                    <div style={{ display: "inline-block", border: "solid 1px", backgroundColor: "lightGrey", float: "right", marginTop: "40px" }}>
+                        <PieChartLegend legendItems={pieChartLegend.legendItems} height={pieChartLegend.height} width={pieChartLegend.width} />
+                    </div>
+                </div>
+
                 <div className='graph'>
                     <YBarTextContainer></YBarTextContainer>
 
