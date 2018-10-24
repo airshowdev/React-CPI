@@ -5017,3 +5017,6 @@ input[type=search] {
 	float: right;
 }
 
+.flexbox {
+    display: flex;
+}

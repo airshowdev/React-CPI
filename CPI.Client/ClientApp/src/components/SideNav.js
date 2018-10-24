@@ -64,7 +64,7 @@ export class SideNav extends Component {
 						<a id="PreEventPreparation" onClick={this.handleSelect} >Pre-Event Preparation</a>
                         <ul className="usa-sidenav-sub_list">
 							<li>
-								<LinkContainer to={"/Project/Process/" + this.props.match.params.id}><a>Process Walk</a></LinkContainer>
+								<LinkContainer to={"/Project/ProcessWalk/" + this.props.match.params.id}><a>Process Walk</a></LinkContainer>
                             </li>
 							<li>
 								<LinkContainer to={"/Project/FinalizeCharter/" + this.props.match.params.id}><a>Finalize Charter</a></LinkContainer>
@@ -114,7 +114,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><a>3. Set Improvement Targets</a></LinkContainer>
                             </li>
                             <li>
-							<LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
+							<LinkContainer to={"/Project/DetermineRootCause/" + this.props.match.params.id}><a>4. Determine Root Cause(s)</a></LinkContainer>
                             </li>
                             <li>
 							<LinkContainer to={"/Project/DevelopCountermeasures/" + this.props.match.params.id}><a>5. Develop Countermeasures</a></LinkContainer>

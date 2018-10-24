@@ -272,8 +272,6 @@ namespace CPI.Client.Controllers
                 jObj = (JObject)JsonConvert.DeserializeObject(json);
             }
 
-            string projID = jObj.GetValue("_id").ToString();
-
             JObject jCauses = (JObject)jObj.GetValue("RootCauses");
 
             IList<RootCause> rootCause = Converter.ListFromJson<RootCause>(jCauses.ToJson());
@@ -292,13 +290,11 @@ namespace CPI.Client.Controllers
 
                 IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
 
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
+               FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
 
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
+               Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
 
                 UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
-
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
                 Response.Body = result.ToStream();
             }

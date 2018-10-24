@@ -69,10 +69,7 @@ namespace CPI.Client.Models
         [JsonProperty("TeamLeads")]
         public IList<string> TeamLeads { get; set; } = new string[0];
 
-
-      
-
-         
+        [BsonIgnoreIfDefault]
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new string[0];
   
@@ -193,6 +190,18 @@ namespace CPI.Client.Models
         public Response Response { get; set; } = new Response();
     }
 
+    public partial class RootCause
+    {
+        [BsonIgnoreIfNull]
+        [JsonProperty("Description")]
+        public string Description { get; set; } = "";
+
+        [BsonIgnoreIfNull]
+        [JsonProperty("Countermeasures")]
+        public IList<string> Countermeasures { get; set; } = new List<string>();
+        
+    }
+
     public partial class Response
     {
         
@@ -231,7 +240,7 @@ namespace CPI.Client.Models
         public DateRange DateRange { get; set; } = new DateRange();
 
         [JsonProperty("SipocRows")]
-        public IList<SipocRow> SipocRows { get; set; } = new List<SipocRow>();
+        public IList<SipocRow> SipocRows { get; set; } = new SipocRow[7] { new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow() };
     }
 
     public partial class DateRange
