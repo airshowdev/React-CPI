@@ -27,11 +27,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="connectionString.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\src\components\ProjectPages\NVADataCollection.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ClientApp\src\components\charting\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="connectionString.json" />
   </ItemGroup>
 
   <ItemGroup>

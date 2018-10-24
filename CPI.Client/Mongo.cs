@@ -11,7 +11,7 @@ namespace CPI
     public class MongoConnection
     {
 
-        MongoClient client;
+        public static MongoClient client;
         IMongoDatabase Database { get; set; }
 
         private MongoConnection()
