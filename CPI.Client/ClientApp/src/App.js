@@ -104,8 +104,12 @@ export default class App extends Component {
 			<Route path='/Project/ClarifyValidateProblem/:id' component={ClarifyValidateProblem} />
             <Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
 
+
             {/*Test Route for chart */}
             <Route path='/Project/Graph' component={Graph} />
+
+            <Route path='/Project/FinalizeCharter/:id' component={DraftCharter} />
+
         </Layout>
     );
   }

@@ -15,17 +15,17 @@ export class DataCollectionStatus extends Component {
 
 		switch (this.state.Type) {
 			case "OnTime":
-				properties.Instructions = <div> Goal: The target date of accomplishment for each task < br />
+				properties.Instructions = (<div> Goal: The target date of accomplishment for each task < br />
 					Actual: The date a task was actually accomplished < br />
 					Percentage on Time: The percentage of tasks completed on time < br />
-					Goal: The percentage of tasks completed on time that is deemed satisfactory</div >;
+					Goal: The percentage of tasks completed on time that is deemed satisfactory</div >);
 				properties.StandardGoalLabel = "On Time Goal";
 				break;
 			case "NVA":
-				properties.Instructions = <div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
+				properties.Instructions = (<div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
 					VA: Value Added.These are expenses that do directly support mission accomplishment, preparedness, and effectiveness < br />
 					Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.  Lower is better < br />
-					Goal: The percentage NVA that is deemed satisfactory</div>;
+					Goal: The percentage NVA that is deemed satisfactory</div>);
 				properties.StandardGoalLabel = "NVA Goal";
 				break;
 		}

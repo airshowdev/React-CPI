@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace CPI.Client.Controllers
 {
@@ -21,7 +22,7 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<bool> Authenticate()
+        public async Task<HttpResponse> Authenticate()
         {
 
             Log4NetLogger.Info("Authentication process started");
@@ -56,61 +57,26 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Authentication process completed succesfully");
 
-                return authenticated;
-            }
-            catch (OutOfMemoryException memEx)
-            {
-                Log4NetLogger.Error(memEx);
-                return false;
-            }
-            catch (IOException ioEx)
-            {
-                Log4NetLogger.Error(ioEx);
-                return false;
+                Response.Body = authenticated.ToStream();
+
+                
             }
             catch (Exception E)
             {
-                Log4NetLogger.Fatal(E);
-                throw;
+                Log4NetLogger.Error(E);
+                Response.Body = E.ToStream();
             }
+            return Response;
         }
 
-        private async Task<string> GetConnectionString()
-        {
-            try
-            {
-                Log4NetLogger.Info("Get connection string process started");
-                using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
-                using (TextReader tr = new StreamReader(stream))
-                {
-
-                    Log4NetLogger.Info("Get connection string process completed succesfully");
-                    return await tr.ReadLineAsync();
-                }
-            }
-            catch (ArgumentOutOfRangeException oorEx)
-            {
-                Log4NetLogger.Error(oorEx);
-                return null;
-            }
-            catch (ObjectDisposedException odEx)
-            {
-                Log4NetLogger.Error(odEx);
-                return null;
-            }
-            catch (InvalidOperationException invalidOpEx)
-            {
-                Log4NetLogger.Error(invalidOpEx);
-                return null;
-            }
-        }
+        
 
         private async Task<User> GetUserDetails(string username)
         {
             Log4NetLogger.Info($"Get user details process started with parameters username = {username}");
             try
             {
-                MongoConnection connection = new MongoConnection(await GetConnectionString());
+                MongoConnection connection = new MongoConnection(await ProjectController.GetConnectionString());
                 connection.ConnectDatabase("CPI_Database");
                 IMongoCollection<User> users = connection.GetCollection<User>("User");
 

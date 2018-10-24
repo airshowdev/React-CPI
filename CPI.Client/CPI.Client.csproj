@@ -27,6 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="connectionString.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\components\js\DataHandler.js" />
     <None Remove="ClientApp\src\components\ProjectPages\NVADataCollection.js" />
   </ItemGroup>
 
@@ -35,6 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="connectionString.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\js\DataHandler.js" />
     <TypeScriptCompile Include="ClientApp\src\components\ProjectPages\NVADataCollection.js" />
   </ItemGroup>
 

@@ -7,12 +7,13 @@ export class DataCollection extends Component {
 	static contextTypes = {
 		router: PropTypes.object
 	}
-	displayName = DataCollection.name;
+    displayName = DataCollection.name;
+
 	constructor(props) {
 		super(props);
-		this.state = {
-			type: this.props.type || "", loading: true, selectedType: "", ProjectDataCollection: {}
-		}
+        this.state = {
+            loading: true, selectedType: "", ProjectDataCollection: {}
+        };
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -22,21 +23,14 @@ export class DataCollection extends Component {
 	componentDidMount() {
 		fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
 			.then(response => response.json())
-			.then(data => this.setState({ selectedType: data.DataCollection.Type, ProjectDataCollection: data.DataCollection, loading: false }));
-	}
+			.then(data => this.setState({ ProjectDataCollection: data.DataCollection, loading: false }));
+    }
 
-	handleSubmit() {
-		var dataCollection = this.state.ProjectDataCollection;
-		dataCollection.Type = this.state.selectedType;
-		this.setState({ DataCollection: dataCollection, loading: true })
-		Post({ _id: this.props.match.params.id, DataCollection: this.state.DataCollection }, "Project", 'UpdateDataCollection')
-			.then((data) => console.info(JSON.stringify(data)))
-			.then(this.redirectPage(this.state.selectedType));
-
-		
+    handleSubmit() {
+        this.redirectPage(this.state.selectedType);
 	}
-	redirectPage() {
-		switch (this.state.ProjectDataCollection.Type) {
+    redirectPage(value) {
+        switch (value) {
 			case "NVA":
 				this.context.router.history.push('/Project/NVAData/' + this.props.match.params.id)
 				break;
@@ -50,21 +44,18 @@ export class DataCollection extends Component {
 		this.setState({ selectedType: event.target.value });
 	}
 
-	render() {
-
-		this.redirectPage(this.state.ProjectDataCollection.Type);
-
+    render() {
+        this.redirectPage(this.state.ProjectDataCollection.Type);
 		return (
-			this.state.loading ? <span>Loading</span> : (
+			this.state.loading ? <span>Loading</span> : 
 				<div>
 					<h3> Please Select a project type</h3>
-					<select onChange={this.handleChange} value={this.state.selectedType}>
-				    <option value="OnTime">On Time</option>
+                    <select onChange={this.handleChange} value={this.state.selectedType}>
+                    <option value="OnTime">On Time</option>
 					<option value="NVA">NVA</option>
 					</select>
 					<button onClick={this.handleSubmit}>Select</button>
-					</div>
-				)
+                </div>
 			)
 	}
 }

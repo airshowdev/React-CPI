@@ -1,98 +1,93 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CPI.Client;
-using CPI.Client.Controllers;
-using CPI.Client.Models;
+
 using System.Collections.Generic;
-using MongoDB.Bson;
 using System.Threading.Tasks;
 using System.IO;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+
+using Moq;
+
+using CPI.Client.Testing;
+using CPI.Client.Controllers;
+using CPI.Client.Models;
 
 namespace CPI.Client.Tests
 {
     [TestClass]
-    public class ProjectControllerTestd
+    public class ProjectControllerTest
     {
         [TestMethod]
-        public void TestAllProjects()
+        public async Task TestAllProjects()
         {
-            ProjectController controller = new ProjectController();
-            string expected = "[{ \"ID\":\"5bb230c5d346df46e89dcb43\",\"Unit\":\"595 SCS\",\"Creator\":\"Gabriel Stines\",\"Name\":\"The CPI Project itself\"},{ \"ID\":\"5bb639f3cdec7e5208aa30cc\",\"Unit\":\"U\",\"Creator\":\"FN LN\",\"Name\":\"PN\"},{ \"ID\":\"5bb63f70cdec7e5208aa30cd\",\"Unit\":\"absolute\",\"Creator\":\"First Last\",\"Name\":\"Namb\"},{ \"ID\":\"5bb640b3a14ab08d9448f181\",\"Unit\":\"5cs\",\"Creator\":\"gab stinz\",\"Name\":\"yahyeet\"}]";
 
-            Task<IEnumerable<Stub>> task = controller.AllProjectsAsync();
-            task.Wait();
-            IEnumerable<Stub> projectList = task.Result;
+            Mock<IProjectController> mock = new Mock<IProjectController>();
 
-            Assert.AreNotEqual(null, projectList.ToString());
-            Assert.AreEqual(expected.Replace(" ", ""), projectList.ToJson().Replace(" ", ""));
+            mock.Setup(x => x.AllProjectsAsync()).ReturnsAsync(new List<Stub>());
+
+            IProjectController controller = mock.Object;
+
+            IEnumerable<Stub> projectList = await controller.AllProjectsAsync();
+
+            Assert.IsNotNull(projectList);
+            mock.VerifyAll();
         }
 
         [TestMethod]
-        public void TestGetProject()
+        public async Task TestGetProject()
         {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.GetProjectAsync(It.IsAny<string>())).ReturnsAsync(new Project());
 
-            string expected = GetContents("./project.json");
-            Task<string> task = controller.GetProjectAsync(id);
-            task.Wait();
-            string actual = task.Result;
+            IProjectController controller = mock.Object;
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected, actual);
+            Project project = await controller.GetProjectAsync("5bcf1017b8e4a5764c5d7dd0");
+
+            Assert.IsNotNull(project);
+            mock.VerifyAll();
         }
 
         [TestMethod]
         public void TestGetProjectWithEmptyID()
         {
             ProjectController controller = new ProjectController();
-            string expected = "404";
-            string id = "";
+            string id = null;
 
-            Task<string> task = controller.GetProjectAsync(id);
+            Task<Project> task = controller.GetProjectAsync(id);
             task.Wait();
-            string actual = task.Result;
+            Project actual = task.Result;
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
         public void TestGetProjectWithNullID()
         {
             ProjectController controller = new ProjectController();
-            string expected = "404"; 
             string id = null;
 
-            Task<string> task = controller.GetProjectAsync(id);
+            Task<Project> task = controller.GetProjectAsync(id);
             task.Wait();
-            string actual = task.Result;
+            Project actual = task.Result;
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("", actual);
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
 
-        public void TestGetDataCollection()
+        public async Task TestGetDataCollection()
         {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
-            string json = GetContents("./datacollection.json").Replace(" ","");
-            DataCollection expected = DataCollection.FromJson(json);
-            
-            Task<object> task = controller.DataCollection(id);
-            task.Wait();
-            DataCollection actual = (DataCollection)task.Result;
+            string id = "5bcf1017b8e4a5764c5d7dd0";
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+
+            mock.Setup(x => x.DataCollection(It.IsAny<string>())).ReturnsAsync(new object());
+
+
+            IProjectController controller = mock.Object;
+
+            object collection = await controller.DataCollection(id);
+
+            Assert.IsNotNull(collection);
+            mock.VerifyAll();
         }
 
         [TestMethod]
@@ -102,13 +97,13 @@ namespace CPI.Client.Tests
             string id = null;
 
             string expected = "404 ID not found";
-            
+
             Task<object> task = controller.DataCollection(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -119,31 +114,33 @@ namespace CPI.Client.Tests
             string id = "";
 
             string expected = "404 ID not found";
-            
+
             Task<object> task = controller.DataCollection(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
 
-        public void TestGetChampMeet()
+        public async Task TestGetChampMeet()
         {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
-            string json = GetContents("./ChampMeet.json").Replace(" ","");
-            Champion expected = Champion.FromJson(json);
-            
-            Task<object> task = controller.ChampMeet(id);
-            task.Wait();
-            Champion actual = (Champion)task.Result;
+            string id = "5bcf1017b8e4a5764c5d7dd0";
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected.ToJson(), actual.ToJson());
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+
+            mock.Setup(x => x.ChampMeet(It.IsAny<string>())).ReturnsAsync(new object());
+
+
+            IProjectController controller = mock.Object;
+
+            object collection = await controller.ChampMeet(id);
+
+            Assert.IsNotNull(collection);
+            mock.VerifyAll();
         }
 
         [TestMethod]
@@ -153,13 +150,13 @@ namespace CPI.Client.Tests
             string id = null;
 
             string expected = "404 ID not found";
-            
+
             Task<object> task = controller.ChampMeet(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -170,131 +167,32 @@ namespace CPI.Client.Tests
             string id = "";
 
             string expected = "404 ID not found";
-            
+
             Task<object> task = controller.ChampMeet(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
 
-        public void TestGetTeamLeadMeeting()
+        public async Task TestGetDraftCharter()
         {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
-            string json = GetContents("./TeamLeadMeet.json").Replace(" ","");
-            TeamLeadMeeting expected = TeamLeadMeeting.FromJson(json);
-            
-            Task<object> task = controller.TeamLeadMeet(id);
-            task.Wait();
-            TeamLeadMeeting actual = (TeamLeadMeeting)task.Result;
+            string id = "5bcf1017b8e4a5764c5d7dd0";
 
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected.ToJson(), actual.ToJson());
-        }
+            Mock<IProjectController> mock = new Mock<IProjectController>();
 
-        [TestMethod]
-        public void TestGetTeamLeadMeetingWithNullId()
-        {
-            ProjectController controller = new ProjectController();
-            string id = null;
-
-            string expected = "404 ID not found";
-            
-            Task<object> task = controller.TeamLeadMeet(id);
-            task.Wait();
-            string actual = (string)task.Result;
-
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TestGetTeamLeadMeetingWithEmptyId()
-        {
-            ProjectController controller = new ProjectController();
-            string id = "";
-
-            string expected = "404 ID not found";
-            
-            Task<object> task = controller.TeamLeadMeet(id);
-            task.Wait();
-            string actual = (string)task.Result;
-
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TestGetCauseAndCounters()
-        {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
-            string json = GetContents("./CauseAndCounters.json").Replace(" ","");
-            RootCause expected = RootCause.FromJson(json);
-            
-            Task<object> task = controller.CauseAndCounters(id);
-            task.Wait();
-            RootCause actual = (RootCause)task.Result;
-
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected.ToJson(), actual.ToJson());
-        }
-
-        [TestMethod]
-        public void TestGetCauseAndCountersWithNullId()
-        {
-            ProjectController controller = new ProjectController();
-            string id = null;
-
-            string expected = "404 ID not found";
-            
-            Task<object> task = controller.TeamLeadMeet(id);
-            task.Wait();
-            string actual = (string)task.Result;
-
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TestGetCauseAndCountersWithEmptyId()
-        {
-            ProjectController controller = new ProjectController();
-            string id = "";
-
-            string expected = "404 ID not found";
-            
-            Task<object> task = controller.TeamLeadMeet(id);
-            task.Wait();
-            string actual = (string)task.Result;
-
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void TestGetDraftCharter()
-        {
-            ProjectController controller = new ProjectController();
-            string id = "5bb230c5d346df46e89dcb43";
-            string expected = GetContents("./DraftCharter.json").Replace(" ","");
+            mock.Setup(x => x.DraftCharter(It.IsAny<string>())).ReturnsAsync(new object());
 
 
+            IProjectController controller = mock.Object;
 
-            Task<object> task = controller.DraftCharter(id);
-            task.Wait();
-            string actual = task.Result.ToJson().Replace(" ","");
-            Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
-            Assert.AreEqual(expected.ToLower(),actual.ToLower());
+            object collection = await controller.DraftCharter(id);
+
+            Assert.IsNotNull(collection);
+            mock.VerifyAll();
         }
 
         [TestMethod]
@@ -304,13 +202,13 @@ namespace CPI.Client.Tests
             string id = null;
 
             string expected = "404 ID not found";
-            
-            Task<object> task = controller.TeamLeadMeet(id);
+
+            Task<object> task = controller.DraftCharter(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
 
@@ -321,16 +219,236 @@ namespace CPI.Client.Tests
             string id = "";
 
             string expected = "404 ID not found";
-            
+
+            Task<object> task = controller.DraftCharter(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public async Task TestGetCausesAndCounters()
+        {
+            string id = "5bcf1017b8e4a5764c5d7dd0";
+
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+
+            mock.Setup(x => x.CausesAndCounters(It.IsAny<string>())).ReturnsAsync(new object());
+
+
+            IProjectController controller = mock.Object;
+
+            object collection = await controller.CausesAndCounters(id);
+
+            Assert.IsNotNull(collection);
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestGetCauseAndCountersWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+
+            Task<object> task = controller.CausesAndCounters(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestGetCauseAndCountersWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+
+            Task<object> task = controller.CausesAndCounters(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public async Task TestGetTeamLeadMeet()
+        {
+            string id = "5bcf1017b8e4a5764c5d7dd0";
+
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+
+            mock.Setup(x => x.TeamLeadMeet(It.IsAny<string>())).ReturnsAsync(new object());
+
+
+            IProjectController controller = mock.Object;
+
+            object collection = await controller.TeamLeadMeet(id);
+
+            Assert.IsNotNull(collection);
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TestGetTeamLeadMeetWithNullId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = null;
+
+            string expected = "404 ID not found";
+
             Task<object> task = controller.TeamLeadMeet(id);
             task.Wait();
             string actual = (string)task.Result;
 
             Assert.IsNotNull(actual);
-            Assert.AreNotEqual("",actual);
+            Assert.AreNotEqual("", actual);
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void TestGetTeamLeadMeetWithEmptyId()
+        {
+            ProjectController controller = new ProjectController();
+            string id = "";
+
+            string expected = "404 ID not found";
+
+            Task<object> task = controller.TeamLeadMeet(id);
+            task.Wait();
+            string actual = (string)task.Result;
+
+            Assert.IsNotNull(actual);
+            Assert.AreNotEqual("", actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public async Task TestUpdateProject()
+        {
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.UpdateProject()).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.UpdateProject();
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+
+        }
+
+        [TestMethod]
+        public async Task TestUpdateDataCollection()
+        {
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.UpdateDataCollection()).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.UpdateDataCollection();
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+
+        }
+        [TestMethod]
+        public async Task TestUpdateChampMeet()
+        {
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.UpdateChampMeet()).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.UpdateChampMeet();
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+
+        }
+        [TestMethod]
+        public async Task TestUpdateTeamLeadMeet()
+        {
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.UpdateTeamLeadMeet()).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.UpdateTeamLeadMeet();
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+
+        }
+        [TestMethod]
+        public async Task TestUpdateDraftCharter()
+        {
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.UpdateDraftCharter()).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.UpdateDraftCharter();
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+
+        }
+
+        [TestMethod]
+        public async Task TestDeleteProject()
+        {
+            string id = "5bcf1017b8e4a5764c5d7dd0";
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.DeleteProject(It.IsAny<string>())).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.DeleteProject(id);
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+        }
+
+
+        [TestMethod]
+        public async Task TestDeleteProjectWithEmptyId()
+        {
+            string id = "";
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.DeleteProject(It.IsAny<string>())).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.DeleteProject(id);
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        public async Task TestDeleteProjectWithNullId()
+        {
+            string id = null;
+            Mock<IProjectController> mock = new Mock<IProjectController>();
+            mock.Setup(x => x.DeleteProject(It.IsAny<string>())).ReturnsAsync(new MockHttpResponse());
+
+            IProjectController controller = mock.Object;
+
+            MockHttpResponse mockResponse = (MockHttpResponse)await controller.DeleteProject(id);
+
+            Assert.IsNotNull(mockResponse);
+            mock.VerifyAll();
+        }
         private string GetContents(string filePath)
         {
             using (Stream stream = new FileStream(filePath, FileMode.Open))

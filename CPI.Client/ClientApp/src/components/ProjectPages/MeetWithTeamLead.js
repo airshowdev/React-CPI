@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 
 export class MeetWithTeamLead extends Component {
 
-
-    displayName = MeetWithTeamLead.name
     static contextTypes = {
         router: PropTypes.object
     }
+
+    displayName = MeetWithTeamLead.name;
+
+    
     constructor(props, context) {
         super(props, context);
 		this.state = {
@@ -22,9 +24,7 @@ export class MeetWithTeamLead extends Component {
         this.formatDateBegin = this.formatDateBegin.bind(this);
         this.formatDateEnd = this.formatDateEnd.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-
         this.handleSipocChange = this.handleSipocChange.bind(this);
-
         this.handleSave = this.handleSave.bind(this);
     }
 
