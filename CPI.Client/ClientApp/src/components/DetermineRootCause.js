@@ -41,6 +41,7 @@ export class DetermineRootCause extends Component {
 
         this.setState({ rootCauses: tempCauses });
     }
+
     handleSubmit() {
         if (this.state.tempCauseDescription !== "") {
             alert("Please add or clear the current entry");
@@ -50,6 +51,7 @@ export class DetermineRootCause extends Component {
             Post(this.state.project, "Project", "UpdateProject");
         }
     }
+
     handleDelete(event) {
         var tempCauses = this.state.rootCauses;
         tempCauses.splice(event.target.id, 1);

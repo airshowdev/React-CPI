@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
+import { Post } from "../REST";
 
 export class DevelopCountermeasures extends Component {
 
@@ -16,6 +17,7 @@ export class DevelopCountermeasures extends Component {
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
@@ -37,7 +39,18 @@ export class DevelopCountermeasures extends Component {
     }
 
     handleDelete(event) {
+        var tempCauses = this.state.rootCauses;
+        var cause = parseInt(event.target.id);
+        var countermeasure = parseInt(event.target.name);
+        tempCauses[cause].Countermeasures.splice(countermeasure, 1);
+        this.setState({ rootCauses: tempCauses });
+    }
 
+    handleSave() {
+        var tempProj = this.state.project;
+        tempProj.RootCauses = this.state.rootCauses;
+        this.setState({ project: tempProj });
+        Post(this.state.project, "Project", "UpdateProject");
     }
 
     handleChange(event) {
@@ -74,22 +87,26 @@ export class DevelopCountermeasures extends Component {
                                                 {Cause.Countermeasures.map((Measure, j) => (
                                                         <tr>
                                                             <td>CM{j + 1}</td>
-                                                            <td><input id={i} name={j} value={Measure} onChange={this.handleChange} /></td>
+                                                <td><input id={i} name={j} value={Measure} onChange={this.handleChange} /></td>
+                                                <td><button id={i} name={j} onClick={this.handleDelete}>X</button></td>
                                                         </tr>
                                                             )
                                                         )
                                                 }
                                         <tr>
-                                                    <td>{i + 2}</td>
-                                                    <td><input id={i} placeholder="x" name="new" value={this.state.newCountermeasures[i]} onChange={this.handleChange} /></td>
+                                            <td>CM{Cause.Countermeasures.length + 1}</td>
+                                            <td><input id={i} placeholder="x" name="new" value={this.state.newCountermeasures[i]} onChange={this.handleChange} /></td>
+                                            <td><button style={{ float: "right" }} id={i} onClick={this.handleAdd}>+</button></td>
                                         </tr>
                                             </tbody>
                                     </table>
-                                <button style={{ float: "right" }} id={i} onClick={this.handleAdd}>Add</button>
+                                
                                 </div>
                             )
                         )}
                     </div>
+
+                    <button onClick={this.handleSave}>Yeet</button>
                 </div>
             );
         }

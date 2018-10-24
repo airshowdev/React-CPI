@@ -230,20 +230,9 @@ namespace CPI.Client.Models
         [JsonProperty("DateRange")]
         public DateRange DateRange { get; set; } = new DateRange();
 
-        //[JsonProperty("SIPOC")]
-        //public SIPOC SIPOC { get; set; } = new SIPOC();
-
         [JsonProperty("SipocRows")]
-        public IList<SipocRow> SipocRows { get; set; } = new List<SipocRow>();
+        public IList<SipocRow> SipocRows { get; set; } = new SipocRow[7] { new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow(), new SipocRow() };
     }
-
-    //public partial class SIPOC
-    //{
-
-    //    [JsonProperty("SipocRow1")]
-    //    public SipocRow SipocRow1 { get; set; } = 
-
-    //}
 
     public partial class DateRange
     {
