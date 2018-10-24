@@ -1,2 +1,0 @@
-mongodb://10.10.3.27:20127
-mongodb+srv://client:psuvfAZszhbSn8rk@cluster0-kxe2y.mongodb.net/test?retryWrites=true
