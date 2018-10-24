@@ -90,7 +90,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -144,7 +144,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -196,7 +196,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -253,7 +253,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -305,7 +305,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -317,7 +317,7 @@ namespace CPI.Client.Controllers
         public async Task<IEnumerable<Stub>> AllProjectsAsync()
         {
 
-            //Log4NetLogger.Info("Get all projects process started");
+            Log4NetLogger.Info("Get all projects process started");
 
             try
             {
@@ -342,12 +342,12 @@ namespace CPI.Client.Controllers
                     stubs.Add(proj.ToStub());
                 }
 
-                //Log4NetLogger.Info("Get all projects process completed succesfully");
+                Log4NetLogger.Info("Get all projects process completed succesfully");
                 return stubs;
             }
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 throw;
             }
         }
@@ -357,7 +357,7 @@ namespace CPI.Client.Controllers
         public async Task<Project> GetProjectAsync(string id)
         {
 
-            //Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
+            Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
             try
             {
 
@@ -384,13 +384,13 @@ namespace CPI.Client.Controllers
 
                 IAsyncCursor<Project> cursor = await projects.FindAsync<Project>(filter);
 
-                //Log4NetLogger.Info("Get project process completed succesfully");
+                Log4NetLogger.Info("Get project process completed succesfully");
 
                 return (await cursor.FirstAsync());
             }
             catch (Exception E)
             {
-                //Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
+                Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
                 throw;
             }
         }
@@ -398,7 +398,7 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<HttpResponse> CreateProject()
         {
-            //Log4NetLogger.Info("Create project process started");
+            Log4NetLogger.Info("Create project process started");
             try
             {
                 string json = "";
@@ -433,7 +433,7 @@ namespace CPI.Client.Controllers
                 IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
                 await projects.InsertOneAsync(newProject);
 
-                //Log4NetLogger.Info("Create project process completed succesfully");
+                Log4NetLogger.Info("Create project process completed succesfully");
 
                 Response.Body = newProject.id.ToStream();
 
@@ -441,7 +441,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -473,7 +473,7 @@ namespace CPI.Client.Controllers
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -484,7 +484,7 @@ namespace CPI.Client.Controllers
         public async Task<HttpResponse> UpdateProject()
         {
 
-            //Log4NetLogger.Info("Update project process started");
+            Log4NetLogger.Info("Update project process started");
 
             try
             {
@@ -541,14 +541,14 @@ namespace CPI.Client.Controllers
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
 
-                //Log4NetLogger.Info("Update project process completed succesfully");
+                Log4NetLogger.Info("Update project process completed succesfully");
 
                 Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
 
@@ -557,15 +557,15 @@ namespace CPI.Client.Controllers
 
         private async Task<object> GetPage(string id, string page)
         {
-            if (id == null || id == "")
+            if (String.IsNullOrEmpty(id))
             {
                 return "404 ID not found";
             }
-            else if (page == null || page == "")
+            else if (String.IsNullOrEmpty(page))
             {
                 return "404 Page not found";
             }
-            //Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
+            Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
 
             object returnObj = null;
             try
@@ -611,11 +611,11 @@ namespace CPI.Client.Controllers
             }
             catch (Exception E)
             {
-                //Log4NetLogger.Error(E);
+                Log4NetLogger.Error(E);
                 throw;
             }
 
-            //Log4NetLogger.Info("Get page process completed succesfully");
+            Log4NetLogger.Info("Get page process completed succesfully");
 
             return returnObj;
         }
@@ -645,39 +645,48 @@ namespace CPI.Client.Controllers
         {
             return await GetPage(id, "CauseAndCounters");
         }
-        private async Task<string> GetConnectionString()
+        public static async Task<string> GetConnectionString()
         {
             try
             {
-                //Log4NetLogger.Info("Get connection string process started");
-                using (Stream stream = new FileStream(".\\connectionString.txt", FileMode.Open))
+                string json = "";
+                Log4NetLogger.Info("Get connection string process started");
+                using (Stream stream = new FileStream(".\\connectionString.json", FileMode.Open))
                 using (TextReader tr = new StreamReader(stream))
                 {
 
-                    //Log4NetLogger.Info("Get connection string process completed succesfully");
-                    return await tr.ReadLineAsync();
+                    Log4NetLogger.Info("Get connection string process completed succesfully");
+                    json = await tr.ReadLineAsync();
                 }
+
+                JObject connStringObj = JsonConvert.DeserializeObject<JObject>(json);
+
+                #if DEBUG
+                    return connStringObj.GetValue("debug").ToString();
+                #else
+                    return connStringObj.GetValue("prod").ToString();
+                #endif
             }
             catch (ArgumentOutOfRangeException oorEx)
             {
-                //Log4NetLogger.Error(oorEx);
+                Log4NetLogger.Error(oorEx);
                 return null;
             }
             catch (ObjectDisposedException odEx)
             {
-                //Log4NetLogger.Error(odEx);
+                Log4NetLogger.Error(odEx);
                 return null;
             }
             catch (InvalidOperationException invalidOpEx)
             {
-                //Log4NetLogger.Error(invalidOpEx);
+                Log4NetLogger.Error(invalidOpEx);
                 return null;
             }
         }
 
-       
 
-       
+
+
     }
 
     public static class Converter
