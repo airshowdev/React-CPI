@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 
 namespace CPI.Client.Models
 {
@@ -32,89 +33,89 @@ namespace CPI.Client.Models
         public string Name { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("MajCom")]
         public string MajCom { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Base")]
         public string Base { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Creator")]
         public string Creator { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Unit")]
         public string Unit { get; set; } = "";
   
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("WingDirectorate")]
         public string WingDirectorate { get; set; } = "";
 
 
         [BsonDefaultValue(new string[0])]
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Evaluators")]
 
         public IList<string> Evaluators { get; set; } = new string[0];
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("TeamLeads")]
         public IList<string> TeamLeads { get; set; } = new string[0];
 
 
       
 
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new string[0];
   
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
  
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("DataCollection")]
         public DataCollection DataCollection { get; set; } = new DataCollection();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("Champion")]
         public Champion Champion { get; set; } = new Champion();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("TeamLeadMeeting")]
         public TeamLeadMeeting TeamLeadMeeting { get; set; } = new TeamLeadMeeting();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("DraftCharter")]
         public DraftCharter DraftCharter { get; set; } = new DraftCharter();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("RootCauses")]
-        public RootCause RootCauses { get; set; } = new RootCause();
+        public IList<RootCause> RootCauses { get; set; } = new List<RootCause>();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("DesiredEffects")]
         public DesiredEffects DesiredEffects { get; set; } = new DesiredEffects();
 
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("DateRange")]
         public DateRange Dates { get; set; } = new DateRange();
 
@@ -122,30 +123,39 @@ namespace CPI.Client.Models
         public string ProblemStatement { get; set; } = "";
     }
 
+    public partial class RootCause
+    {
+        [JsonProperty("Description")]
+        public string Description { get; set; } = "";
+
+        [JsonProperty("Countermeasures")]
+        public IList<string> Countermeasures { get; set; } = new List<string>();
+    }
+
     public partial class DesiredEffects
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Productivity")]
         public string Productivity { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("EquipAvail")]
         public string EquipAvail { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Agility")]
         public string Agility { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("SafeOps")]
         public string SafeOps { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Efficiency")]
         public string Efficiency { get; set; } = "";
     }
@@ -153,32 +163,32 @@ namespace CPI.Client.Models
     public partial class Champion
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Name")]
         public string Name { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Deficiency")]
         public string Deficiency { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Expectation")]
         public string Expectation { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Recommendation")]
         public string Recommendation { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Goal")]
         public string Goal { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Response")]
         public Response Response { get; set; } = new Response();
     }
@@ -186,7 +196,7 @@ namespace CPI.Client.Models
     public partial class Response
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Concur")]
         public string Concur { get; set; } = "";
     }
@@ -198,12 +208,12 @@ namespace CPI.Client.Models
     public partial class DraftCharter
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("TeamLeadSig")]
         public Sig TeamLeadSig { get; set; } = new Sig();
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("ChampSig")]
         public Sig ChampSig { get; set; } = new Sig();
     }
@@ -212,11 +222,11 @@ namespace CPI.Client.Models
 
     public partial class TeamLeadMeeting
     {
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("MembersIdentified")]
         public IList<string> MembersIdentified { get; set; } = new string[0];
 
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("DateRange")]
         public DateRange DateRange { get; set; } = new DateRange();
 
@@ -227,12 +237,12 @@ namespace CPI.Client.Models
     public partial class DateRange
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("begin")]
         public string Begin { get; set; } = "";
 
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("end")]
         public string End { get; set; } = "";
     }
@@ -325,24 +335,25 @@ namespace CPI.Client.Models
                 new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AssumeUniversal }
             },
         };
+
     }
 
-    public partial class RootCause
+    /*public partial class RootCause
     {
-        [BsonIgnoreIfNull]
+         
         [JsonProperty("FishboneBranch")]
         IList<FishboneBranch> FishboneBranches { get; set; } = new List<FishboneBranch>();
 
-        [BsonIgnoreIfNull]
-        [JsonProperty("RootCausesAndCounters")]
+         
+        [JsonProperty("RootCauses")]
         IDictionary<string, string> CausesAndCounters { get; set; } = new Dictionary<string, string>();
         
-    }
+    }*/
 
     public partial class FishboneBranch
     {
         
-        [BsonIgnoreIfDefault]
+         
         [JsonProperty("Nodes")]
         IList<string> Nodes { get; set; } = new string[0];
     }

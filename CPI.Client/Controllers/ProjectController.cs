@@ -20,7 +20,8 @@ using Microsoft.AspNetCore.Mvc;
 using CPI.Client.Models;
 using CPI.Client;
 using CPI.Client.Testing;
-
+using System.Runtime.Serialization.Formatters.Binary;
+using Microsoft.AspNetCore.Http;
 
 namespace CPI.Client.Controllers
 {
@@ -30,8 +31,19 @@ namespace CPI.Client.Controllers
     {
 
         MongoClient Client = null;
+
+
+        /// <summary>
+        /// Post action with data formar
+        /// {   id:"",
+        ///     DataCollection:{Elements: [
+        ///         {Goal: "", Actual:"", Name:"", Type:""}],
+        ///     Type: "",
+        ///     Standard: ""} }
+        /// </summary>
+        /// <returns>string</returns>
         [HttpPost("[action]")]
-        public async Task<string> UpdateDataCollection()
+        public async Task<HttpResponse> UpdateDataCollection()
         {
 
             string json = "";
@@ -54,6 +66,7 @@ namespace CPI.Client.Controllers
             try
             {
                 MongoClient client;
+
                 if (Client == null)
                 {
                     Client = new MongoClient(await GetConnectionString());
@@ -71,19 +84,22 @@ namespace CPI.Client.Controllers
                 UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.DataCollection, collection);
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-                return result.ToJson();
+
+                Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
             
         }
 
         [HttpPost("[action]")]
-        public async Task<string> UpdateChampMeet()
+        public async Task<HttpResponse> UpdateChampMeet()
         {
             string json = "";
 
@@ -123,17 +139,19 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                return result.ToString();
+                Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
         [HttpPost("[action]")]
-        public async Task<string> UpdateTeamLeadMeet()
+        public async Task<HttpResponse> UpdateTeamLeadMeet()
         {
             string json = "";
 
@@ -173,17 +191,19 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                return result.ToString();
+                Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
         [HttpPost("[action]")]
-        public async Task<string> UpdateDraftCharter()
+        public async Task<HttpResponse> UpdateDraftCharter()
         {
             string json = "";
 
@@ -228,17 +248,19 @@ namespace CPI.Client.Controllers
                     .Set(x => x.DesiredEffects, DesiredEffects.FromJson(jObj.GetValue("DesiredEffects").ToString()));
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                return result.ToString();
+                Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
         [HttpPost("[action]")]
-        public async Task<string> UpdateRootCauses()
+        public async Task<HttpResponse> UpdateRootCauses()
         {
             string json = "";
 
@@ -254,7 +276,7 @@ namespace CPI.Client.Controllers
 
             JObject jCauses = (JObject)jObj.GetValue("RootCauses");
 
-            RootCause rootCause = RootCause.FromJson(jCauses.ToString());
+            IList<RootCause> rootCause = Converter.ListFromJson<RootCause>(jCauses.ToJson());
 
             try
             {
@@ -278,14 +300,16 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                return result.ToString();
+                Response.Body = result.ToStream();
             }
 
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
 
 
@@ -341,11 +365,14 @@ namespace CPI.Client.Controllers
                 {
                     return null;
                 }
+
                 MongoClient client;
+
                 if (Client == null)
                 {
                     Client = new MongoClient(await GetConnectionString());
                 }
+
                 client = Client;
 
 
@@ -369,7 +396,7 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<string> CreateProject()
+        public async Task<HttpResponse> CreateProject()
         {
             //Log4NetLogger.Info("Create project process started");
             try
@@ -390,61 +417,42 @@ namespace CPI.Client.Controllers
                 string projectName = project.GetValue("Name").ToString();
 
                 //Change to is null or empty
-                if (name == "" || name == null)
+
+                Project newProject = Project.FromJson(json);
+
+                MongoClient client;
+                if (Client == null)
                 {
-                    return "Name cannot be null or empty";
+                    Client = new MongoClient(await GetConnectionString());
                 }
-                else if (assignedBase == "" || assignedBase == null)
-                {
-                    return "Base cannot be null or empty";
-                }
-                else if (unit == "" || unit == null)
-                {
-                    return "Unit cannot be null or empty";
-                }
-                else if (projectName == "" || projectName == null)
-                {
-                    return "Project Name cannot be null or empty";
-                }
-                else
-                {
-
-                    Project newProject = Project.FromJson(json);
-
-                    MongoClient client;
-                    if (Client == null)
-                    {
-                        Client = new MongoClient(await GetConnectionString());
-                    }
-                    client = Client;
+                client = Client;
 
 
-                    IMongoDatabase database = client.GetDatabase("CPI_Database");
+                IMongoDatabase database = client.GetDatabase("CPI_Database");
 
-                    IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                    await projects.InsertOneAsync(newProject);
+                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
+                await projects.InsertOneAsync(newProject);
 
-                    //Log4NetLogger.Info("Create project process completed succesfully");
+                //Log4NetLogger.Info("Create project process completed succesfully");
 
-                    return newProject.ID;
-                }
+                Response.Body = newProject.id.ToStream();
+
             }
+
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
 
         [HttpGet("[action]")]
-        public async Task<string> DeleteProject(string id)
+        public async Task<HttpResponse> DeleteProject(string id)
         {
             try
             {
-                if (id == null || id == "")
-                {
-                    return " 404 ";
-                }
                 MongoClient client;
                 if (Client == null)
                 {
@@ -460,21 +468,20 @@ namespace CPI.Client.Controllers
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
                 DeleteResult result = await projects.DeleteOneAsync(filter);
-                if (result.DeletedCount == 0)
-                {
-                    return " 404 ";
-                }
-                return result.ToString();
+                Response.Body = result.ToStream();
             }
+
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                return E.ToString();
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
 
         [HttpPost("[action]")]
-        public async Task<long> UpdateProject()
+        public async Task<HttpResponse> UpdateProject()
         {
 
             //Log4NetLogger.Info("Update project process started");
@@ -487,16 +494,11 @@ namespace CPI.Client.Controllers
                 using (StreamReader sr = new StreamReader(stream))
                 {
                     json = sr.ReadToEnd();
-                }
+                } 
 
                 JObject project = (JObject)JsonConvert.DeserializeObject(json);
 
                 string id = project.GetValue("_id").ToString();
-
-                if (id == null || id == "")
-                {
-                    return 404;
-                }
 
                 Project updateProject = Project.FromJson(json);
                 updateProject.ID = id;
@@ -541,13 +543,16 @@ namespace CPI.Client.Controllers
 
                 //Log4NetLogger.Info("Update project process completed succesfully");
 
-                return result.ModifiedCount;
+                Response.Body = result.ToStream();
             }
+
             catch (Exception E)
             {
                 //Log4NetLogger.Error(E);
-                throw;
+                Response.Body = E.ToStream();
             }
+
+            return Response;
         }
 
         private async Task<object> GetPage(string id, string page)
@@ -636,7 +641,7 @@ namespace CPI.Client.Controllers
             return await GetPage(id, "TeamLeadMeet");
         }
         [HttpGet("[action]")]
-        public async Task<object> CauseAndCounters(string id)
+        public async Task<object> CausesAndCounters(string id)
         {
             return await GetPage(id, "CauseAndCounters");
         }
@@ -671,5 +676,28 @@ namespace CPI.Client.Controllers
         }
 
        
+
+       
+    }
+
+    public static class Converter
+    {
+        public static IList<T> ListFromJson<T>(string json)
+        {
+            IList<T> list = JsonConvert.DeserializeObject<IList<T>>(json);
+
+            return list;
+        }
+
+        public static Stream ToStream(this object obj)
+        {
+            BinaryFormatter formater = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formater.Serialize(ms, obj);
+                return ms;
+            }
+
+        }
     }
 }
