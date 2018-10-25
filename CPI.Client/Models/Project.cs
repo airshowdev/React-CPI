@@ -120,15 +120,6 @@ namespace CPI.Client.Models
         public string ProblemStatement { get; set; } = "";
     }
 
-    public partial class RootCause
-    {
-        [JsonProperty("Description")]
-        public string Description { get; set; } = "";
-
-        [JsonProperty("Countermeasures")]
-        public IList<string> Countermeasures { get; set; } = new List<string>();
-    }
-
     public partial class DesiredEffects
     {
         
@@ -347,22 +338,8 @@ namespace CPI.Client.Models
 
     }
 
-    /*public partial class RootCause
-    {
-         
-        [JsonProperty("FishboneBranch")]
-        IList<FishboneBranch> FishboneBranches { get; set; } = new List<FishboneBranch>();
-
-         
-        [JsonProperty("RootCauses")]
-        IDictionary<string, string> CausesAndCounters { get; set; } = new Dictionary<string, string>();
-        
-    }*/
-
     public partial class FishboneBranch
     {
-        
-         
         [JsonProperty("Nodes")]
         IList<string> Nodes { get; set; } = new string[0];
     }
