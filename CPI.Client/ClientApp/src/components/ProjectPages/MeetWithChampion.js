@@ -69,7 +69,7 @@ export class MeetWithChampion extends Component {
     }
 
 
-    render(project) {
+    render() {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {

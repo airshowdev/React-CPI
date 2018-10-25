@@ -206,7 +206,9 @@ namespace CPI.Client.Controllers
         /// <returns>HttpResponse</returns>
 
         [HttpPost("[action]")]
+
         public async Task<Response> UpdateTeamLeadMeet()
+
         {
             string json = "";
 
@@ -582,6 +584,7 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
+
         public async Task<Response> UpdateProject()
         {
 
@@ -643,8 +646,10 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
+                Response.Body = result.ToJson().ToStream();
 
                 Log4NetLogger.Info("Update project process completed succesfully");
+
 
                 httpResponse.Status = "200";
                 httpResponse.Body = "Project update successfully completed";

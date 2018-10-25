@@ -5019,4 +5019,5 @@ input[type=search] {
 
 .flexbox {
     display: flex;
+    flex-wrap: wrap;
 }

@@ -52,10 +52,8 @@ export class DataCollectionStatus extends Component {
 				var total = 0;
 				this.state.Elements.map(x => { total += parseFloat(x.Goal); });
 				return (total / this.state.Elements.length) + "%";
-				break;
 			case "OnTime":
 				return this.state.Standard + "%";
-				break;
 		}
 	}
 
@@ -69,12 +67,10 @@ export class DataCollectionStatus extends Component {
 					totalVA += parseFloat(x.VA);
 				});
 				return this.NVAPercentage(totalNVA, totalVA);
-				break;
 			case "OnTime":
 				var unsats = 0;
 				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
 				return (unsats / this.state.Elements.length) * 100;
-				break;
 		}
 	}
 
@@ -154,7 +150,7 @@ export class DataCollectionStatus extends Component {
                                     <td>{this.TotalCalculated()}%</td>
                                 </tr>
                                 <tr>
-                                    <td>{this.state.Type == "OnTime" ? "Goal" : "Average Goal"}</td>
+                                    <td>{this.state.Type === "OnTime" ? "Goal" : "Average Goal"}</td>
                                     <td>{this.calculateAverageGoal()}</td>
                                 </tr>
                                 <tr>
