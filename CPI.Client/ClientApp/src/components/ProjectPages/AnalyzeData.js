@@ -2,7 +2,11 @@
 import '../css/uswds.css';
 import querystring from 'query-string';
 import PropTypes from 'prop-types';
-import { NavButtons } from '../NavButtons.js'
+import { NavButtons } from '../NavButtons';
+import { DataCollectionStatus } from '../DataCollectionStatus';
+import { BarChart } from './BarChart';
+import { PieChart } from './PieChart';
+import { PieChartLegend } from './PieChartLegend';
 import '../css/HallMartino.css';
 
 
@@ -19,54 +23,115 @@ export class AnalyzeData extends Component {
     displayName = AnalyzeData.name;
 
     constructor(props, context) {
-        super(props, context)
-        this.state = { project: {}, BarData: {}, loading: true };   
+        super(props, context);
+        this.state = {Elements: [], championGoal: "", Type: "", loading: true, Standard: ""};   
     }
 
     componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
+                this.setState({ loading: false, DataCollection: data.DataCollection, championGoal: data.Champion.Goal, Elements: data.DataCollection.Elements, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
             });
     }
 
-    getBarLabels() {
-        var out = [];
-        this.state.project.DataCollection.Elements.map(x => out.push(x.Name));
-    }
+    //getBarLabels() {
+    //    var out = [];
+    //    this.state.project.DataCollection.Elements.map(x => out.push(x.Name));
+    //    return out;
+    //}
 
-    getBarData(goal, heightIn, widthIn) {
-        var out = [];
-
-        switch (this.state.project.DataCollection.Type) {
+    getBarData(goal) {
+        var out = [
+            {
+                x: "Actual",
+                y: 0
+            },
+            {
+                x: 'Goal',
+                y: parseFloat(goal)
+            }
+        ];
+        var totalNVA = 0;
+        var totalVA = 0;
+        switch (this.state.Type) {
             case "NVA":
-                this.state.project.DataCollection.map(x => out.push(this.calculateNVA(x.VA, x.NVA)));
+                this.state.Elements.map(x => { totalNVA += x.NVA; totalVA += x.VA });
+                out[0].y = this.calculateTotalNVA();
                 break;
             case "OnTime":
                 break;
         }
-
         out.push({ x: "Goal", y: parseFloat(goal) });
+        
 
-        return {
-            height: parseInt(heightIn),
-            width: parseInt(widthIn),
-            data: out
-        };
+        return out;
+
+        //return {
+        //    height: parseInt(heightIn),
+        //    width: parseInt(widthIn),
+        //    data: out
+        //};
+    }
+
+    getPieData(goal) {
+        var out = [
+            {
+                angle: 0,
+                lable: "Actual",
+                color: 'rgb(18, 147, 154)'
+            },
+            {
+                angle: parseFloat(goal),
+                lable: "Goal",
+                color: 'rgb(18, 147, 0)'
+            }
+        ];
+
+        var totalNVA = 0;
+        var totalVA = 0;
+        switch (this.state.Type) {
+            case "NVA":
+                this.state.Elements.map(x => { totalNVA += x.NVA; totalVA += x.VA });
+                out[0].angle = this.calculateTotalNVA();
+                break;
+            case "OnTime":
+                break;
+        }
+        out.push({ angle: parseFloat(goal) });
+
+        return out;
+    }
+
+    getLegendData() {
+        var name = "Garcia";
+        var type = "Absolute";
+
+        var out = [
+            {
+                title: 'Actual',
+                color: 'rgb(18, 147, 154)'
+            },
+            {
+                title: 'Goal',
+                color: 'rgb(18, 147, 0)'
+            }
+        ];
+
+        return out;
     }
 
     calculateNVA(va, nva) {
         var fltVA = parseFloat(va);
         var fltNVA = parseFloat(nva);
 
-        return (fltNVA * 100) / (fltNVA + fltVA);
+        return parseFloat((fltNVA * 100) / (fltNVA + fltVA));
     }
 
-    calculateTotalNVA(elements) {
+    calculateTotalNVA() {
         var totalNVA = 0;
         var totalVA = 0;
-        this.state.project.DataCollection.Elements.map(x => {
+        this.state.Elements.map(x => {
             totalVA += parseFloat(x.VA);
             totalNVA += parseFloat(x.NVA);
         });
@@ -75,27 +140,18 @@ export class AnalyzeData extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
-                <div className="paragraph">
-                <h1> Analyze Data </h1>
-                <div className="one-half-left">
-                    <p>Total Reports: 55</p>
-                    <p>Total Late Reports: 3 </p>
-                    <p>Total On-Time: 52  </p>
+        if (this.state.loading) {
+            return (<span>Loading</span>);
+        } else {
+            return (
+                <div>
+                    <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
+                    <DataCollectionStatus {...this.state} />
+                    <BarChart data={this.getBarData(this.state.championGoal)} height={400} width={400} />
+                    <PieChart data={this.getPieData(this.state.championGoal)} height={400} width={400} radius={180} innerRadius={140} />
+                    <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
                 </div>
-                <div className="one-half-right">
-                    <p>% On Time: 95%</p>
-                    <p>Goal: 100%</p>
-                    <p>Gap: 5%</p>
-                    <p>Champion Goal: 90%</p>
-                    <p>Revised Gap: -5%</p>
-                </div>
-                <h2>RECOMMENDATION</h2>
-                    <input readOnly className="center-input" type="text" placeholder="CPI NOT RECOMMENDED" style={{ textAlign: "center", backgroundColor: "#60ea20" }} />
-                    </div>
-            </div>
-        )
+            )
+        }
     }    
 }

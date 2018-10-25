@@ -3,36 +3,43 @@
 
 export class DataCollectionStatus extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-			champGoal: this.props.championGoal, Type: this.props.Type, Elements: this.props.Elements, LabelProps: {}, Standard: this.props.Standard
-		};
+            champGoal: "", Type: this.props.Type, Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}
+        };
     }
 
-	componentDidMount() {
-		var properties = {
-		}
+    componentDidMount() {
+        this.fillHeader();
+    }
 
-		switch (this.state.Type) {
-			case "OnTime":
-				properties.Instructions = (<div> Goal: The target date of accomplishment for each task < br />
-					Actual: The date a task was actually accomplished < br />
-					Percentage on Time: The percentage of tasks completed on time < br />
-					Goal: The percentage of tasks completed on time that is deemed satisfactory</div >);
-				properties.StandardGoalLabel = "On Time Goal";
-				break;
-			case "NVA":
-				properties.Instructions = (<div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
-					VA: Value Added.These are expenses that do directly support mission accomplishment, preparedness, and effectiveness < br />
-					Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.  Lower is better < br />
-					Goal: The percentage NVA that is deemed satisfactory</div>);
-				properties.StandardGoalLabel = "NVA Goal";
-				break;
-		}
+    fillHeader() {
+        var properties = {};
 
-		this.setState({ LabelProps: properties });
+        switch (this.state.Type) {
+            case "OnTime":
+                properties.Instructions = (<div> Goal: The target date of accomplishment for each task < br />
+                    Actual: The date a task was actually accomplished < br />
+                    Percentage on Time: The percentage of tasks completed on time < br />
+                    Goal: The percentage of tasks completed on time that is deemed satisfactory</div >);
+                properties.StandardGoalLabel = "On Time Goal";
+                break;
+            case "NVA":
+                properties.Instructions = (<div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
+                    VA: Value Added.These are expenses that do directly support mission accomplishment, preparedness, and effectiveness < br />
+                    Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.  Lower is better < br />
+                    Goal: The percentage NVA that is deemed satisfactory</div>);
+                properties.StandardGoalLabel = "NVA Goal";
+                break;
+            default:
+                properties.Instructions = (<div> Error Selecting project type. Given = {this.state.Type}</div>);
+                properties.StandardGoalLabel = "Goal Placeholder";
+                break;
+        }
 
-	}
+
+        this.setState({ champGoal: this.props.championGoal, Type: this.props.Type, Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}, LabelProps: properties });
+    }
 
     NVAPercentage(nva, va) {
         var flNVA = parseFloat(nva);
@@ -74,12 +81,11 @@ export class DataCollectionStatus extends Component {
 		}
 	}
 
-	calculateUnsat() {
-	
+	calculateUnsat() {	
 		var unsats = 0;
 		switch (this.state.Type) {
-			case "NVA":
-				
+            case "NVA":
+                this.state.Elements.map((x) => (this.NVAPercentage(x.NVA, x.VA) > this.state.Standard) ? unsats++ : unsats = unsats);
 				break;
 			case "OnTime":
 				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
@@ -93,7 +99,7 @@ export class DataCollectionStatus extends Component {
     }
 
     calculateRevisedGap() {
-        return ((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal));
+        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal)) ? "0" : (this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal);
     }
 
     render() {
@@ -159,7 +165,7 @@ export class DataCollectionStatus extends Component {
                                 </tr>
                                 <tr>
                                     <td>Champion Goal</td>
-                                    <td>{this.state.champGoal}%</td>
+                                    <td>{this.state.champGoal ? this.state.champGoal + '%' : 'Unset'}</td>
                                 </tr>
                                 <tr>
                                     <td>Revised Gap</td>

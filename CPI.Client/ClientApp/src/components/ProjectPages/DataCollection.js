@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Rest, Post } from '../../REST'
 
 export class DataCollection extends Component {
 
