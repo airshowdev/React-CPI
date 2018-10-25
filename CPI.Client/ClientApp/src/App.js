@@ -49,6 +49,7 @@ import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use
 import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
 import { MeetWithTeamLead } from './components/ProjectPages/MeetWithTeamLead';
 import { DraftCharter } from './components/ProjectPages/DraftCharter';
+import { DataFetchTest } from './components/ProjectPages/DataFetchTest';
 
 export default class App extends Component {
     displayName = App.name
@@ -105,9 +106,9 @@ export default class App extends Component {
             <Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
 
 
-            {/*Test Route for chart */}
+            {/*Test Route for chart and dataFetching */}
             <Route path='/Project/Graph' component={Graph} />
-
+            <Route path='/Project/DataFetchTest' component={DataFetchTest} />
             <Route path='/Project/FinalizeCharter/:id' component={DraftCharter} />
 
         </Layout>
