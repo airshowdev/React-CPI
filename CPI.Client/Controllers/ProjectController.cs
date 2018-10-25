@@ -151,6 +151,7 @@ namespace CPI.Client.Controllers
             return Response;
         }
         [HttpPost("[action]")]
+        
         public async Task<HttpResponse> UpdateTeamLeadMeet()
         {
             string json = "";
@@ -481,6 +482,8 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
+        [ProducesResponseType(200, Type = typeof(Project))]
+        [ProducesResponseType(404)]
         public async Task<HttpResponse> UpdateProject()
         {
 
@@ -540,10 +543,11 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
+                Response.Body = result.ToJson().ToStream();
 
                 Log4NetLogger.Info("Update project process completed succesfully");
-
-                Response.Body = result.ToStream();
+                
+                
             }
 
             catch (Exception E)
@@ -551,8 +555,8 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Error(E);
                 Response.Body = E.ToStream();
             }
-
             return Response;
+
         }
 
         private async Task<object> GetPage(string id, string page)

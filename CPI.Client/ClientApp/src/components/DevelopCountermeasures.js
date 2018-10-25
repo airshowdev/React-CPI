@@ -46,7 +46,7 @@ export class DevelopCountermeasures extends Component {
         this.setState({ rootCauses: tempCauses });
     }
 
-    handleSave() {
+    async handleSave() {
         var tempProj = this.state.project;
         tempProj.RootCauses = this.state.rootCauses;
         this.setState({ project: tempProj });
@@ -80,7 +80,7 @@ export class DevelopCountermeasures extends Component {
                     </div>
                     <div className="flexbox">
                         {/*STINES PLZ FIX*/this.state.rootCauses.map((Cause, i) => (
-                                <div>
+                            <div style={{ minWidth: "300px", margin: "5vw" }}>
                                     <label>RC{i + 1}:{Cause.Description}</label>
                                     <table>
                                             <tbody>

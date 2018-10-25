@@ -7,9 +7,8 @@
     };
 }
 
-export async function Post(data, controller, action) {
-    console.log('yeet?');
-    fetch('api/' + controller + '/' + action, {
+export function Post(data, controller, action) {
+    return fetch('api/' + controller + '/' + action, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -20,8 +19,8 @@ export async function Post(data, controller, action) {
         redirect: "follow",
         referrer: "no-referrer",
         body: JSON.stringify(data)
-    })
-        .then(response => { return response.json();
-        });
+    }).then(response => 
+        response.json()
+    );
 }
 

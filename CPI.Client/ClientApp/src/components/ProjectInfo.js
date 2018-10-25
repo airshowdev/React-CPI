@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
-import { Post } from '../REST';
-import { NavButtons } from './NavButtons'
+import { NavButtons } from './NavButtons';
 
 export class ProjectInfo extends Component {
 
@@ -11,6 +10,7 @@ export class ProjectInfo extends Component {
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.Post = this.Post.bind(this);
     }
 
 	componentDidMount() {
@@ -20,9 +20,7 @@ export class ProjectInfo extends Component {
 			.then(data => {
 				if (data.TeamLeads) {
 					this.setState({ project: data, loading: false });
-				} else {
-					
-				}
+				} 
             });
     }
 
@@ -39,7 +37,6 @@ export class ProjectInfo extends Component {
 			case "Unit":
                 stateProject.Unit = event.target.value;
 				break;
-				break;
             case "Evaluators":
                 stateProject.Evaluators = event.target.value.split('\n');
                 break;
@@ -55,9 +52,22 @@ export class ProjectInfo extends Component {
         this.setState({ project: stateProject });
     }
 
+    async Post(data, controller, action) {
+        return fetch('api/' + controller + '/' + action, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response =>
+            alert(JSON.stringify(response.body.json()))
+        );
+    }
+
     handleSubmit() {
-        alert(JSON.stringify(this.state.project));
-        Post(this.state.project, "Project", "UpdateProject");
+        this.Post(this.state.project, "Project", "UpdateProject").then(data => console.log(JSON.stringify(data))).catch(error => console.log(error));
+        
     }
 
     
