@@ -21,11 +21,11 @@ namespace CPI.Client.Testing
         Task<object> CausesAndCounters(string id);
         Task<object> DraftCharter(string id);
 
-        Task<HttpResponse> UpdateProject();
-        Task<HttpResponse> UpdateDraftCharter();
-        Task<HttpResponse> UpdateTeamLeadMeet();
-        Task<HttpResponse> UpdateChampMeet();
-        Task<HttpResponse> UpdateDataCollection();
-        Task<HttpResponse> DeleteProject(string id);
+        Task<Response> UpdateProject();
+        Task<Response> UpdateDraftCharter();
+        Task<Response> UpdateTeamLeadMeet();
+        Task<Response> UpdateChampMeet();
+        Task<Response> UpdateDataCollection();
+        Task<Response> DeleteProject(string id);
     }
 }
