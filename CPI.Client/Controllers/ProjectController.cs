@@ -34,14 +34,14 @@ namespace CPI.Client.Controllers
 
 
         /// <summary>
-        /// Post action with data formar
+        /// Post action with data format
         /// {   id:"",
         ///     DataCollection:{Elements: [
         ///         {Goal: "", Actual:"", Name:"", Type:""}],
         ///     Type: "",
         ///     Standard: ""} }
         /// </summary>
-        /// <returns>string</returns>
+        /// <returns>HttpResponse</returns>
         [HttpPost("[action]")]
         public async Task<HttpResponse> UpdateDataCollection()
         {
@@ -98,6 +98,24 @@ namespace CPI.Client.Controllers
             
         }
 
+        /// <summary>
+        /// Post action with data format
+        /// {   
+        ///     id:"",
+        ///     Champion:{
+        ///         Name:"",
+        ///         Deficiency: "",
+        ///         Expectation: "",
+        ///         Recommendation: "",
+        ///         Goal: "",
+        ///         Response: {
+        ///         Concur :""
+        ///         }
+        ///     }
+        /// }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
         public async Task<HttpResponse> UpdateChampMeet()
         {
@@ -150,6 +168,31 @@ namespace CPI.Client.Controllers
 
             return Response;
         }
+
+        /// <summary>
+        /// Post action with data format
+        /// {
+        /// id:"",
+        /// TeamLeadMeet: {
+        ///     MemebersIdentified: [""]
+        ///     DateRange: {
+        ///         begin: "",
+        ///         end: ""
+        ///         }
+        ///     SipocRows:[
+        ///             {
+        ///             Supplier:"",
+        ///             Input:"",
+        ///             Process:"",
+        ///             Output: "",
+        ///             Customer:""
+        ///             }
+        ///         ]
+        ///     },
+        /// }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
         public async Task<HttpResponse> UpdateTeamLeadMeet()
         {
@@ -202,6 +245,19 @@ namespace CPI.Client.Controllers
 
             return Response;
         }
+
+
+
+        /// <summary>
+        /// Post action with data format
+        /// {   id:"",
+        ///     DataCollection:{Elements: [
+        ///         {Goal: "", Actual:"", Name:"", Type:""}],
+        ///     Type: "",
+        ///     Standard: ""} }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
         public async Task<HttpResponse> UpdateDraftCharter()
         {
@@ -259,6 +315,20 @@ namespace CPI.Client.Controllers
 
             return Response;
         }
+
+
+        /// <summary>
+        /// Post action with data format
+        /// {   id:"",
+        ///     RootCauses: [
+        ///             {
+        ///                 Description: "",
+        ///                 CounterMeasures: [""]
+        ///             }
+        ///         ]
+        ///  }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
         [HttpPost("[action]")]
         public async Task<HttpResponse> UpdateRootCauses()
         {
@@ -311,6 +381,9 @@ namespace CPI.Client.Controllers
 
             return Response;
         }
+
+
+
 
 
         [HttpGet("[action]")]
@@ -415,8 +488,6 @@ namespace CPI.Client.Controllers
                 string assignedBase = project.GetValue("Base").ToString();
                 string unit = project.GetValue("Unit").ToString();
                 string projectName = project.GetValue("Name").ToString();
-
-                //Change to is null or empty
 
                 Project newProject = Project.FromJson(json);
 
