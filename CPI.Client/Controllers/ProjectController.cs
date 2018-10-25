@@ -26,27 +26,33 @@ using Microsoft.AspNetCore.Http;
 namespace CPI.Client.Controllers
 {
 
+
+    
+
     [Route("api/[controller]")]
     public class ProjectController :  Controller , IProjectController
     {
 
         MongoClient Client = null;
+        User CurrentUser { get => Models.User.CurrentUser; }
 
 
         /// <summary>
-        /// Post action with data formar
+        /// Post action with data format
         /// {   id:"",
         ///     DataCollection:{Elements: [
         ///         {Goal: "", Actual:"", Name:"", Type:""}],
         ///     Type: "",
         ///     Standard: ""} }
         /// </summary>
-        /// <returns>string</returns>
+        /// <returns>HttpResponse</returns>
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateDataCollection()
+        public async Task<Response> UpdateDataCollection()
         {
 
             string json = "";
+
+            Response httpResponse = new Response();
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -85,22 +91,44 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Data collection update successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
-            
+            return httpResponse;
+
         }
 
+        /// <summary>
+        /// Post action with data format
+        /// {   
+        ///     id:"",
+        ///     Champion:{
+        ///         Name:"",
+        ///         Deficiency: "",
+        ///         Expectation: "",
+        ///         Recommendation: "",
+        ///         Goal: "",
+        ///         Response: {
+        ///         Concur :""
+        ///         }
+        ///     }
+        /// }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateChampMeet()
+        public async Task<Response> UpdateChampMeet()
         {
+
+           Response httpResponse = new Response();
             string json = "";
 
             JObject jObj;
@@ -139,21 +167,50 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Champion update successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
+
+        /// <summary>
+        /// Post action with data format
+        /// {
+        /// id:"",
+        /// TeamLeadMeet: {
+        ///     MemebersIdentified: [""]
+        ///     DateRange: {
+        ///         begin: "",
+        ///         end: ""
+        ///         }
+        ///     SipocRows:[
+        ///             {
+        ///             Supplier:"",
+        ///             Input:"",
+        ///             Process:"",
+        ///             Output: "",
+        ///             Customer:""
+        ///             }
+        ///         ]
+        ///     },
+        /// }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateTeamLeadMeet()
+        public async Task<Response> UpdateTeamLeadMeet()
         {
             string json = "";
+
+            Response httpResponse = new Response();
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -191,21 +248,38 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Team lead meeting successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
+
+
+
+        /// <summary>
+        /// Post action with data format
+        /// {   id:"",
+        ///     DataCollection:{Elements: [
+        ///         {Goal: "", Actual:"", Name:"", Type:""}],
+        ///     Type: "",
+        ///     Standard: ""} }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
+
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateDraftCharter()
+        public async Task<Response>UpdateDraftCharter()
         {
             string json = "";
+
+            Response httpResponse = new Response();
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -248,21 +322,38 @@ namespace CPI.Client.Controllers
                     .Set(x => x.DesiredEffects, DesiredEffects.FromJson(jObj.GetValue("DesiredEffects").ToString()));
                 UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Draft charter updated successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
+
+
+        /// <summary>
+        /// Post action with data format
+        /// {   id:"",
+        ///     RootCauses: [
+        ///             {
+        ///                 Description: "",
+        ///                 CounterMeasures: [""]
+        ///             }
+        ///         ]
+        ///  }
+        /// </summary>
+        /// <returns>HttpResponse</returns>
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateRootCauses()
+        public async Task<Response> UpdateRootCauses()
         {
             string json = "";
+            CPI.Client.Response httpResponse = new Response();
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -300,17 +391,22 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDefinition);
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Root causes update successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
+
+
+
 
 
         [HttpGet("[action]")]
@@ -396,9 +492,11 @@ namespace CPI.Client.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<HttpResponse> CreateProject()
+        public async Task<Response> CreateProject()
         {
             Log4NetLogger.Info("Create project process started");
+
+            CPI.Client.Response httpResponse = new Response();
             try
             {
                 string json = "";
@@ -415,8 +513,6 @@ namespace CPI.Client.Controllers
                 string assignedBase = project.GetValue("Base").ToString();
                 string unit = project.GetValue("Unit").ToString();
                 string projectName = project.GetValue("Name").ToString();
-
-                //Change to is null or empty
 
                 Project newProject = Project.FromJson(json);
 
@@ -435,22 +531,25 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Create project process completed succesfully");
 
-                Response.Body = newProject.id.ToStream();
-
+                httpResponse.Status = "200";
+                httpResponse.Body = "Project delete successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
 
         [HttpGet("[action]")]
-        public async Task<HttpResponse> DeleteProject(string id)
+        public async Task<Response> DeleteProject(string id)
         {
+
+            CPI.Client.Response httpResponse = new Response();
             try
             {
                 MongoClient client;
@@ -468,23 +567,27 @@ namespace CPI.Client.Controllers
                 FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
 
                 DeleteResult result = await projects.DeleteOneAsync(filter);
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Project delete successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
 
         [HttpPost("[action]")]
-        public async Task<HttpResponse> UpdateProject()
+        public async Task<Response> UpdateProject()
         {
 
             Log4NetLogger.Info("Update project process started");
+
+            CPI.Client.Response httpResponse = new Response();
 
             try
             {
@@ -543,16 +646,18 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 
-                Response.Body = result.ToStream();
+                httpResponse.Status = "200";
+                httpResponse.Body = "Project update successfully completed";
             }
 
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                httpResponse.Status = "500";
+                httpResponse.InternalException = E;
             }
 
-            return Response;
+            return httpResponse;
         }
 
         private async Task<object> GetPage(string id, string page)
@@ -696,17 +801,6 @@ namespace CPI.Client.Controllers
             IList<T> list = JsonConvert.DeserializeObject<IList<T>>(json);
 
             return list;
-        }
-
-        public static Stream ToStream(this object obj)
-        {
-            BinaryFormatter formater = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                formater.Serialize(ms, obj);
-                return ms;
-            }
-
         }
     }
 }
