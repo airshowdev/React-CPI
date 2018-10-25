@@ -272,6 +272,8 @@ namespace CPI.Client.Controllers
                 jObj = (JObject)JsonConvert.DeserializeObject(json);
             }
 
+            string projID = jObj.GetValue("_id").ToString();
+
             JObject jCauses = (JObject)jObj.GetValue("RootCauses");
 
             IList<RootCause> rootCause = Converter.ListFromJson<RootCause>(jCauses.ToJson());
@@ -295,6 +297,8 @@ namespace CPI.Client.Controllers
                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
 
                 UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
+
+                UpdateResult result = await projects.UpdateOneAsync(filter, updateDefinition);
 
                 Response.Body = result.ToStream();
             }
