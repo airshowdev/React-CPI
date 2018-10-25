@@ -646,7 +646,7 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
-                Response.Body = result.ToJson().ToStream();
+                //Response.Body = result.ToJson().ToStream();
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 

@@ -57,14 +57,14 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Authentication process completed succesfully");
 
-                Response.Body = authenticated.ToStream();
+                //Response.Body = authenticated.ToStream();
 
                 
             }
             catch (Exception E)
             {
                 Log4NetLogger.Error(E);
-                Response.Body = E.ToStream();
+                //Response.Body = E.ToStream();
             }
             return Response;
         }

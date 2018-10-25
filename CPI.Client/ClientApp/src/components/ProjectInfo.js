@@ -1,27 +1,32 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { NavButtons } from './NavButtons';
+import DataHandler from './js/DataHandler';
 
 export class ProjectInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { project: {}, loading: true };
+        this.state = { project: {}, loading: true, dataHandler: new DataHandler() };
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.Post = this.Post.bind(this);
     }
 
-	componentDidMount() {
-		console.log(this.props.match.params.id);
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				if (data.TeamLeads) {
-					this.setState({ project: data, loading: false });
-				} 
-            });
+    async componentDidMount() {
+        let newProject = {};
+        console.log(this.props.match.params.id);
+        newProject = await this.state.dataHandler.getProjectInfo(this.props.match.params.id, this)
+
+        console.log(newProject);
+   //     fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+   //         .then(response => response.json())
+			//.then(data => {
+			//	if (data.TeamLeads) {
+			//		this.setState({ project: data, loading: false });
+			//	} 
+   //         });
     }
 
 
