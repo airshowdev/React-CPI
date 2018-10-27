@@ -20,14 +20,20 @@ export class DataCollectionStatus extends Component {
             case "OnTime":
                 properties.Instructions = (<div> Goal: The target date of accomplishment for each task < br />
                     Actual: The date a task was actually accomplished < br />
+                    <br/>
                     Percentage on Time: The percentage of tasks completed on time < br />
+                    <br />
+
                     Goal: The percentage of tasks completed on time that is deemed satisfactory</div >);
                 properties.StandardGoalLabel = "On Time Goal";
                 break;
             case "NVA":
                 properties.Instructions = (<div>NVA: Non - Value - Added.These are expenses that do not directly mission accomplishment, preparedness, and effectiveness < br />
+                    <br/>
                     VA: Value Added.These are expenses that do directly support mission accomplishment, preparedness, and effectiveness < br />
+                    <br/>
                     Percentage NVA: The percentage of total cost(NVA + VA) that NVA expenses takes up.  Lower is better < br />
+                    <br/>
                     Goal: The percentage NVA that is deemed satisfactory</div>);
                 properties.StandardGoalLabel = "NVA Goal";
                 break;
@@ -38,7 +44,7 @@ export class DataCollectionStatus extends Component {
         }
 
 
-        this.setState({ champGoal: this.props.championGoal, Type: this.props.Type, Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}, LabelProps: properties });
+        this.setState({ Standard: this.calculateAverageGoal(), LabelProps: properties });
     }
 
     NVAPercentage(nva, va) {
@@ -46,19 +52,22 @@ export class DataCollectionStatus extends Component {
 		var flVA = parseFloat(va);
 
         let total = flNVA + flVA;
-        return Math.round((flNVA * 100) / total);
+
+        let out = flNVA * 100 / (flNVA + flVA);
+
+        return Math.round(out);
     }
 
     NVAGoal(goal, nva, va) {
-        return goal > this.NVAPercentage(nva, va);
+        return parseFloat(goal) > this.NVAPercentage(nva, va);
     }
 
 	calculateAverageGoal() {
 		switch (this.state.Type) {
 			case "NVA":
 				var total = 0;
-				this.state.Elements.map(x => { total += parseFloat(x.Goal); });
-				return (total / this.state.Elements.length) + "%";
+                this.state.Elements.map(x => { total += parseFloat(x.Goal); });
+                return Math.round(total / this.state.Elements.length) + "%";
 			case "OnTime":
 				return this.state.Standard + "%";
 		}
@@ -85,7 +94,7 @@ export class DataCollectionStatus extends Component {
 		var unsats = 0;
 		switch (this.state.Type) {
             case "NVA":
-                this.state.Elements.map((x) => (this.NVAPercentage(x.NVA, x.VA) > this.state.Standard) ? unsats++ : unsats = unsats);
+                this.state.Elements.map((x) => !this.NVAGoal(this.state.Standard, x.NVA, x.VA) ? unsats = unsats : unsats++);
 				break;
 			case "OnTime":
 				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
@@ -95,11 +104,11 @@ export class DataCollectionStatus extends Component {
     }
 
     calculateGap() {
-        return ((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.calculateAverageGoal()));
+        return Math.round(((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.calculateAverageGoal())));
     }
 
     calculateRevisedGap() {
-        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal)) ? "0" : (this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal);
+        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal)) ? "0" : Math.round((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal));
     }
 
     render() {
