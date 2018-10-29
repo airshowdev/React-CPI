@@ -18,7 +18,7 @@ export class SeeCountermeasuresThrough extends Component {
     componentDidMount() {
             fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
                 .then(response => response.json())
-                .then(data => this.setState({project: data, loading: false }));
+				.then(data => this.setState({ project: data, loading: false, counterMeasures: data.RootCauses}));
     }
 
     render() {
