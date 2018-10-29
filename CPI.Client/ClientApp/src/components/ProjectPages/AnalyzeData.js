@@ -44,10 +44,8 @@ export class AnalyzeData extends Component {
 
     getBarData(goal) {
         var out = [
-            {
-                x: "Actual",
-                y: 0
-            },
+            {  x: "Actual",
+                y: 0 },
             {
                 x: 'Goal',
                 y: parseFloat(goal)
