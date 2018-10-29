@@ -642,11 +642,12 @@ namespace CPI.Client.Controllers
                     .Set(x => x.RootCauses, updateProject.RootCauses)
                     .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
                     .Set(x => x.Dates, updateProject.Dates)
-                    .Set(x => x.Name, updateProject.Name);
+                    .Set(x => x.Name, updateProject.Name)
+                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap);
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
-                Response.Body = result.ToJson().ToStream();
+                //Response.Body = result.ToJson().ToStream();
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 

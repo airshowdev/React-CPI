@@ -13,9 +13,6 @@ export const colorGenerator = [
 ];
 
 export class PieChart extends Component {
-
-    
-
     render(props) {
 
         return (

@@ -7,9 +7,7 @@ import { SideNav } from './SideNav';
 
 export class Layout extends Component {
     displayName = Layout.name
-    constructor() {
-        super();
-    }
+
   render() {
       return (
         <Grid>

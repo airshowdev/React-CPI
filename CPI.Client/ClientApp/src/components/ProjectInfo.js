@@ -60,8 +60,8 @@ export class ProjectInfo extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }).then(response =>
-            alert(JSON.stringify(response.body.json()))
+        }).then(Response =>
+            alert(JSON.stringify(Response.body.json()))
         );
     }
 
@@ -82,7 +82,7 @@ export class ProjectInfo extends Component {
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
-                            <input id="ID" name="ID" type="text" value={this.state.project._id} />
+                            <input id="ID" name="ID" type="text" defaultValue={this.state.project._id} />
                             <label htmlFor="Name">Name</label>
                             <input id="Name" name="Name" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Name} />
                             <label htmlFor="Base">Base</label>
