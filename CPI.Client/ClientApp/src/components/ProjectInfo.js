@@ -1,27 +1,32 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { NavButtons } from './NavButtons';
+import DataHandler from './js/DataHandler';
 
 export class ProjectInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { project: {}, loading: true };
+        this.state = { project: {}, loading: true, dataHandler: new DataHandler() };
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.Post = this.Post.bind(this);
     }
 
-	componentDidMount() {
-		console.log(this.props.match.params.id);
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				if (data.TeamLeads) {
-					this.setState({ project: data, loading: false });
-				} 
-            });
+    async componentDidMount() {
+        let newProject = {};
+        console.log(this.props.match.params.id);
+        newProject = await this.state.dataHandler.getProjectInfo(this.props.match.params.id, this)
+
+        console.log(newProject);
+   //     fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+   //         .then(response => response.json())
+			//.then(data => {
+			//	if (data.TeamLeads) {
+			//		this.setState({ project: data, loading: false });
+			//	} 
+   //         });
     }
 
 
@@ -60,8 +65,8 @@ export class ProjectInfo extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }).then(response =>
-            alert(JSON.stringify(response.body.json()))
+        }).then(Response =>
+            alert(JSON.stringify(Response.body.json()))
         );
     }
 
@@ -82,7 +87,7 @@ export class ProjectInfo extends Component {
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
-                            <input id="ID" name="ID" type="text" value={this.state.project._id} />
+                            <input id="ID" name="ID" type="text" defaultValue={this.state.project._id} />
                             <label htmlFor="Name">Name</label>
                             <input id="Name" name="Name" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Name} />
                             <label htmlFor="Base">Base</label>

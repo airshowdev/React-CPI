@@ -19,23 +19,29 @@ export class DevelopCountermeasures extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-
     componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: [] });
+                let tempNewCountermeasures = [];
+                data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" }));
+                this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: tempNewCountermeasures });
             });
+
     }
 
     handleAdd(event) {
         var tempRootCauses = this.state.rootCauses;
+
         var tempNewCountermeasures = this.state.newCountermeasures;
+
         var indexToUpdate = parseInt(event.target.id);
 
-        tempRootCauses[indexToUpdate].Countermeasures.push(this.state.newCountermeasures[indexToUpdate]);
-        tempNewCountermeasures[indexToUpdate] = "";
+        tempRootCauses[indexToUpdate].Countermeasures.push(tempNewCountermeasures[indexToUpdate]);
+        tempNewCountermeasures[indexToUpdate] = { Description: "" };
         this.setState({ rootCauses: tempRootCauses, newCountermeasures: tempNewCountermeasures });
+
+        
     }
 
     handleDelete(event) {
@@ -52,18 +58,27 @@ export class DevelopCountermeasures extends Component {
         this.setState({ project: tempProj });
         Post(this.state.project, "Project", "UpdateProject");
     }
+     //if (this.state.newCountermeasures.length !== this.state.rootCauses.length) {
+        //    var tempCountermeasures = [];
+        //    for (var i = 0; i < this.state.rootCauses.length; i++) {
+        //        tempCountermeasures.push({ Description: "" });
+        //    }
+        //    this.setState({ newCountermeasures: tempCountermeasures });
+        //}
 
     handleChange(event) {
+       
         var tempCauses = this.state.rootCauses;
+
         var tempNewCountermeasures = this.state.newCountermeasures;
+
         var changedID = parseInt(event.target.id);
 
         if (event.target.name === "new") {
-            tempNewCountermeasures[changedID] = event.target.value;
-            this.setState({ newCountermeasures: tempNewCountermeasures }); 
+            tempNewCountermeasures[changedID] = { Description: event.target.value };
+            this.setState({ newCountermeasures: tempNewCountermeasures });
         } else {
-            tempCauses[parseInt(event.target.id)].Countermeasures[parseInt(event.target.name)] = event.target.value;
-
+            tempCauses[parseInt(event.target.id)].Countermeasures[parseInt(event.target.name)].Description = event.target.value;
             this.setState({ rootCauses: tempCauses });
         }
     }
@@ -79,15 +94,15 @@ export class DevelopCountermeasures extends Component {
                         <h3 style={{ marginTop: "10px" }}>Develop countermeaures for each root cause using an appropriate CPI principle</h3>
                     </div>
                     <div className="flexbox">
-                        {/*STINES PLZ FIX*/this.state.rootCauses.map((Cause, i) => (
+                        {this.state.rootCauses.map((Cause, i) => (
                             <div style={{ minWidth: "300px", margin: "5vw" }}>
                                     <label>RC{i + 1}:{Cause.Description}</label>
                                     <table>
                                             <tbody>
                                                 {Cause.Countermeasures.map((Measure, j) => (
                                                         <tr>
-                                                            <td>CM{j + 1}</td>
-                                                <td><input id={i} name={j} value={Measure} onChange={this.handleChange} /></td>
+                                                <td>CM{j + 1}</td>
+                                                <td><input id={i} name={j} value={Measure.Description} onChange={this.handleChange} /></td>
                                                 <td><button id={i} name={j} onClick={this.handleDelete}>X</button></td>
                                                         </tr>
                                                             )
@@ -95,7 +110,7 @@ export class DevelopCountermeasures extends Component {
                                                 }
                                         <tr>
                                             <td>CM{Cause.Countermeasures.length + 1}</td>
-                                            <td><input id={i} placeholder="x" name="new" value={this.state.newCountermeasures[i]} onChange={this.handleChange} /></td>
+                                            <td><input id={i} placeholder="x" name="new" value={this.state.newCountermeasures[i] ? this.state.newCountermeasures[i].Description : ""} onChange={this.handleChange} /></td>
                                             <td><button style={{ float: "right" }} id={i} onClick={this.handleAdd}>+</button></td>
                                         </tr>
                                             </tbody>
