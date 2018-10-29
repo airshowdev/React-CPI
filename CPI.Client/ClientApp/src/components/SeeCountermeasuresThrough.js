@@ -1,14 +1,24 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+import PropTypes from 'prop-types';
 
 export class SeeCountermeasuresThrough extends Component {
 
-    displayName = SeeCountermeasuresThrough.name
+    displayName = SeeCountermeasuresThrough.name;
 
+    static contextTypes = {
+        router: PropTypes.object
+    }
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true };
+        this.state = { project: {}, loading: true, rootCauses: [] };
+    }
+
+    componentDidMount() {
+            fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
+                .then(response => response.json())
+                .then(data => this.setState({project: data, loading: false }));
     }
 
     render() {

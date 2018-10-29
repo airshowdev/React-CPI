@@ -12,7 +12,7 @@ export class OnTimeDataCollection extends Component {
         super(props);
 
         this.state = {
-			Elements: [], championGoal: "", Standard: "", Type: "", newElementActual: "", newElementGoal: "", loading: true
+			Elements: [], championGoal: "", Standard: "", Type: "OnTime", newElementActual: "", newElementGoal: "", loading: true
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -25,6 +25,7 @@ export class OnTimeDataCollection extends Component {
         this.handleActualChange = this.handleActualChange.bind(this);
         this.formatDateActual = this.formatDateActual.bind(this);
         this.formatDateGoal = this.formatDateGoal.bind(this);
+        this.handleStandardChange = this.handleStandardChange.bind(this);
     }
 
     componentDidMount() {
@@ -67,11 +68,14 @@ export class OnTimeDataCollection extends Component {
     handleSave() {
         var type = "OnTime";
         var elements = this.state.Elements;
+        var standard = this.state.Standard;
         var postData = {
 			_id: this.props.match.params.id,
 			DataCollection: {
 				Type: type,
-				Elements: elements
+                Elements: elements,
+                Standard: standard
+  
 			}
         };
         alert(JSON.stringify(postData));
@@ -79,6 +83,14 @@ export class OnTimeDataCollection extends Component {
         Post(postData, "Project", "UpdateDataCollection");
     }
 
+    handleStandardChange(event) {
+        var value = 0;
+        if (!isNaN(parseInt(event.target.value))) {
+            value = parseInt(event.target.value);
+        }
+        this.setState({ Standard: value });
+    }
+    
     metGoal(goal, actual) {
 		return Date.parse(goal) >= Date.parse(actual);
     }
@@ -121,8 +133,9 @@ export class OnTimeDataCollection extends Component {
             return (
                 <div className="usa-grid">
                     <NavButtons previous="ProjectOverview" title="On-Time Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
-                    <DataCollectionStatus {...this.state}  />
                     <label>*All dates should be formatted as DD-MM-YYYY</label>
+
+                    <label htmlFor="standardValue" >Standard</label><input style={{ maxWidth: '100px' }} type="text" id="standardValue" value={this.state.Standard} onChange={this.handleStandardChange} />
                     <table>
                         <thead>
                             <tr>

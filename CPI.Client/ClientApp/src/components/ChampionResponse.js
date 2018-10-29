@@ -17,7 +17,7 @@ export class ChampionResponse extends Component {
     {
         var keynum = this.state.key;
 
-        if (keynum == "Backspace") {
+        if (keynum === "Backspace") {
 
             var length = this.state.successPercent.length;
 

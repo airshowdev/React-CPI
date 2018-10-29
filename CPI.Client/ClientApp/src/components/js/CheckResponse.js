@@ -1,8 +1,9 @@
-﻿
-export default CheckGetResponse = (response) => {
-    if (response.Status == 200) {
-        return response.Data
-    } else {
-        return;
+﻿export default CheckGetResponse = (response) => {
+
+    switch (response.Status) {
+        case "200":
+            return response.Data;
+        default:
+            this.context.router.history.push('/404');
     }
 }

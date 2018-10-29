@@ -9,7 +9,7 @@ export class NVADataCollection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Elements: [], championGoal: "", Type: "" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
+            Elements: [], championGoal: "", Type: "NVA" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
         };
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNVAChange = this.handleNVAChange.bind(this);
@@ -26,7 +26,7 @@ export class NVADataCollection extends Component {
 		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
 			.then(response => response.json())
             .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type });
+                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal});
             });
     }
     
@@ -126,8 +126,7 @@ export class NVADataCollection extends Component {
         } else {
             return (
                 <div className="usa-grid">
-					<NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
-					<DataCollectionStatus {...this.state} Type="NVA" />
+                    <NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
 					<table>
                     <thead>
                         <tr>
