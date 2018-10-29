@@ -77,8 +77,9 @@ namespace CPI.Client.Models
          
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
- 
-        
+
+        [JsonProperty("IdentifyPerformanceGap")]
+        public string IdentifyPerformanceGap { get; set; } = "";
          
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
@@ -148,6 +149,21 @@ namespace CPI.Client.Models
         public string Efficiency { get; set; } = "";
     }
 
+    public partial class Countermeasure
+    {
+        [JsonProperty("Description")]
+        public string Description { get; set; } = "";
+
+        [JsonProperty("ActionOfficer")]
+        public string ActionOfficer { get; set; } = "";
+
+        [JsonProperty("Date")]
+        public string Date { get; set; } = "";
+
+        [JsonProperty("Status")]
+        public string Status { get; set; } = "";
+    }
+
     public partial class Champion
     {
         
@@ -189,7 +205,7 @@ namespace CPI.Client.Models
 
         [BsonIgnoreIfNull]
         [JsonProperty("Countermeasures")]
-        public IList<string> Countermeasures { get; set; } = new List<string>();
+        public IList<Countermeasure> Countermeasures { get; set; } = new List<Countermeasure>();
         
     }
 

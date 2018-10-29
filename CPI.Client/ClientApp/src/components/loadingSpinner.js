@@ -1,12 +1,12 @@
-﻿import react from 'react';
-import blocKspinner from './img/loading';
+﻿import React from 'react';
 
 export class Spinner extends React.Component {
 
     render() {
-        <div>
-            <img src={blockSpinner} alt="loading..."/>
-        </div>
+        return (
+            <div>
+            </div>
+        );
     }
 
 }

@@ -8,6 +8,7 @@ import { BarChart } from './BarChart';
 import { PieChart } from './PieChart';
 import { PieChartLegend } from './PieChartLegend';
 import '../css/HallMartino.css';
+import { loadingSpinner } from '../loadingSpinner';
 
 
 /*
@@ -141,7 +142,7 @@ export class AnalyzeData extends Component {
 
     render() {
         if (this.state.loading) {
-            return (<span>Loading</span>);
+            return <loadingSpinner/>;
         } else {
             return (
                 <div>
