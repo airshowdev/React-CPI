@@ -49,10 +49,17 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<Response> UpdateDataCollection()
         {
+            Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             string json = "";
 
-            Response httpResponse = new Response();
+            
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -129,6 +136,13 @@ namespace CPI.Client.Controllers
         {
 
            Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             string json = "";
 
             JObject jObj;
@@ -214,6 +228,12 @@ namespace CPI.Client.Controllers
 
             Response httpResponse = new Response();
 
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
             {
@@ -282,6 +302,12 @@ namespace CPI.Client.Controllers
             string json = "";
 
             Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -356,6 +382,12 @@ namespace CPI.Client.Controllers
         {
             string json = "";
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -499,6 +531,13 @@ namespace CPI.Client.Controllers
             Log4NetLogger.Info("Create project process started");
 
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             try
             {
                 string json = "";
@@ -552,6 +591,12 @@ namespace CPI.Client.Controllers
         {
 
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
             try
             {
                 MongoClient client;
@@ -646,8 +691,6 @@ namespace CPI.Client.Controllers
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
-                Response.Body = result.ToJson().ToStream();
-
                 Log4NetLogger.Info("Update project process completed succesfully");
 
 
@@ -683,7 +726,7 @@ namespace CPI.Client.Controllers
                 Project project = await GetProjectAsync(id);
 
 
-                switch (page.ToUpper())
+                switch (page.ToUpper().Replace(" ", ""))
                 {
                     case "DATACOLLECTION":
                         returnObj =  project.DataCollection;
@@ -713,6 +756,13 @@ namespace CPI.Client.Controllers
                         break;
                     case "CAUSEANDCOUNTERS":
                         returnObj = project.RootCauses;
+                        break;
+                    case "ANALYZEDATA":
+                        returnObj = new
+                        {
+                            project.Champion,
+                            project.DataCollection
+                        };
                         break;
                     default:
                         returnObj = null;
