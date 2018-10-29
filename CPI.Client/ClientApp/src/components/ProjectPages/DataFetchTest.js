@@ -12,16 +12,13 @@ export class DataFetchTest extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, BarData: {}, loading: true };
-        this.DataHandler = new DataHandler();
-
+        this.state = { project: {}, BarData: {}, loading: true, dataHandler: new DataHandler() };
     }
 
-    componentDidMount() {
-        var newData = {};
-        var id = '5bd1e0668828cf6d388d80f8';
-        newData = this.DataHandler.getDataCollection(id);
-
+    async componentDidMount() {
+        let newData = {};
+        let id = '5bd1e0668828cf6d388d80f8';
+        newData = await this.state.dataHandler.getDataCollection(id);
         console.log(newData);
     }
 
