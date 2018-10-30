@@ -74,7 +74,7 @@ export class SeeCountermeasuresThrough extends Component {
 									x.Countermeasures.length > 0 ?
 										x.Countermeasures.map((y, j) => (
 											<tr>
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" name="Task" id={i.toString() + "_" + j.toString()} value={this.state.RootCauses[i].Countermeasures[j].Description} /></td>
+												<td style={{ padding: "0px" }}><label name="Task" id={i.toString() + "_" + j.toString()} > va{this.state.RootCauses[i].Countermeasures[j].Description}</label></td>
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" name="ActionOfficer" id={i.toString() + "_" + j.toString()} value={this.state.RootCauses[i].Countermeasures[j].ActionOfficer} onChange={this.handleChange} /></td>
 												<td style={{ padding: '0px' }}><input type="text" placeholder="x" name="Date" id={i.toString() + "_" + j.toString()} value={this.state.RootCauses[i].Countermeasures[j].Date} onChange={this.handleChange} /></td>
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" name="Status" id={i.toString() + "_" + j.toString()} value={this.state.RootCauses[i].Countermeasures[j].Status} onChange={this.handleChange} /></td>
