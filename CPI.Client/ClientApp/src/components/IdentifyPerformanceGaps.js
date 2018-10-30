@@ -23,7 +23,8 @@ export class IdentifyPerformanceGaps extends Component {
 
     handleSave() {
         var tempProject = this.state.project;
-        tempProject.IdentifyPerformanceGap = this.state.PerformanceGap;
+		tempProject.IdentifyPerformanceGap = this.state.PerformanceGap;
+		
         Post(tempProject, "Project", "UpdateProject");
         this.setState({ project: tempProject });
     }

@@ -5,6 +5,7 @@ import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Col, Grid, Row } from 'react-bootstrap';
 
 export class ProjectOverview extends Component {
 
@@ -26,9 +27,12 @@ export class ProjectOverview extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
+		return (
+			<Grid>
+				<Col style={{ paddingBottom: 15 }}>
+					<NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
+				</Col>
+				<Col>
             <table style={{width: '85%'}}>
                 <thead>
                     <th>Pre-Event Planning</th>
@@ -79,8 +83,9 @@ export class ProjectOverview extends Component {
                         <LinkContainer to={"/Project/StandardizeSuccessfulProcess/" + this.props.match.params.id}><p>Standardize Successful Process</p></LinkContainer>
                     </td>
                 </tbody>
-                </table>
-            </div>
+					</table>
+				</Col>
+			</Grid>
         );
     }
 }
