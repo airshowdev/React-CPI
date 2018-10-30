@@ -24,6 +24,10 @@ namespace CPI.Client.Models
         [JsonProperty("PasswordHash")]
         public string PasswordHash { get; set; } = "";
 
+        [JsonIgnore]
+        [BsonIgnore]
+        public bool IsAuthenticated { get; set; } = true;
+
         [JsonProperty("Permissions")]
         public IList<string> Permissions { get; set; } = new string[0];
         [JsonIgnore]
@@ -40,7 +44,7 @@ namespace CPI.Client.Models
 
         [JsonIgnore]
         [BsonIgnore]
-        public static User CurrentUser { get; set; }
+        public static User CurrentUser { get; set; } = new User();
 
         private string GetAuthToken()
         {
