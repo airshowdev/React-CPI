@@ -5,6 +5,10 @@
         return project.json();
     }
 
+    async getFullProject(id, component) {
+        let project = (await this.getProject(id)).DataCollection;
+        component.setState({project: project, loading: false})
+    }
     async getDataCollection(id) {
         return (await this.getProject(id)).DataCollection;
     }

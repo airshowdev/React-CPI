@@ -484,7 +484,8 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Get project process completed succesfully");
 
-                return (await cursor.FirstAsync());
+                return await cursor.FirstAsync();
+                
             }
             catch (Exception E)
             {

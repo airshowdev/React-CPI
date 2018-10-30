@@ -14,19 +14,18 @@ export class ProjectInfo extends Component {
         this.Post = this.Post.bind(this);
     }
 
-    async componentDidMount() {
-        let newProject = {};
-        console.log(this.props.match.params.id);
-        newProject = await this.state.dataHandler.getProjectInfo(this.props.match.params.id, this)
+    componentDidMount() {
+        //let newProject = {};
+        //console.log(this.props.match.params.id);
+        //newProject = await this.state.dataHandler.getProjectInfo(this.props.match.params.id, this)
 
-        console.log(newProject);
-   //     fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-   //         .then(response => response.json())
-			//.then(data => {
-			//	if (data.TeamLeads) {
-			//		this.setState({ project: data, loading: false });
-			//	} 
-   //         });
+        //console.log(newProject);
+        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
+            .then(response => response.json())
+			.then(data =>  {
+					this.setState({ project: data, loading: false });
+				} 
+            );
     }
 
 
@@ -83,7 +82,7 @@ export class ProjectInfo extends Component {
 			return (
 				<div>
 					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
-                <form id="projectInfo" onSubmit={this.handleSubmit} >
+                <div id="projectInfo" >
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
@@ -109,10 +108,10 @@ export class ProjectInfo extends Component {
                             <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.TeamLeads.join("\n")} />
 								<label htmlFor="Mentor">Mentor</label>
 								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} /> */}
-                            <button id="Submit">Save Changes</button>
+                                <button id="Submit" onClick={this.handleSubmit}>Save Changes</button>
                         </div>
-                    </div>
-						</form>
+                        </div>
+						</div>
 				</div>
             );
         }

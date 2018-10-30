@@ -7,7 +7,7 @@
     };
 }
 
-export function Post(data, controller, action) {
+export async function Post(data, controller, action) {
     return fetch('api/' + controller + '/' + action, {
         method: "POST",
         mode: "cors",
@@ -19,8 +19,9 @@ export function Post(data, controller, action) {
         redirect: "follow",
         referrer: "no-referrer",
         body: JSON.stringify(data)
-    }).then(response => 
-        response.json()
+    }).then(response => {
+        return response.json();
+    }
     );
 }
 

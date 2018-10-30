@@ -1,10 +1,15 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { Post } from '../REST';
+import PropTypes from 'prop-types';
 
      
 export class CreateProject extends Component {
     displayName = CreateProject.name
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     constructor(props) {
         super(props);
@@ -14,7 +19,7 @@ export class CreateProject extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit() {
+    async  handleSubmit() {
 
         var data = {
             Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
@@ -23,15 +28,25 @@ export class CreateProject extends Component {
             Unit: this.state.unit
         };
 
-		var response = Post(data, 'Project', 'CreateProject');
-		this.context.router.history.push("/Project/ProjectInfo" + response.Body);
+
+        this.setState({ loading: true }); 
+
+        let httpResponse = await Post(data, 'Project', 'CreateProject');
+
+
+        if (httpResponse.status == 200) {
+        this.context.router.history.push("/Project/ProjectInfo/" + httpResponse.body);
+        } else {
+            alert(JSON.stringify(httpResponse.InternalException));
+        }
     }
 
-	render() {
-		if (this.state.loading) {
-			return <span> loading... </span>
-		} else {
-			return (
+    render() {
+        return (
+            <fieldset>
+					<h2 style={{marginLeft: "0"}}>Create Project</h2>
+                    <label htmlFor="ProjectName">Project Name</label>
+                    <input id="ProjectName" type="text" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name}required aria-required="true"/>
 
 				<form className="usa-form" onSubmit={this.handleSubmit}>
 					<fieldset>
@@ -48,14 +63,12 @@ export class CreateProject extends Component {
 						<label htmlFor="options">Select Base</label>
 						<input id="Base" onChange={(event) => this.setState({ base: event.target.value })} required aria-required="true" />
 
-						<label htmlFor="Unit">Unit</label>
-						<input id="Unit" ref="Unit" type="text" onChange={(event) => this.setState({ unit: event.target.value })} required aria-required="true" />
+                    <input type="submit" className="usa-button" value="Create Project" onClick={this.handleSubmit} />
 
-						<input type="submit" className="usa-button" value="Create Project" />
-					</fieldset>
-				</form>
-			);
-		}
-    }
-    
+            </fieldset>
+
+       
+        );
+    }   
+
 }
