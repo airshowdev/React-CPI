@@ -43,11 +43,6 @@ export class CreateProject extends Component {
 
     render() {
         return (
-            <fieldset>
-					<h2 style={{marginLeft: "0"}}>Create Project</h2>
-                    <label htmlFor="ProjectName">Project Name</label>
-                    <input id="ProjectName" type="text" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name}required aria-required="true"/>
-
 				<form className="usa-form" onSubmit={this.handleSubmit}>
 					<fieldset>
 						<h2 style={{ marginLeft: "0" }}>Create Project</h2>
@@ -65,7 +60,8 @@ export class CreateProject extends Component {
 
                     <input type="submit" className="usa-button" value="Create Project" onClick={this.handleSubmit} />
 
-            </fieldset>
+                    </fieldset>
+                </form>
 
        
         );

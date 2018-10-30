@@ -84,12 +84,6 @@ namespace CPI.Client.Models
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
 
-
-        [JsonProperty("IdentifyPerformanceGap")]
-        public string IdentifyPerformanceGap { get; set; } = "";
-
-		[JsonProperty("ImprovementTarget")]
-		public string ImprovementTarget { get; set; } = "";
          
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
