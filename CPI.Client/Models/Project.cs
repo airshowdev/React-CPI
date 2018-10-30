@@ -80,6 +80,9 @@ namespace CPI.Client.Models
 
         [JsonProperty("IdentifyPerformanceGap")]
         public string IdentifyPerformanceGap { get; set; } = "";
+
+		[JsonProperty("ImprovementTarget")]
+		public string ImprovementTarget { get; set; } = "";
          
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
@@ -211,8 +214,6 @@ namespace CPI.Client.Models
 
     public partial class Response
     {
-        
-         
         [JsonProperty("Concur")]
         public string Concur { get; set; } = "";
     }

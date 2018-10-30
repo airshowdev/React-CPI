@@ -517,6 +517,7 @@ namespace CPI.Client.Controllers
                 string projectName = project.GetValue("Name").ToString();
 
                 Project newProject = Project.FromJson(json);
+				newProject.id = new ObjectId();
 
                 MongoClient client;
                 if (Client == null)
@@ -529,12 +530,12 @@ namespace CPI.Client.Controllers
                 IMongoDatabase database = client.GetDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                await projects.InsertOneAsync(newProject);
+                   await projects.InsertOneAsync(newProject);
 
                 Log4NetLogger.Info("Create project process completed succesfully");
 
                 httpResponse.Status = "200";
-                httpResponse.Body = "Project delete successfully completed";
+                httpResponse.Body = newProject.id.ToString();
             }
 
             catch (Exception E)
