@@ -21,6 +21,12 @@ namespace CPI.Client.Models
             };
         }
 
+        [JsonProperty("IdentifyPerformanceGap")]
+        public string IdentifyPerformanceGap { get; set; } = "";
+
+        [JsonProperty("ImprovementTarget")]
+        public string ImprovementTarget { get; set; } = "";
+
         [BsonIgnore]
         [JsonProperty("_id")]
         public string ID { get { return id.ToString(); } set { id = new ObjectId(value); } }
@@ -77,9 +83,6 @@ namespace CPI.Client.Models
          
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
-
-        [JsonProperty("IdentifyPerformanceGap")]
-        public string IdentifyPerformanceGap { get; set; } = "";
          
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
@@ -119,6 +122,7 @@ namespace CPI.Client.Models
 
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
+        
     }
 
     public partial class DesiredEffects
@@ -164,6 +168,7 @@ namespace CPI.Client.Models
         public string Status { get; set; } = "";
     }
 
+    
     public partial class Champion
     {
         

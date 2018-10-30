@@ -98,8 +98,8 @@ export default class App extends Component {
 			<Route path='/Project/DetermineRootCause/:id' component={DetermineRootCause} />
 			<Route path='/Project/IdentifyPerformanceGaps/:id' component={IdentifyPerformanceGaps} />
 			<Route path='/Project/SetImprovementTargets/:id' component={SetImprovementTargets} />
-            <Route path='/Project/MeetingChampionPpt/:id' component={MeetingChampionPpt} /> 
-            <Route path='/Project/MeetWithTeamLeadPpt/:id' component={MeetWithTeamLeadPpt} /> 
+            <Route path='/Project/MeetingChampionPpt' component={MeetingChampionPpt} /> 
+            <Route path='/Project/MeetWithTeamLeadPpt' component={MeetWithTeamLeadPpt} /> 
 			<Route path='/Project/EventCharter/:id' component={EventCharter} />
 			<Route path='/Project/MeetWithChampion/:id' component={MeetWithChampion} />
 			<Route path='/Project/MeetWithTeamLeader/:id' component={MeetWithTeamLead} />

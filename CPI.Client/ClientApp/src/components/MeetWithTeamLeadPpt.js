@@ -1,34 +1,27 @@
 ﻿import React, { Component } from 'react';
 import { Slide } from 'react-slideshow-image';
 
+const images = [
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic0.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic1.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic2.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic3.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic4.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic5.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic6.png'),
+    require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic7.png'),
+]
+
 //This is called from inside the class. The height and width are set to match the size of the current 8 pictures. They are all the same size. 
 const Slideshow = () => {
     return (
-        <div style={{ marginTop: '1em', marginLeft: '5em', width: '33vw' }}>
+        <div style={{ marginTop: '1em', marginLeft: '5em', width: 'auto', height: 'auto', maxWidth: '100%' }}>
             <Slide {...properties} >
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic0.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic1.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic2.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic3.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic4.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic5.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic6.png') + ')' }}>
-                </div>
-
-                <div className='each-slide' style={{ height: '32vh', backgroundImage: 'url(' + require('./img/MeetingWithTeamLeadPNGs/MeetingWithTeamLeadPic7.png') + ')' }}>
-                </div>
+                {images.map((x) => (
+                    <div className='each-slide'>
+                        <img src={x} />
+                    </div>
+                ))}
             </Slide>
         </div>
     );

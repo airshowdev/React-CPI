@@ -1,10 +1,15 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { Post } from '../REST';
+import PropTypes from 'prop-types';
 
      
 export class CreateProject extends Component {
     displayName = CreateProject.name
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
 
     constructor(props) {
         super(props);
@@ -14,7 +19,7 @@ export class CreateProject extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit() {
+    async  handleSubmit() {
 
         var data = {
             Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
@@ -23,12 +28,20 @@ export class CreateProject extends Component {
             Unit: this.state.unit
         };
 
-        Post(data, 'Project', 'CreateProject');
+        this.setState({ loading: true }); 
+
+        let httpResponse = await Post(data, 'Project', 'CreateProject');
+
+
+        if (httpResponse.status == 200) {
+        this.context.router.history.push("/Project/ProjectInfo/" + httpResponse.body);
+        } else {
+            alert(JSON.stringify(httpResponse.InternalException));
+        }
     }
 
     render() {
         return (
-            <form className="usa-form" onSubmit={this.handleSubmit}>
             <fieldset>
 					<h2 style={{marginLeft: "0"}}>Create Project</h2>
                     <label htmlFor="ProjectName">Project Name</label>
@@ -46,10 +59,11 @@ export class CreateProject extends Component {
                     <label htmlFor="Unit">Unit</label>
                     <input id="Unit" ref="Unit" type="text" onChange={(event) => this.setState({ unit: event.target.value })}required aria-required="true" />
 
-                    <input type="submit" className="usa-button" value="Create Project"/>
+                    <input type="submit" className="usa-button" value="Create Project" onClick={this.handleSubmit} />
+
             </fieldset>
-            </form>
+
+       
         );
-    }
-    
+    }   
 }

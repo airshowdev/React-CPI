@@ -484,7 +484,8 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Get project process completed succesfully");
 
-                return (await cursor.FirstAsync());
+                return await cursor.FirstAsync();
+                
             }
             catch (Exception E)
             {
@@ -517,7 +518,6 @@ namespace CPI.Client.Controllers
                 string projectName = project.GetValue("Name").ToString();
 
                 Project newProject = Project.FromJson(json);
-
                 MongoClient client;
                 if (Client == null)
                 {
@@ -534,7 +534,8 @@ namespace CPI.Client.Controllers
                 Log4NetLogger.Info("Create project process completed succesfully");
 
                 httpResponse.Status = "200";
-                httpResponse.Body = "Project delete successfully completed";
+                Console.WriteLine(newProject.ID);
+                httpResponse.Body = newProject.ID;
             }
 
             catch (Exception E)
