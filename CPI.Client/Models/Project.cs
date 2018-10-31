@@ -64,10 +64,8 @@ namespace CPI.Client.Models
         public string WingDirectorate { get; set; } = "";
 
 
-        [BsonDefaultValue(new string[0])]
-         
+        [BsonDefaultValue(new string[0])]         
         [JsonProperty("Evaluators")]
-
         public IList<string> Evaluators { get; set; } = new string[0];
 
         

@@ -8,69 +8,219 @@ import { NavButtons } from '../NavButtons';
 
 export class DraftCharter extends Component {
 
-    displayName = DraftCharter.name;
-
     static contextTypes = {
         router: PropTypes.object
     }
 
+    displayName = DraftCharter.name;
+
     constructor(props, context) {
-        super(props, context)
-        this.state = { project: {}, loading: true, content: ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]};
+        super(props, context);
+
+        this.state = { project: {}, loading: true};
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidMount() {
+        fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
+            .then(response => response.json())
+            .then(data => this.setState({ project: data, loading: false }));
     }
 
     handleClick = (event) => {
 
         var labelContent = this.state.content;
 
-        if (parseInt(event.target.id) < 5)
-        {
+        if (parseInt(event.target.id) < 5) {
             labelContent[0] = "-";
             labelContent[1] = "-";
             labelContent[2] = "-";
             labelContent[3] = "-";
             labelContent[4] = "-";
         }
-        else if (parseInt(event.target.id) < 10)
-        {
+        else if (parseInt(event.target.id) < 10) {
             labelContent[5] = "-";
             labelContent[6] = "-";
             labelContent[7] = "-";
             labelContent[8] = "-";
             labelContent[9] = "-";
         }
-        else if (parseInt(event.target.id) < 15)
-        {
+        else if (parseInt(event.target.id) < 15) {
             labelContent[10] = "-";
             labelContent[11] = "-";
             labelContent[12] = "-";
             labelContent[13] = "-";
             labelContent[14] = "-";
         }
-        else if (parseInt(event.target.id) < 20)
-        {
+        else if (parseInt(event.target.id) < 20) {
             labelContent[15] = "-";
             labelContent[16] = "-";
             labelContent[17] = "-";
             labelContent[18] = "-";
             labelContent[19] = "-";
         }
-        else
-        {
+        else {
             labelContent[20] = "-";
             labelContent[21] = "-";
             labelContent[22] = "-";
             labelContent[23] = "-";
             labelContent[24] = "-";
         }
-        
+
         labelContent[parseInt(event.target.id)] = (labelContent[parseInt(event.target.id)] === "-") ? "X" : "-";
         this.setState({ content: labelContent });
     };
 
     render() {
-        return (
+        if (this.state.loading) {
+            return <span>Loading</span>;
+        } else {
+            return (
+                <div style={{ height: '11in', width: '8.5in', fontSize: '12px' }}>
+                    <h2>{this.state.project.Name + " Event Charter"}</h2>
+                    <table className="charterTable" style={{ padding: '0', width: '100%' }}>
+                        <thead>
+                            <th/>
+                            <th>Name/Rank</th>
+                        </thead>
+                        <tbody>
+                            <tr><td>Champion/Owner</td><td>{this.state.project.Champion.Name}</td></tr>
+                            <tr><td>Process Owner</td><td>{this.state.project.ProcessOwner}</td></tr>
+                            <tr><td>Unit AF CPI POC:</td><td>{this.state.project.Facilitator}</td></tr>
+                            <tr><td>Facilitator(s) in Training</td><td>{this.state.project.Evaluators.join(" ")}</td></tr>
+                            <tr><td>Facilitator / Trainer</td><td>{this.state.project.Facilitator}</td></tr>
+                        </tbody>
+                    </table>
+
+                    <label htmlFor="problemTable">Problem</label>
+                    <table id="problemTable" className="charterTable" style={{ padding: '0', width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ width: '25%', wordWrap: 'wrap' }}>Define the problem/opportunity for improvement. <br /> Answer: What, when, where, how. <br />  <strong>Don't answer: Why</strong></td>
+                                <td>{this.state.project.ProblemStatement}</td>
+                            </tr>
+                            <tr>
+                                <td style={{ width: '25%', wordWrap: 'wrap' }}>Tell how bad the mproblem is. Explain what is happening and what should happen. <strong>How do we know it's a problem?</strong></td>
+                                <td>{this.state.project.ProblemStatement}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <label htmlFor="impactStatementTable">Impact Statement</label>
+                    <table id="impactStatementTable" className="charterTable" style={{ padding: '0', width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ width: '25%', wordWrap: 'wrap' }}>How does the problem impact your organization's ability to meet its mission, quality of life, AF goals, priorities, etc? <strong>This helps categorize the improvement type</strong></td>
+                                <td>{this.state.project.ImpactStatement}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    <label htmlFor="expectedImprovementTable">Goal/Expected Improvements</label>
+                    <table id="expectedImprovementTable" className="charterTable" style={{ padding: '0', width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ width: '25%', wordWrap: 'wrap' }}>What specific, quantifiable goals should the team strive toward during the event?<strong>This helps with the improvement target.</strong></td>
+                                <td>{this.state.project.Champion.Expectation}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <label htmlFor="sipocTable">SIPOC (Defines the scope and major elements of the process.)</label>
+                    <table id="sipocTable" className="charterTable" style={{ padding: '0', width: '100%' }}>
+                        <tbody>
+                            <tr>
+                                <td ><strong>SUPPLIERS</strong><br/>Who supplies inputs to the process?</td>
+                                <td ><strong>INPUTS</strong><br />What people, materials, equipment, policies, or procedures feed the process?</td>
+                                <td ><strong>PROCESS</strong><br />What are the 5-7 high level steps in the process?</td>
+                                <td ><strong>OUTPUTS</strong><br />What products/services are generated from the process?</td>
+                                <td ><strong>CUSTOMERS</strong><br />Who receives the outputs of the process?</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+                                        (i === 0 ? "" : "\n") + x.Supplier
+                                         ))
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+                                        (i === 0 ? "" : "\n") + x.Input
+                                    ))
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+                                        (i === 0 ? "" : "\n") + x.Process
+                                    ))
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+                                        (i === 0 ? "" : "\n") + x.Output
+                                    ))
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+                                        (i === 0 ? "" : "\n") + x.Customer
+                                    ))
+                                    }
+                                </td>
+
+                            </tr>
+                            <tr style={{width: "100%"}}><td><strong>Exclusions</strong> (Identify any items/processes that are off limits or will not be looked at during this event.)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <label htmlFor="teamMemberTable"><strong>TEAM MEMBERS (INCLUDE INDIVIDUALS IDENTIFIED IN THE SIPOC)</strong></label>
+                    <div className="flex-no-wrap">
+                        <table id="teamMemberTable" className="charterTable" style={{ padding: '0', width: '45%' }}>
+                            <thead>
+                                <th>NAME/RANK</th>
+                                <th>ORGANIZATION</th>
+                            </thead>
+                            <tbody>
+                                {this.state.project.Evaluators.map((x, i) => (
+                                    i < this.state.project.Evaluators.length/2 ?
+                                        <tr>
+                                            <td>{x}</td>
+                                            <td>Unit?</td>
+                                        </tr> : null
+                                ))}
+                            </tbody>
+                        </table>
+
+                        <table id="teamMemberTable2" className="charterTable" style={{ padding: '0', width: '45%' }}>
+                            <thead>
+                                <th>NAME/RANK</th>
+                                <th>ORGANIZATION</th>
+                            </thead>
+                            <tbody>
+                                {this.state.project.Evaluators.map((x, i) => (
+                                    i >= this.state.project.Evaluators.length / 2 ?
+                                        <tr>
+                                            <td>{x}</td>
+                                            <td>Unit?</td>
+                                    </tr> : null
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <label htmlFor="currentPerformanceTable"><strong>TEAM MEMBERS (INCLUDE INDIVIDUALS IDENTIFIED IN THE SIPOC)</strong></label>
+                    <div className="flex-no-wrap">
+                        <div style={{ width: '25%' }}>What metrics are used to measure the current performance of the process and how have they been performing?</div>
+                        <div></div>
+                    </div>
+                </div>
+            )
+        }
+    }
+}
+            /*
             <div>
                 <NavButtons next="ProcessWalk" previous="MeetWithTeamLeader" title="CPI Event Charter" projectId={this.props.match.params.id}/>
             <div className="paragraph" style={{ border: "hidden", minWidth: "687px" }}>
@@ -315,6 +465,4 @@ export class DraftCharter extends Component {
                 </table>
                 </div>
                 </div>
-        )
-    }
-}
+        )*/
