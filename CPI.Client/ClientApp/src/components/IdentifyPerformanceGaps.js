@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
 
 export class IdentifyPerformanceGaps extends Component {
 
@@ -31,6 +32,8 @@ export class IdentifyPerformanceGaps extends Component {
 
     render() {
         return (
+            <div>
+                <NavButtons next="SetImprovementTargets" previous="ClarifyValidateProblem" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> PPSM Step 2 - Identify Performance Gaps </h1>
                 <div><h3>Chart goes here</h3></div>
@@ -39,7 +42,8 @@ export class IdentifyPerformanceGaps extends Component {
                     <textarea onChange={(event) => this.setState({ PerformanceGap: event.target.value })} value={this.state.PerformanceGap} placeholder="Performance Gap" className="performance-gap-text-area"></textarea>   
                 </div>
                 <button onClick={this.handleSave}>Save</button>
-            </div>
+                </div>
+                </div>
         )
     }
 }

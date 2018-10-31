@@ -65,7 +65,7 @@ export class OnTimeDataCollection extends Component {
 		this.setState({ newElementGoal: "", newElementActual: "" });
     }
     
-    handleSave() {
+    async handleSave() {
         var type = "OnTime";
         var elements = this.state.Elements;
         var standard = this.state.Standard;
@@ -78,9 +78,13 @@ export class OnTimeDataCollection extends Component {
   
 			}
         };
-        alert(JSON.stringify(postData));
+        //alert(JSON.stringify(postData));
+        //Post(postData, "Project", "UpdateDataCollection");
 
-        Post(postData, "Project", "UpdateDataCollection");
+        let httpResponse = await Post(postData, "Project", "UpdateDataCollection");
+        if (httpResponse.status == 200) {
+            alert("Save Successful");
+        }
     }
 
     handleStandardChange(event) {

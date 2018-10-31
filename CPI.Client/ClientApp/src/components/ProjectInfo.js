@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import { NavButtons } from './NavButtons';
 import DataHandler from './js/DataHandler';
+import { Post } from '../REST';
 
 export class ProjectInfo extends Component {
 
@@ -69,9 +70,11 @@ export class ProjectInfo extends Component {
         );
     }
 
-    handleSubmit() {
-        this.Post(this.state.project, "Project", "UpdateProject").then(data => console.log(JSON.stringify(data))).catch(error => console.log(error));
-        
+    async handleSubmit() {
+        let httpResponse = await Post(this.state.project, 'Project', 'UpdateProject');
+        if (httpResponse.status == 200) {
+            alert("Save Successful");
+        }
     }
 
     
@@ -81,7 +84,7 @@ export class ProjectInfo extends Component {
         } else {
 			return (
 				<div>
-					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
+					<NavButtons next="ProjectOverview" projectId={this.props.match.params.id} />
                 <div id="projectInfo" >
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">

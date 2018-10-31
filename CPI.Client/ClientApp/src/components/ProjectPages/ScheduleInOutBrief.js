@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
+import { NavButtons } from '../NavButtons';
 
 export class ScheduleInOutBrief extends Component {
 
@@ -13,10 +14,13 @@ export class ScheduleInOutBrief extends Component {
 
     render(project) {
         return (
+            <div>
+                <NavButtons next="TeamProcessWalk" previous="DistributeEventNotification" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> Schedule In Brief / Out Brief </h1>
                 <p>Understanding what success looks like from the Champions perspective and clearly conveying<br /> that to the team is extremely important in having an effective CPI event.  What better way to<br /> accomplish this then by having the Champion address the team directly? In addition to getting<br /> everyone on the same page, having the Champion address the team lets everyone know that<br /> the work they are about to do is important.  Done correctly, a good In Brief will set a positive<br /> tone for the team.  At the end of the event it is important to get the Champion's blessing on<br /> any action items that are purposed.  Leadership is busy so it's important to schedule as far in<br /> advance as possible to ensure they are there for the In Brief and Out Brief.</p>
-            </div>
+                </div>
+                </div>
         )
     }
 }

@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+import { NavButtons } from './NavButtons';
 
 export class StandardizeSuccessfulProcess extends Component {
 
@@ -13,6 +14,8 @@ export class StandardizeSuccessfulProcess extends Component {
 
     render(project) {
         return (
+            <div>
+                <NavButtons previous="ConfirmResults" projectId={this.props.match.params.id} />
             <div className="usa-grid">
                 <div className="paragraph">
                     <h1> PPSM Step 8 - Standardize Successful Process </h1>
@@ -41,7 +44,8 @@ export class StandardizeSuccessfulProcess extends Component {
                         </table>
                     </div>
                 </div>
-            </div>
+                </div>
+                </div>
         )
     }
 }

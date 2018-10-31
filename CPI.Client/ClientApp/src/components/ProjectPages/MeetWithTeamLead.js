@@ -83,12 +83,17 @@ export class MeetWithTeamLead extends Component {
         }
     }
 
-    handleSave() {
+    async handleSave() {
         var tempProject = this.state.project;
         tempProject.TeamLeadMeeting.SipocRows = this.state.SIPOC;
         this.setState({ project: tempProject });
 
-        Post(this.state.project, "Project", "UpdateProject");
+        //Post(this.state.project, "Project", "UpdateProject");
+
+        let httpResponse = await Post(this.state.project, "Project", "UpdateProject");
+        if (httpResponse.status == 200) {
+            alert("Save Successful");
+        }
     }
 
     isDate(date) {

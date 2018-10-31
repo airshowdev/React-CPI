@@ -67,9 +67,9 @@ export class DataCollectionStatus extends Component {
 			case "NVA":
 				var total = 0;
                 this.state.Elements.map(x => { total += parseFloat(x.Goal); });
-                return Math.round(total / this.state.Elements.length) + "%";
+                return Math.round(total / this.state.Elements.length) ;
 			case "OnTime":
-				return this.state.Standard + "%";
+				return this.state.Standard;
 		}
 	}
 
@@ -130,11 +130,11 @@ export class DataCollectionStatus extends Component {
                             <tbody>
 								<tr>
 									<td>{this.state.LabelProps.StandardGoalLabel}</td>
-                                    <td>{this.calculateAverageGoal()}</td>
+                                    <td>{this.calculateAverageGoal()}%</td>
                                 </tr>
                                 <tr>
                                     <td>Champion Goal</td>
-                                    <td>{this.state.champGoal}%</td>
+                                    <td>{this.state.champGoal ? this.state.champGoal + "%" : "unset"}</td>
                                 </tr>
                             </tbody>
                         </table>
