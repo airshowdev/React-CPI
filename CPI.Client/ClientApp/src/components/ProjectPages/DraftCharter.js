@@ -210,10 +210,9 @@ export class DraftCharter extends Component {
                         </table>
                     </div>
 
-
                     <label htmlFor="currentPerformanceTable"><strong>TEAM MEMBERS (INCLUDE INDIVIDUALS IDENTIFIED IN THE SIPOC)</strong></label>
                     <div className="flex-no-wrap">
-                        <div style={{ width: '25%' }}>What metrics are used to measure the current peerformance of the process and how have they been performing?</div>
+                        <div style={{ width: '25%' }}>What metrics are used to measure the current performance of the process and how have they been performing?</div>
                         <div></div>
                     </div>
                 </div>
