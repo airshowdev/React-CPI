@@ -5020,3 +5020,13 @@ input[type=search] {
     display: flex;
     flex-wrap: wrap;
 }
+
+.charterTable td, th{
+
+    padding: 0px;
+}
+
+.flex-no-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+}

@@ -29,7 +29,7 @@ export class SeeCountermeasuresThrough extends Component {
 
 	handleChange(event) {
 		var tempRootCauses = this.state.RootCauses;
-		var i = event.target.id.split("_")
+        var i = event.target.id.split("_");
 		switch (event.target.name) {
 			case "ActionOfficer":
 				tempRootCauses[i[0]].Countermeasures[i[1]].ActionOfficer = event.target.value;
