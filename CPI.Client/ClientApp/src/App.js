@@ -45,6 +45,7 @@ import { MeetWithTeamLeadPpt } from './components/MeetWithTeamLeadPpt'; //Testin
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
 import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use as a template for graphs
 
+import { EightSPSM } from './components/EightSPSM'; 
 
 //adding in more routes to test pages
 import { MeetWithChampion } from './components/ProjectPages/MeetWithChampion';
@@ -107,6 +108,7 @@ export default class App extends Component {
 			<Route path='/Project/ClarifyValidateProblem/:id' component={ClarifyValidateProblem} />
             <Route path='/Project/EventExecutionOverview/:id' component={EventExecutionOverview} />
 
+            <Route path='/Project/EightSPSM' component={EightSPSM} />
 
             {/*Test Route for chart and dataFetching */}
             <Route path='/Project/Graph' component={Graph} />

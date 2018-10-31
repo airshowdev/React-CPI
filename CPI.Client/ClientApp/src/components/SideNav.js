@@ -128,7 +128,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/SeeCountermeasuresThrough/" + this.props.match.params.id}><a>6. See Countermeasures Through</a></LinkContainer>
                                 </li>
                                 <li>
-							<LinkContainer to={"/Project/ValidateResults/" + this.props.match.params.id}><a>7. Validate Results</a></LinkContainer>
+							<LinkContainer to={"/Project/ConfirmResults/" + this.props.match.params.id}><a>7. Validate Results</a></LinkContainer>
                                 </li>
                             </ul>
 					</li>

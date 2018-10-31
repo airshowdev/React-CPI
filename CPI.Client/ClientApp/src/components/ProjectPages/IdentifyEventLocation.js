@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
+import { NavButtons } from '../NavButtons';
 
 export class IdentifyEventLocation extends Component {
 
@@ -13,6 +14,8 @@ export class IdentifyEventLocation extends Component {
 
     render(project) {
         return (
+            <div>
+                <NavButtons next="DistributeEventNotification" previous="ReviewKPI" projectId={this.props.match.params.id} />
             <div className="left-aligned-paragraph">
                 <h1> Identify Event Location </h1>
                 <div className="image-alignment">
@@ -23,7 +26,8 @@ export class IdentifyEventLocation extends Component {
                    <br />- Available for the duration of the event
                    <br />- A safe environment where participants feel free to contribute to discussions without retribution
                 </p>
-            </div>
+                </div>
+                </div>
         )
     }
 }

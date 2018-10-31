@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
 
 export class ClarifyValidateProblem extends Component {
 
@@ -33,6 +34,8 @@ export class ClarifyValidateProblem extends Component {
             return <span>Loading</span>;
         } else {
             return (
+                <div>
+                    <NavButtons next="IdentifyPerformanceGaps" previous="RoomSetup" projectId={this.props.match.params.id} />
                 <div className="paragraph">
                     <h1> PPSM Step 1 - Clarify and Validate the Problem </h1>
                     <p>Using the information below, create a problem statement<br />What is the Process and Issue?<br />What organization owns the process?<br />What organizations are affected by the process?<br />What is happening in the process?<br />What should be happening in the process?<br />What is the critical to (x) factor? (time, cost, quality, variation)</p>
@@ -45,7 +48,8 @@ export class ClarifyValidateProblem extends Component {
                         </div>
                     </div>
                     <button onClick={this.handleSave}>Save</button>
-                </div>
+                    </div>
+                    </div>
             )
         }
     }

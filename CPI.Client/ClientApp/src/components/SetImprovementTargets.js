@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
 
 export class SetImprovementTargets extends Component {
 
@@ -28,11 +29,13 @@ export class SetImprovementTargets extends Component {
 
 		this.setState({ project: tempProject });
 
-		Post(this.sta.project, "Project", "UpdateProject");
+		Post(this.state.project, "Project", "UpdateProject");
 	}
 
     render() {
         return (
+            <div>
+                <NavButtons next="DetermineRootCause" previous="IdentifyPerformanceGaps" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> PPSM Step 3 - Set Improvement Targets </h1>
                 <textarea className="set-improvement-text-area" placeholder="Performance Gap:"></textarea>
@@ -62,7 +65,8 @@ export class SetImprovementTargets extends Component {
                     </tbody>
 				</table>
 				<button onClick={this.handleSave}>Save</button>
-            </div>
+                </div>
+                </div>
         )
     }
 }

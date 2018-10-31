@@ -3,6 +3,7 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import PropTypes from 'prop-types';
 import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
 
 export class SeeCountermeasuresThrough extends Component {
 
@@ -55,6 +56,8 @@ export class SeeCountermeasuresThrough extends Component {
 
     render() {
         return (
+            <div>
+                <NavButtons next="ConfirmResults" previous="DevelopCountermeasures" projectId={this.props.match.params.id} />
             <div className="usa-grid">
                 <div className="paragraph">
                     <h1> PPSM Step 6 - See Countermeasures Through </h1>
@@ -84,7 +87,8 @@ export class SeeCountermeasuresThrough extends Component {
 						<button onClick={this.handleSave}>Save</button>
                     </div>
                 </div>
-            </div>
+                </div>
+                </div>
         )
     }
 }
