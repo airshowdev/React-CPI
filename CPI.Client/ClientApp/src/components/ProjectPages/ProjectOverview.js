@@ -29,8 +29,8 @@ export class ProjectOverview extends Component {
     render() {
 		return (
 			<Grid>
-				<Col style={{ paddingBottom: 15 }}>
-					<NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
+                <Col style={{ paddingBottom: 15 }}>
+                    <NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
 				</Col>
 				<Col>
             <table style={{width: '85%'}}>
@@ -69,7 +69,7 @@ export class ProjectOverview extends Component {
                     </td>
                     <td>
                 <LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><p>Clarify and Validate the Problem</p></LinkContainer>
-                <LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
+                <LinkContainer to={"/Project/IdentifyProblemStatements/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
                 <LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><p>Set Improvement Target</p></LinkContainer>
                 <LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><p>Determine Root Cause(s)</p></LinkContainer>
                 <LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><p>Develop Countermeasures</p></LinkContainer>

@@ -143,7 +143,7 @@ export class AnalyzeData extends Component {
             return <loadingSpinner/>;
         } else {
             return (
-                <div>
+                <div className="flexbox">
                     <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
                     <DataCollectionStatus {...this.state} />
                     <BarChart data={this.getBarData(this.state.championGoal)} height={400} width={400} />

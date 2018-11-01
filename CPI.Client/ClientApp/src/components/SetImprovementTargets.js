@@ -35,7 +35,7 @@ export class SetImprovementTargets extends Component {
     render() {
         return (
             <div>
-                <NavButtons next="DetermineRootCause" previous="IdentifyPerformanceGaps" projectId={this.props.match.params.id} />
+                <NavButtons next="DetermineRootCause" previous="IdentifyProblemStatements" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> PPSM Step 3 - Set Improvement Targets </h1>
                 <textarea className="set-improvement-text-area" placeholder="Performance Gap:"></textarea>

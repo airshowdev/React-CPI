@@ -53,11 +53,12 @@ export class StandardizeSuccessfulProcess extends Component {
 
         tempProject.SSProcesses = this.state.Processes;
 
-        this.setState({ project: tempProject });
         Post(this.state.project, "Project", "UpdateProject");
+        
+        this.setState({ project: tempProject });
     }
 
-    render(project) {
+    render() {
         return (
             <div>
                 <NavButtons previous="ConfirmResults" projectId={this.props.match.params.id} />
