@@ -32,59 +32,61 @@ namespace CPI.Client.Models
         [JsonProperty("Name")]
         public string Name { get; set; } = "";
 
-        
-         
+
+
         [JsonProperty("MajCom")]
         public string MajCom { get; set; } = "";
 
-        
-         
+
+
         [JsonProperty("Base")]
         public string Base { get; set; } = "";
 
-        
-         
+
+
         [JsonProperty("Creator")]
         public string Creator { get; set; } = "";
 
-        
-         
+
+
         [JsonProperty("Unit")]
         public string Unit { get; set; } = "";
-  
-        
-         
+
+
+
         [JsonProperty("WingDirectorate")]
         public string WingDirectorate { get; set; } = "";
 
 
         [BsonDefaultValue(new string[0])]
-         
+
         [JsonProperty("Evaluators")]
 
         public IList<string> Evaluators { get; set; } = new string[0];
 
-        
-         
+
+
         [JsonProperty("TeamLeads")]
         public IList<string> TeamLeads { get; set; } = new string[0];
 
         [BsonIgnoreIfDefault]
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new string[0];
-  
-        
-         
+
+        [JsonProperty("SSProcesses")]
+        public IList<Process> SSProcesses { get; set; } = new List<Process>();
+
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
 
         [JsonProperty("IdentifyPerformanceGap")]
         public string IdentifyPerformanceGap { get; set; } = "";
-         
+
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
 
-        
+        [JsonProperty("ImprovementTarget")]
+        public string ImprovementTarget { get; set; } = "";
          
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
@@ -119,6 +121,21 @@ namespace CPI.Client.Models
 
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
+    }
+
+    public partial class Process
+    {
+        [JsonProperty("Item")]
+        public string Item { get; set; } = "";
+
+        [JsonProperty("POC")]
+        public string POC { get; set; } = "";
+
+        [JsonProperty("Date")]
+        public string Date { get; set; } = "";
+        [JsonProperty("Status")]
+        public string Status { get; set; } = "";
+
     }
 
     public partial class DesiredEffects
@@ -280,6 +297,8 @@ namespace CPI.Client.Models
 		[JsonProperty("Customer")]
 		public string Customer { get; set; } = "";
 	}
+
+
 
 	public partial class Project
     {

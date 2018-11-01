@@ -5,16 +5,23 @@ import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
 
 export class NVADataCollection extends Component {
-
+    
     constructor(props) {
+
         super(props);
+
         this.state = {
-            Elements: [], championGoal: "", Type: "NVA" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
+            Elements: [],
+            championGoal: "",
+            Type: "NVA",
+            newElementVA: "",
+            newElementNVA: "",
+            newElementName: "",
+            newElementGoal: 0,
+            loading: true
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleNVAChange = this.handleNVAChange.bind(this);
-        this.handleVAChange = this.handleVAChange.bind(this);
-        this.handleGoalChange = this.handleGoalChange.bind(this);
+
+        
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -29,23 +36,6 @@ export class NVADataCollection extends Component {
                 this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal});
             });
     }
-    
-    handleGoalChange(event) {
-        this.setState({ newElementGoal: event.target.value });
-    }
-
-    handleNameChange(event) {
-        this.setState({ newElementName: event.target.value });
-    }
-
-    handleVAChange(event) {
-        this.setState({newElementVA: event.target.value });
-    }
-
-    handleNVAChange(event) {
-        this.setState({newElementNVA: event.target.value });
-	}
-
 
     handleAdd() {
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
@@ -53,7 +43,7 @@ export class NVADataCollection extends Component {
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
-            alert("gib #");
+            alert("Valid entries required to add data");
         }
     }
     handleDelete(event) {
@@ -76,23 +66,17 @@ export class NVADataCollection extends Component {
     }
 
     handleSave() {
-
-        var type = "NVA";
         var elements = this.state.Elements;
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
 		var postData = {
 			_id: this.props.match.params.id,
-			DataCollection: {
-				Type: type,
+            DataCollection: {
+                Type: this.state.Type,
 				Elements: elements
 			}
         };
-        alert(JSON.stringify(postData));
 
 		Post(postData, "Project", "UpdateDataCollection");
-
-        
-        
     }
 
     NVAPercentage(nva, va) {
@@ -101,6 +85,8 @@ export class NVADataCollection extends Component {
         let total = flNVA + flVA;
         return Math.round((flNVA * 100) / total);
     }
+
+    
     NVAGoal(goal, nva, va) {
         return goal > this.NVAPercentage(nva, va);
     }
@@ -112,6 +98,7 @@ export class NVADataCollection extends Component {
         }
         return total / this.state.Elements.length;
     }
+
     calculateUnsat() {
         var unsats = 0;
         this.state.Elements.forEach(
@@ -153,12 +140,12 @@ export class NVADataCollection extends Component {
                                     <td><button id={i} onClick={this.handleEdit}>Edit</button></td>
                                 </tr>
                                 )) : <div/>}
-                        <tr>
-                            <td><input type="text" id="Name" onChange={this.handleNameChange} value={this.state.newElementName} required aria-required /></td>
-                            <td><input type="text" id="VA" onChange={this.handleVAChange} value={this.state.newElementVA} required aria-required /></td>
-                            <td><input type="text" id="NVA" onChange={this.handleNVAChange} value={this.state.newElementNVA} required aria-required /></td>
-                            <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
-                            <td><input type="text" id="Goal" onChange={this.handleGoalChange} value={this.state.newElementGoal} required aria-required /></td>
+                            <tr>
+                                <td><input type="text" id="Name" onChange={(event) => this.setState({ newElementName: event.target.value })} value={this.state.newElementName} required aria-required /></td>
+                                <td><input type="text" id="VA" onChange={(event) => this.setState({ newElementVA: event.target.value })} value={this.state.newElementVA} required aria-required /></td>
+                                <td><input type="text" id="NVA" onChange={(event) => this.setState({ newElementNVA: event.target.value })} value={this.state.newElementNVA} required aria-required /></td>
+                                <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
+                                <td><input type="text" id="Goal" onChange={(event) => this.setState({ newElementGoal: event.target.value })} value={this.state.newElementGoal} required aria-required /></td>
                             <td>{this.NVAGoal(this.state.newElementGoal, this.state.newElementNVA, this.state.newElementVA) ? "Success" : "Fail"}</td>
                             <td><input type="submit" value="Add" onClick={this.handleAdd} /></td>
                             <td><input type="submit" value="Clear" onClick={this.handleClear}/></td>
