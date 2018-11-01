@@ -20,7 +20,7 @@ export function Post(data, controller, action) {
         referrer: "no-referrer",
         body: JSON.stringify(data)
     }).then(response => 
-        response.json()
+            response.json())
     );
 }
 

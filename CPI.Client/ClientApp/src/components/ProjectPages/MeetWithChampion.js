@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
-import { Post } from '../../REST';
 import PropTypes from 'prop-types';
 import { NavButtons } from '../NavButtons';
+import DataHandler from '../js/DataHandler';
 
 export class MeetWithChampion extends Component {
 
@@ -15,57 +15,80 @@ export class MeetWithChampion extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true };
-
+        this.state = {
+            WingDirectorate: "",
+            Unit: "",
+            Champion: {},
+            ProcessOwner: "",
+            TeamLeads: [],
+            Facilitators: [],
+            Facilitator: "",
+            loading: true
+        }
         this.handleSave = this.handleSave.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data,  loading: false });
-            });
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data,  loading: false });
+            
     }
 
     handleSave() {
-        alert(JSON.stringify(this.state.project));
-        Post(this.state.project, "Project", "UpdateProject");
-        alert("changes saved");
+        this.setState({ loading: true });
+        let dHandler = new DataHandler();
+       
+        var sendData = {
+            WingDirectorate: this.state.WingDirectorate,
+            Unit: this.state.Unit,
+            Champion: this.state.Champion,
+            ProcessOwner: this.state.ProcessOwner,
+            TeamLeads: this.state.TeamLeads,
+            Facilitators: this.state.Facilitators,
+            Facilitator: this.state.Facilitator,
+        }
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+        if (response.status !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
     }
 
     handleUpdate(event) {
-        var stateProject = this.state.project;
+        var tempChampion = this.state.Champion;
         switch (event.target.id) {
             case "WingDirectorate":
-                stateProject.WingDirectorate = event.target.value;
+                this.setState({ WingDirectorate: event.target.value })
                 break;
             case "Unit":
-                stateProject.Unit = event.target.value;
+                this.setState({ Unit: event.target.value });
                 break;
             case "ChampionName":
-                stateProject.Champion.Name = event.target.value;
+                tempChampion.Name = event.target.value;
+                this.setState({ Champion: tempChampion });
                 break;
             case "ProcessOwner":
-                stateProject.ProcessOwner = event.target.value;
+                this.setState({ ProcessOwner: event.target.value });
                 break;
             case "TeamLeads":
-                stateProject.TeamLeads = event.target.value.split('\n');
+                this.setState({ TeamLeads: event.target.value.split('\n') });
                 break;
             case "Facilitators":
-                stateProject.Facilitators = event.target.value.split('\n');
+                this.setState({ Facilitators: event.target.value.split('\n') });
                 break;
             case "Facilitator":
-                stateProject.Facilitator = event.target.value;
+                this.setState({ Facilitator: event.target.value });
                 break;
             case "ChampionGoal":
-                stateProject.Champion.Goal = event.target.value;
+                tempChampion.Goal = event.target.value;
+                this.setState({ Champion: tempChampion });
                 break;
             default:
                 break;
         }
-        this.setState({ project: stateProject });
     }
 
 

@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
-import { Post } from '../REST';
+import DataHandler from './js/DataHandler';
 
 export class ClarifyValidateProblem extends Component {
 
@@ -9,23 +9,32 @@ export class ClarifyValidateProblem extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { problemStatement: {}, loading: true };
+        this.state = { problemStatement: "", loading: true };
 
         this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, problemStatement: data.ProblemStatement, loading: false });
-            });
+        var dHandler = new DataHandler();
+        let response = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: response, problemStatement: response.ProblemStatement, loading: false})
     }
 
-    handleSave() {
-        var tempProj = this.state.project;
-        tempProj.ProblemStatement = this.state.problemStatement;
-        Post(this.state.project, "Project", "UpdateProject");
+    async handleSave() {
+
+        this.setState({ loading: true });
+        let dHandler = new DataHandler();
+        let sendData = {
+            ProblemStatement: this.state.problemStatement;
+        }
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+
+
+        if (response.status !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
     }
 
     render() {

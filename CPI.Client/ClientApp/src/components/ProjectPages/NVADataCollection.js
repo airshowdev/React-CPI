@@ -1,8 +1,9 @@
 ﻿import { NavButtons } from "../NavButtons";
 import React, { Component } from 'react';
 import '../css/uswds.css';
-import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
+import DataHandler from "../js/DataHandler";
+import { DataCollection } from "./DataCollection";
 
 export class NVADataCollection extends Component {
     
@@ -11,8 +12,9 @@ export class NVADataCollection extends Component {
         super(props);
 
         this.state = {
+            DataCollection: {},
             Elements: [],
-            championGoal: "",
+            Champion: {},
             Type: "NVA",
             newElementVA: "",
             newElementNVA: "",
@@ -20,37 +22,39 @@ export class NVADataCollection extends Component {
             newElementGoal: 0,
             loading: true
         };
-
         
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
+
     }
 
     componentDidMount() {
-		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-			.then(response => response.json())
-            .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal});
-            });
+        var dHandler = new DataHandler();
+
+        let data = await dHandler.getProject(this.props.match.params.id);
+
+        this.setState({ DataCollection: data.DataCollection, Elements: data.DataCollection.Elements, loading: false });
     }
 
     handleAdd() {
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
-            var elements = this.state.Elements;
+            let elements = this.state.Elements;
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
             alert("Valid entries required to add data");
         }
     }
+
     handleDelete(event) {
         var elements = this.state.Elements;
         elements.splice(event.target.id, 1);
         this.setState({ Elements: elements });
     }
+
     handleEdit(event) {
         if (this.state.newElementName || this.state.newElementNVA || this.state.newElementVA) {
             alert("Please ensure the current entries are empty. Please add or clear current entry");
@@ -61,22 +65,28 @@ export class NVADataCollection extends Component {
             this.setState({ newElementGoal: selected.Goal, newElementName: selected.Name, newElementNVA: selected.NVA, newElementVA: selected.VA, Elements: elements });
         }
     }
+
     handleClear() {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
     }
 
     handleSave() {
-        var elements = this.state.Elements;
-        elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
-		var postData = {
-			_id: this.props.match.params.id,
-            DataCollection: {
-                Type: this.state.Type,
-				Elements: elements
-			}
-        };
+        let dHandler = new DataHandler();
+        let elements = this.state.Elements;
+        let tempDataCollection = this.state.DataCollection
 
-		Post(postData, "Project", "UpdateDataCollection");
+        elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
+
+        tempDataCollection.Elements = elements;
+        tempDataCollection.Type = this.state.Type;
+
+        this.setState({ DataCollection: tempDataCollection });
+
+        let postData = {
+            DataCollection: tempDataCollection,
+        }
+
+        dHandler.modifyProject(postData, this.props.match.params.id);
     }
 
     NVAPercentage(nva, va) {
@@ -155,7 +165,7 @@ export class NVADataCollection extends Component {
                     <div style={{ float: 'right' }}>
                         <button onClick={this.handleSave}>Save Data</button>
                     </div>
-                    </div>
+                </div>
             );
         }
     }  

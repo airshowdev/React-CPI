@@ -8,30 +8,11 @@ export class ChampionResponse extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true, successPercent: "", key: "" };
+        this.state = { project: {}, loading: true};
         this.handleChange = this.handleChange.bind(this);
-        this.keyPress = this.keyPress.bind(this);
     }
 
-    handleChange(event)
-    {
-        var keynum = this.state.key;
-
-        if (keynum === "Backspace") {
-
-            var length = this.state.successPercent.length;
-
-            this.setState({ successPercent: event.target.value.substring(0, length-2) + "%" })
-        }
-        else {
-            this.setState({ successPercent: event.target.value.replace("%", "") + "%" });
-        }
-    }
-
-    keyPress(event)
-    {
-        this.setState({key: event.key})
-    }
+ 
 
     render()
     {

@@ -1,8 +1,10 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { Post } from '../REST';
+import DataHandler from './js/DataHandler';
 
-     
+
+
 export class CreateProject extends Component {
     displayName = CreateProject.name
 
@@ -16,6 +18,8 @@ export class CreateProject extends Component {
 
     handleSubmit() {
 
+        var handler = new DataHandler();
+
         var data = {
             Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
             Base: this.state.base,
@@ -23,13 +27,12 @@ export class CreateProject extends Component {
             Unit: this.state.unit
         };
 
-        Post(data, 'Project', 'CreateProject');
+        handler.addProject(data);
     }
 
     render() {
         return (
-            <form className="usa-form" onSubmit={this.handleSubmit}>
-            <fieldset>
+            <div className="usa-form">
 					<h2 style={{marginLeft: "0"}}>Create Project</h2>
                     <label htmlFor="ProjectName">Project Name</label>
                     <input id="ProjectName" type="text" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name}required aria-required="true"/>
@@ -46,9 +49,8 @@ export class CreateProject extends Component {
                     <label htmlFor="Unit">Unit</label>
                     <input id="Unit" ref="Unit" type="text" onChange={(event) => this.setState({ unit: event.target.value })}required aria-required="true" />
 
-                    <input type="submit" className="usa-button" value="Create Project"/>
-            </fieldset>
-            </form>
+                    <button type="submit" className="usa-button" onClick={this.handleSubmit}>Create Project</button>
+            </div>
         );
     }
     

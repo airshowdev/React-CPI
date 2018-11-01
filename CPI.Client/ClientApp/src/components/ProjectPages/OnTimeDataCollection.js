@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import '../css/uswds.css';
 import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
+import DataHandler from "../js/DataHandler";
 
 
 export class OnTimeDataCollection extends Component {
@@ -12,7 +13,14 @@ export class OnTimeDataCollection extends Component {
         super(props);
 
         this.state = {
-			Elements: [], championGoal: "", Standard: "", Type: "OnTime", newElementActual: "", newElementGoal: "", loading: true
+            Champion: {},
+            DataCollection: {},
+            Elements: [],
+            Standard: "",
+            Type: "OnTime",
+            newElementActual: "",
+            newElementGoal: "",
+            loading: true
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -29,11 +37,9 @@ export class OnTimeDataCollection extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
-            });
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id)
+        this.setState({ DataCollection: data, Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
     }
 
 

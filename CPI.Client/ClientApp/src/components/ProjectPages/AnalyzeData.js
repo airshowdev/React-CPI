@@ -9,6 +9,7 @@ import { PieChart } from './PieChart';
 import { PieChartLegend } from './PieChartLegend';
 import '../css/HallMartino.css';
 import { loadingSpinner } from '../loadingSpinner';
+import DataHandler from '../js/DataHandler';
 
 
 /*
@@ -29,11 +30,10 @@ export class AnalyzeData extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ loading: false, DataCollection: data.DataCollection, championGoal: data.Champion.Goal, Elements: data.DataCollection.Elements, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
-            });
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ loading: false, DataCollection: data.DataCollection, championGoal: data.Champion.Goal, Elements: data.DataCollection.Elements, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
+            
     }
 
     //getBarLabels() {

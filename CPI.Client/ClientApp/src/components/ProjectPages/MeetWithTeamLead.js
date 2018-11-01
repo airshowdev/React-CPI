@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
-import { Post } from '../../REST';
 import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
+import DataHandler from '../js/DataHandler';
 
 export class MeetWithTeamLead extends Component {
 
@@ -17,7 +17,9 @@ export class MeetWithTeamLead extends Component {
     constructor(props, context) {
         super(props, context);
 		this.state = {
-			project: {}, dateBeginTemp: "", dateEndTemp: "", SIPOC: [], loading: true };
+            TeamLeadMeeting: {},
+            loading: true
+        };
 
         this.handleChange = this.handleChange.bind(this);
         this.isDate = this.isDate.bind(this);
@@ -29,11 +31,12 @@ export class MeetWithTeamLead extends Component {
     }
 
     componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				this.setState({ project: data, dateBeginTemp: data.TeamLeadMeeting.DateRange.begin, dateEndTemp: data.TeamLeadMeeting.DateRange.end, loading: false, SIPOC: data.TeamLeadMeeting.SipocRows });
-            });
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({
+            TeamLeadMeeting: data.TeamLeadMeeting,
+            loading: false
+        });
     }
     
 
@@ -49,46 +52,45 @@ export class MeetWithTeamLead extends Component {
 
 
     formatDateBegin() {
-        
-        alert(this.state.dateBeginTemp);
-        if (this.isDate(this.state.dateBeginTemp)) {
-            var stateProject = this.state.project;
-            stateProject.TeamLeadMeeting.DateRange.begin = this.state.dateBeginTemp;
-            this.setState({ project: stateProject });
-        } else {
+        if (!this.isDate(this.state.TeamLeadMeeting.DateRange.Begin)) {
             alert("Please Enter a valid date for the new element's \"begin\" value ");
         }
     }
 
     formatDateEnd() {
-        if (this.isDate(this.state.dateEndTemp)) {
-            var stateProject = this.state.project;
-            stateProject.TeamLeadMeeting.DateRange.end = this.state.dateEndTemp;
-            this.setState({ project: stateProject });
+        if (!this.isDate(this.state.TeamLeadMeeting.DateRange.End)) {
             alert(this.state.dateEndTemp);
         }
     }
 
     handleDateChange(event) {
+        let tempTLM = this.state.TeamLeadMeeting;
         switch (event.target.id) {
             case "startDate":
-                this.setState({ dateBeginTemp: event.target.value });
+                tempTLM.DateRange.Begin = event.target.value;
                 break;
             case "endDate":
-                this.setState({ dateEndTemp: event.target.value });
+                tempTLM.DateRange.End = event.target.value;
                 break;
             default:
                 alert("oh no, this is the problem");
                 break;
         }
+        this.setState({TeamLeadMeeting: tempTLM })
     }
 
     handleSave() {
-        var tempProject = this.state.project;
-        tempProject.TeamLeadMeeting.SipocRows = this.state.SIPOC;
-        this.setState({ project: tempProject });
+        this.setState({ loading: true });
+        
+        let dHandler = new DataHandler();
+        var sendData = { TeamLeadMeeting: this.state.TeamLeadMeeting  }
 
-        Post(this.state.project, "Project", "UpdateProject");
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+        if (response.status !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
     }
 
     isDate(date) {
@@ -96,8 +98,8 @@ export class MeetWithTeamLead extends Component {
         return !isNaN(Date.parse(date));
     }
 
-	handleSipocChange(event) {
-		var Sipoc = this.state.SIPOC;
+    handleSipocChange(event) {
+        var Sipoc = this.state.TeamLeadMeeting.SipocRows;
 		switch (event.target.name) {
 			case "Supplier":
 				Sipoc[parseInt(event.target.id)].Supplier = event.target.value;
@@ -151,9 +153,9 @@ export class MeetWithTeamLead extends Component {
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
-                                        <tbody>
-                                            <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.dateBeginTemp || ""}  /></td>
-                                                <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.dateEndTemp || ""} /></td></tr>
+                                                <tbody>
+                                                    <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange.Begin || ""} /></td>
+                                                        <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange.End || ""} /></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -175,8 +177,8 @@ export class MeetWithTeamLead extends Component {
                                             <td>What products/services are generated from the process?</td>
                                             <td>Who receives the outputs of the process?</td>
 										</tr>	
-                                        {
-                                            this.state.SIPOC.map((el, i) => (
+                                                {
+                                                    this.state.TeamLeadMeeting.SipocRows.map((el, i) => (
 												<tr>
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}

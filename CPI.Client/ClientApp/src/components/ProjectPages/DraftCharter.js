@@ -5,6 +5,7 @@ import { Checkbox } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { NavButtons } from '../NavButtons';
+import DataHandler from '../js/DataHandler';
 
 export class DraftCharter extends Component {
 
@@ -18,6 +19,12 @@ export class DraftCharter extends Component {
         super(props, context)
         this.state = { project: {}, loading: true, content: ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]};
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: {}, loading: false })
     }
 
     handleClick = (event) => {
