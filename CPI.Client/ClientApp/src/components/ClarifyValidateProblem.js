@@ -39,7 +39,7 @@ export class ClarifyValidateProblem extends Component {
             return (
                 <Grid>
                     <Col style={{ paddingBottom: 50}}>
-                        <NavButtons next="IdentifyProblemStatements" previous="RoomSetup" projectId={this.props.match.params.id} />
+                        <NavButtons next="IdentifyPerformanceGaps" previous="RoomSetup" projectId={this.props.match.params.id} />
                     </Col>
                     <Col>
                         <div className="paragraph">

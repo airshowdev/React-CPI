@@ -147,7 +147,7 @@ export class AnalyzeData extends Component {
                     <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
                     <DataCollectionStatus {...this.state} />
                     <BarChart data={this.getBarData(this.state.championGoal)} height={400} width={400} />
-                    <PieChart data={this.getPieData(this.state.championGoal)} height={400} width={400} radius={180} innerRadius={140} />
+                    <PieChart data={this.getPieData(this.state.championGoal)} height={400} width={400} radius={180} innerRadius={100} />
                     <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
                 </div>
             )
