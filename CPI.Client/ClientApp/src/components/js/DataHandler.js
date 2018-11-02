@@ -14,7 +14,11 @@ export default class DataHandler {
     //Returns [Project]
     async getProjects() {
         let response = await fetch(`${address}/projects`);
-        return response.json();
+        if (response.status !== 200) {
+            return response.status;
+        } else {
+            return response.json();
+        }
     }
 
     //PUT
@@ -32,7 +36,7 @@ export default class DataHandler {
             referrer: 'no-referrer',
             body: JSON.stringify(project)
         })
-        return response.json();
+        return response.status;
     }
 
 
@@ -51,7 +55,7 @@ export default class DataHandler {
             referrer: 'no-referrer',
             body: JSON.stringify(project)
         })
-        return response.json();
+        return response.status;
     }
 
 
@@ -70,7 +74,7 @@ export default class DataHandler {
         referrer: 'no-referrer',
         body: JSON.stringify(project)
         })
-        return response.json();
+        return response.status;
     }
     //POST
     //Empty response, status code only
@@ -88,6 +92,6 @@ export default class DataHandler {
             body: JSON.stringify(project)
         });
 
-        return response.json();
+        return response.status;
     }
 }

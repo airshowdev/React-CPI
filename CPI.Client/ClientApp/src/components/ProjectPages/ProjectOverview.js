@@ -5,6 +5,7 @@ import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+import DataHandler from '../js/DataHandler';
 
 export class ProjectOverview extends Component {
 
@@ -15,12 +16,10 @@ export class ProjectOverview extends Component {
         this.state = { project: {}, loading: true };
     }
 
-	componentDidMount() {
-		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false });
-            });
+    componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data, loading: false });
     }
 
     checkDataCollection() {
@@ -59,19 +58,21 @@ export class ProjectOverview extends Component {
         return (this.state.project.DraftCharter.TeamLeadSig && this.state.project.DraftCharter.ChampSig);
     }
 
-    checkClarifyAndValidate() {
+    checkClarifyAndValidate(){
         return (this.state.project.ProblemStatement);
     }
 
-    checkPerformanceGaps() {
+    checkPerformanceGaps(){
         return (this.state.project.IdentifyPerformanceGap);
     }
 
-    checkSetImpTargets() {
+    checkSetImpTargets(){
         return (this.state.project.ImprovementTarget);
     }
 
-    checkRootCauses
+    checkRootCauses() {
+        return (this.state.project.RootCause.length > 0);
+    }
 
     render() {
         return (
