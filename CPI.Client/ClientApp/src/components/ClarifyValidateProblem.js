@@ -14,7 +14,7 @@ export class ClarifyValidateProblem extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         this.setState({ project: response, problemStatement: response.ProblemStatement, loading: false})
@@ -25,7 +25,7 @@ export class ClarifyValidateProblem extends Component {
         this.setState({ loading: true });
         let dHandler = new DataHandler();
         let sendData = {
-            ProblemStatement: this.state.problemStatement;
+            ProblemStatement: this.state.problemStatement
         }
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 

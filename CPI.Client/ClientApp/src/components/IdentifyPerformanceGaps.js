@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+import DataHandler from './js/DataHandler';
 
 export class IdentifyPerformanceGaps extends Component {
 
@@ -13,19 +14,28 @@ export class IdentifyPerformanceGaps extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false, PerformanceGap: data.IdentifyPerformanceGap });
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data, loading: false, PerformanceGap: data.IdentifyPerformanceGap });
+            
     }
 
-    handleSave() {
+    async handleSave() {
+        
+        let dHandler = new DataHandler();
         var tempProject = this.state.project;
         tempProject.IdentifyPerformanceGap = this.state.PerformanceGap;
-        Post(tempProject, "Project", "UpdateProject");
-        this.setState({ project: tempProject });
+        this.setState({ project: tempProject, loading: true });
+        let sendData = { IdentifyPerforamceGap: this.state.PerformanceGap };
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+
+
+        if (response.status !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
     }
 
     render() {

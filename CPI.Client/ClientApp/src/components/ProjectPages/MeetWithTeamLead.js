@@ -30,7 +30,7 @@ export class MeetWithTeamLead extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
         this.setState({
@@ -79,7 +79,7 @@ export class MeetWithTeamLead extends Component {
         this.setState({TeamLeadMeeting: tempTLM })
     }
 
-    handleSave() {
+    async handleSave() {
         this.setState({ loading: true });
         
         let dHandler = new DataHandler();

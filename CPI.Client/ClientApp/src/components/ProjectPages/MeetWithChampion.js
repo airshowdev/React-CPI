@@ -29,14 +29,24 @@ export class MeetWithChampion extends Component {
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: data,  loading: false });
+
+        this.setState({
+            WingDirectorate: data.WingDirectorate,
+            Unit: data.Unit,
+            Champion: data.Champion,
+            ProcessOwner: data.ProcessOwner,
+            TeamLeads: data.TeamLeads,
+            Facilitators: data.Facilitators,
+            Facilitator: data.Facilitator,
+            loading: false
+        });
             
     }
 
-    handleSave() {
+    async handleSave() {
         this.setState({ loading: true });
         let dHandler = new DataHandler();
        
@@ -122,35 +132,35 @@ export class MeetWithChampion extends Component {
                                         <tbody>
                                             <tr>
                                                 <td>Wing/Directorate:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="WingDirectorate" value={this.state.project.WingDirectorate} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="WingDirectorate" value={this.state.WingDirectorate} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Unit:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Unit" value={this.state.project.Unit} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Unit" value={this.state.Unit} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Champion:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionName" value={this.state.project.Champion ? this.state.project.Champion.Name : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionName" value={this.state.Champion ? this.state.Champion.Name : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Process Owner:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ProcessOwner" value={this.state.project.ProcessOwner} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ProcessOwner" value={this.state.ProcessOwner} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Event Team Leader(s):</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="TeamLeads" value={this.state.project.TeamLeads ? this.state.project.TeamLeads.map(TeamLead => TeamLead + "\n") : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="TeamLeads" value={this.state.TeamLeads ? this.state.TeamLeads.map(TeamLead => TeamLead + "\n") : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
-                                                <td>Facilitator(s)-in-Training:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitators" value={this.state.project.Evaluators ? this.state.project.Evaluators.map(Evaluator => Evaluator + "\n") : ""} onChange={this.handleUpdate} /></td>
+                                                    <td>Facilitator(s)-in-Training:</td>
+                                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitators" value={this.state.Evaluators ? this.state.project.Facilitators.map(Facilitator => Facilitator + "\n") : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>*Facilitator/Trainer:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitator" value={this.state.project.Facilitator} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitator" value={this.state.Facilitator} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>CHAMPION GOAL:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionGoal" value={this.state.project.Champion ? this.state.project.Champion.Goal : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionGoal" value={this.state.Champion ? this.state.Champion.Goal : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr style={{ border: 'none' }}><td></td><td><button className="usa-button" style={{ float: 'right' }} onClick={this.handleSave}>Save</button></td></tr>
                                         </tbody>

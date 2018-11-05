@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { NavButtons } from './NavButtons';
+import DataHandler from './js/DataHandler';
 
 export class ProjectInfo extends Component {
 
@@ -10,20 +11,14 @@ export class ProjectInfo extends Component {
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.Post = this.Post.bind(this);
     }
 
-	componentDidMount() {
-		console.log(this.props.match.params.id);
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				if (data.TeamLeads) {
-					this.setState({ project: data, loading: false });
-				} 
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        console.log(JSON.stringify(data));
+		this.setState({ project: data, loading: false });
     }
-
 
     handleUpdate(event) {
         var stateProject = this.state.project;
@@ -52,21 +47,17 @@ export class ProjectInfo extends Component {
         this.setState({ project: stateProject });
     }
 
-    async Post(data, controller, action) {
-        return fetch('api/' + controller + '/' + action, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(Response =>
-            alert(JSON.stringify(Response.body.json()))
-        );
-    }
 
-    handleSubmit() {
-        this.Post(this.state.project, "Project", "UpdateProject").then(data => console.log(JSON.stringify(data))).catch(error => console.log(error));
+    async handleSubmit() {
+        let dHandler = new DataHandler();
+        let sendData = this.state.project;
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+
+        if (response.status !== 200) {
+            alert("There was an error submitting changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
         
     }
 
@@ -97,7 +88,7 @@ export class ProjectInfo extends Component {
 							<label htmlFor="Creator">Creator</label>
 							<input id="Creator" name="Creator" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Creator} />
                             <label htmlFor="Evaluators">Evaluators</label>
-								<textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators.join('\n')} />
+                                <textarea id="Evaluators" name="Evaluators" onChange={this.handleUpdate} value={this.state.project.Evaluators ? this.state.project.Evaluators.join('\n'): ""} />
                           {/*  <label htmlFor="Champion">Champion</label>
                             <input id="Champion" name="Champion" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Champion.Name} />
                             <label htmlFor="TeamLead">TeamLead</label>

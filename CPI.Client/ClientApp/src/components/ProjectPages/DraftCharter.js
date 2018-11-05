@@ -21,7 +21,7 @@ export class DraftCharter extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
         this.setState({ project: {}, loading: false })

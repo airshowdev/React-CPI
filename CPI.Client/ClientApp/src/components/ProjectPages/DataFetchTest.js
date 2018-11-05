@@ -17,7 +17,7 @@ export class DataFetchTest extends Component {
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var newData = {};
         var id = '5bd1e0668828cf6d388d80f8';
         newData = this.DataHandler.getDataCollection(id);

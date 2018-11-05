@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import '../css/uswds.css';
 import { DataCollectionStatus } from '../DataCollectionStatus';
 import DataHandler from "../js/DataHandler";
-import { DataCollection } from "./DataCollection";
 
 export class NVADataCollection extends Component {
     
@@ -12,10 +11,7 @@ export class NVADataCollection extends Component {
         super(props);
 
         this.state = {
-            DataCollection: {},
             Elements: [],
-            Champion: {},
-            Type: "NVA",
             newElementVA: "",
             newElementNVA: "",
             newElementName: "",
@@ -31,18 +27,19 @@ export class NVADataCollection extends Component {
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         var dHandler = new DataHandler();
 
         let data = await dHandler.getProject(this.props.match.params.id);
 
-        this.setState({ DataCollection: data.DataCollection, Elements: data.DataCollection.Elements, loading: false });
+        this.setState({ Elements: data.Elements, Standard: data.Standard, loading: false });
     }
 
     handleAdd() {
+
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
             let elements = this.state.Elements;
-            elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
+            elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Type: "NVA", Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
             alert("Valid entries required to add data");
@@ -70,20 +67,14 @@ export class NVADataCollection extends Component {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
     }
 
-    handleSave() {
+    async handleSave() {
         let dHandler = new DataHandler();
         let elements = this.state.Elements;
-        let tempDataCollection = this.state.DataCollection
 
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
-
-        tempDataCollection.Elements = elements;
-        tempDataCollection.Type = this.state.Type;
-
-        this.setState({ DataCollection: tempDataCollection });
-
+        
         let postData = {
-            DataCollection: tempDataCollection,
+            Elements: elements
         }
 
         dHandler.modifyProject(postData, this.props.match.params.id);
@@ -98,7 +89,7 @@ export class NVADataCollection extends Component {
 
     
     NVAGoal(goal, nva, va) {
-        return goal > this.NVAPercentage(nva, va);
+        return goal >= this.NVAPercentage(nva, va);
     }
 
     calculateAverageGoal() {

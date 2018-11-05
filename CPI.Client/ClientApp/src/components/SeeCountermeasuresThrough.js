@@ -2,6 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import PropTypes from 'prop-types';
+import DataHandler from './js/DataHandler';
 
 export class SeeCountermeasuresThrough extends Component {
 
@@ -15,10 +16,10 @@ export class SeeCountermeasuresThrough extends Component {
         this.state = { project: {}, loading: true, rootCauses: [] };
     }
 
-    componentDidMount() {
-            fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
-                .then(response => response.json())
-                .then(data => this.setState({project: data, loading: false }));
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data, loading: false });
     }
 
     render() {

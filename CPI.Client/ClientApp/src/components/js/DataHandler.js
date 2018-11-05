@@ -1,19 +1,44 @@
-﻿var address = 'http://10.10.3.27:1337/v1';
-
+﻿var address = 'https://localhost:5001/v1';
+            /*http://10.10.3.27:1337/v1 */
 export default class DataHandler {
 
     //GET
     //Returns Project
     async getProject(id){
-        let response = await fetch(`${address}/projects/${id}`)
-        return response.json();
+        let response = await fetch(`${address}/projects/${id}`, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: 'follow',
+            referrer: 'no-referrer'
+        })
+        if (response.status !== 200) {
+            return response.status;
+        } else {
+            return response.json();
+        }
     }
 
 
     //GET
     //Returns [Project]
     async getProjects() {
-        let response = await fetch(`${address}/projects`);
+        let response = await fetch(`${address}/projects`, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials:'same-origin',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            redirect: 'follow',
+            referrer: 'no-referrer'
+        });
+
         if (response.status !== 200) {
             return response.status;
         } else {
@@ -24,7 +49,7 @@ export default class DataHandler {
     //PUT
     //Empty response, status code only
     async replaceProject(project, id){
-        let response = await fetch(`${address}/projects${id}`, {
+        let response = await fetch(`${address}/projects/${id}`, {
             method: 'PUT',
             mode: 'cors',
             cache: 'no-cache',
@@ -43,7 +68,7 @@ export default class DataHandler {
     //PATCH
     //Empty response, status code only
     async modifyProject(project, id){
-        let response = await fetch(`${address}/projects${id}`, {
+        let response = await fetch(`${address}/projects/${id}`, {
             method: 'PATCH',
             mode: 'cors',
             cache: 'no-cache',
@@ -61,9 +86,9 @@ export default class DataHandler {
 
     //DELETE 
     //Empty response, status code only
-    async deleteProject(project){
+    async deleteProject(id){
     let response = await fetch(`${address}/projects/${id}`, {
-        method: 'PUT',
+        method: 'DELETE',
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
@@ -72,7 +97,6 @@ export default class DataHandler {
         },
         redirect: 'follow',
         referrer: 'no-referrer',
-        body: JSON.stringify(project)
         })
         return response.status;
     }
@@ -80,7 +104,7 @@ export default class DataHandler {
     //Empty response, status code only
     async addProject(project) {
         let response = await fetch(`${address}/projects`, {
-            method: 'PUT',
+            method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
             credentials: 'same-origin',

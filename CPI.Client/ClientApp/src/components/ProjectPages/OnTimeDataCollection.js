@@ -36,7 +36,7 @@ export class OnTimeDataCollection extends Component {
         this.handleStandardChange = this.handleStandardChange.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id)
         this.setState({ DataCollection: data, Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
@@ -71,7 +71,7 @@ export class OnTimeDataCollection extends Component {
 		this.setState({ newElementGoal: "", newElementActual: "" });
     }
     
-    handleSave() {
+    async handleSave() {
         var type = "OnTime";
         var elements = this.state.Elements;
         var standard = this.state.Standard;

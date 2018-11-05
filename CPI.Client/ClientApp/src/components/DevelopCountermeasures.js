@@ -3,6 +3,7 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Post } from "../REST";
+import DataHandler from './js/DataHandler';
 
 export class DevelopCountermeasures extends Component {
 
@@ -19,15 +20,14 @@ export class DevelopCountermeasures extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                let tempNewCountermeasures = [];
-                data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" }));
-                this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: tempNewCountermeasures });
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = dHandler.getProject(this.props.match.params.id);
 
+        let tempNewCountermeasures = [];
+        data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" }));
+        this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: tempNewCountermeasures });
+          
     }
 
     handleAdd(event) {
@@ -53,6 +53,8 @@ export class DevelopCountermeasures extends Component {
     }
 
     async handleSave() {
+
+
         var tempProj = this.state.project;
         tempProj.RootCauses = this.state.rootCauses;
         this.setState({ project: tempProj });

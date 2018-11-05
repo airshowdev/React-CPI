@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 import DataHandler from './js/DataHandler';
 
-var dataHandler = new DataHandler();
+
 
 export class Projects extends Component {  
     static contextTypes = {
@@ -18,9 +18,15 @@ export class Projects extends Component {
         this.state = { project: [], loading: true };
 	}
 
-    componentDidMount() {
-        dataHandler.getProjects();
+    async componentDidMount() {
+        var dataHandler = new DataHandler();
+        let response = await dataHandler.getProjects();
+        this.setState({ project: response, loading: false });
 	}
+
+    componentDidCatch() {
+        alert("Oh no, it broke");
+    }
 
     renderProjectsTable(project) {
 		return (

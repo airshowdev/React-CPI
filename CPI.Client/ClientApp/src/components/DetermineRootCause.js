@@ -17,7 +17,7 @@ export class DetermineRootCause extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
             .then(response => response.json())
             .then(data => {
@@ -42,7 +42,7 @@ export class DetermineRootCause extends Component {
         this.setState({ rootCauses: tempCauses });
     }
 
-    handleSubmit() {
+    async handleSubmit() {
         if (this.state.tempCauseDescription !== "") {
             alert("Please add or clear the current entry");
         } else {
