@@ -53,7 +53,7 @@ export class ProjectInfo extends Component {
         let sendData = this.state.project;
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
-        if (response.status !== 200) {
+        if (response !== 200) {
             alert("There was an error submitting changes. Please try again or contact a system administrator")
         } else {
             this.setState({ loading: false });
@@ -69,7 +69,7 @@ export class ProjectInfo extends Component {
 			return (
 				<div>
 					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
-                <form id="projectInfo" onSubmit={this.handleSubmit} >
+                <div id="projectInfo">
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
@@ -95,10 +95,10 @@ export class ProjectInfo extends Component {
                             <textarea id="TeamLead" name="TeamLead" type="text" placeholder="Not Defined" onChange={this.handleUpdate}  value={this.state.project.TeamLeads.join("\n")} />
 								<label htmlFor="Mentor">Mentor</label>
 								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} /> */}
-                            <button id="Submit">Save Changes</button>
+                                <button id="Submit" onClick={this.handleSubmit}>Save Changes</button>
                         </div>
                     </div>
-						</form>
+						</div>
 				</div>
             );
         }

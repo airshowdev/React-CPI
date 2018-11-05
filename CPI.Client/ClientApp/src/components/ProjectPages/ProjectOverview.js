@@ -80,12 +80,12 @@ export class ProjectOverview extends Component {
                 <NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
             <table style={{width: '85%'}}>
                 <thead>
-                        <th>Pre-Event Planning + {}</th>
-                        <th>Pre-Event Preparation + {}</th>
-                        <th>Pre-Event Preparation + {}</th>
-                        <th>Event Execution + {}</th>
-                        <th>Post-Event-Implementation + {}</th>
-                        <th>Post-Event Follow Up + {}</th>
+                        <th>Pre-Event Planning</th>
+                        <th>Pre-Event Preparation</th>
+                        <th>Pre-Event Preparation</th>
+                        <th>Event Execution</th>
+                        <th>Post-Event-Implementation</th>
+                        <th>Post-Event Follow Up</th>
                     </thead>
                 <tbody>
                     <td>
