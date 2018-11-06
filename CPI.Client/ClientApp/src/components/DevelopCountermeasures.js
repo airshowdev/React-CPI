@@ -3,7 +3,9 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Post } from "../REST";
-import { NavButtons } from './NavButtons';
+
+import DataHandler from './js/DataHandler';
+
 
 export class DevelopCountermeasures extends Component {
 
@@ -11,8 +13,7 @@ export class DevelopCountermeasures extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = {
-            project: {}, loading: true, rootCauses: [], newCountermeasures: [] 
+        this.state = { loading: true, rootCauses: [], newCountermeasures: [] 
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -20,15 +21,14 @@ export class DevelopCountermeasures extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                let tempNewCountermeasures = [];
-                data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" }));
-                this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: tempNewCountermeasures });
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
 
+        let tempNewCountermeasures = [];
+        data.RootCauses ? data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : null;
+        this.setState({ loading: false, rootCauses: data.RootCauses ? data.RootCauses : [], newCountermeasures: tempNewCountermeasures });
+          
     }
 
     handleAdd(event) {
@@ -54,11 +54,20 @@ export class DevelopCountermeasures extends Component {
     }
 
     async handleSave() {
-        var tempProj = this.state.project;
-        tempProj.RootCauses = this.state.rootCauses;
-        this.setState({ project: tempProj });
-        Post(this.state.project, "Project", "UpdateProject");
+        let dHandler = new DataHandler();
+        let sendData = {
+            RootCauses: this.state.rootCauses
+        }
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+
+        if (response !== 200) {
+            alert('bad uwu \n ' + response)
+        } else {
+            //GO ON BB
+        }
+
     }
+
      //if (this.state.newCountermeasures.length !== this.state.rootCauses.length) {
         //    var tempCountermeasures = [];
         //    for (var i = 0; i < this.state.rootCauses.length; i++) {

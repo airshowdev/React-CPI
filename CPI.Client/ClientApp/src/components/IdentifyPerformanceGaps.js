@@ -2,8 +2,12 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+
+import DataHandler from './js/DataHandler';
+
 import { NavButtons } from './NavButtons';
 import { Col, Grid, Row } from 'react-bootstrap';
+
 
 export class IdentifyPerformanceGaps extends Component {
 
@@ -11,23 +15,32 @@ export class IdentifyPerformanceGaps extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true, PerformanceGap: "" };
+        this.state = {loading: true, PerformanceGap: "" };
         this.handleSave = this.handleSave.bind(this);
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false, PerformanceGap: data.IdentifyPerformanceGap });
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({loading: false, PerformanceGap: data.IdentifyPerformanceGap });
+            
     }
 
-    handleSave() {
-        var tempProject = this.state.project;
-		tempProject.IdentifyPerformanceGap = this.state.PerformanceGap;	
-        Post(tempProject, "Project", "UpdateProject");
-        this.setState({ project: tempProject });
+
+    async handleSave() {
+        
+        let dHandler = new DataHandler();
+
+        let sendData = { IdentifyPerformanceGap: this.state.PerformanceGap };
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+
+
+        if (response !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
+
     }
 
     render() {

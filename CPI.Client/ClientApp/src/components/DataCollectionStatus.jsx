@@ -5,7 +5,7 @@ export class DataCollectionStatus extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            champGoal: "", Type: this.props.Type, Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}
+            Champion: this.props.Champion, Type: this.props.Elements ? this.props.Elements[0].Type : "" , Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}
         };
     }
 
@@ -108,7 +108,7 @@ export class DataCollectionStatus extends Component {
     }
 
     calculateRevisedGap() {
-        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal)) ? "0" : Math.round((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.champGoal));
+        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal)) ? "0" : Math.round((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal));
     }
 
     render() {
@@ -134,8 +134,9 @@ export class DataCollectionStatus extends Component {
                                 </tr>
                                 <tr>
                                     <td>Champion Goal</td>
-                                    <td>{this.state.champGoal ? this.state.champGoal + "%" : "unset"}</td>
-                                </tr>
+
+                                    <td>{this.state.Champion.Goal}%</td>
+                 </tr>
                             </tbody>
                         </table>
                     </td>
@@ -174,7 +175,7 @@ export class DataCollectionStatus extends Component {
                                 </tr>
                                 <tr>
                                     <td>Champion Goal</td>
-                                    <td>{this.state.champGoal ? this.state.champGoal + '%' : 'Unset'}</td>
+                                    <td>{this.state.Champion.Goal ? this.state.Champion.Goal + '%' : 'Unset'}</td>
                                 </tr>
                                 <tr>
                                     <td>Revised Gap</td>

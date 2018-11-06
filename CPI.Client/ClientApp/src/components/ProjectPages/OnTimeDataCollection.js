@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import '../css/uswds.css';
 import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
+import DataHandler from "../js/DataHandler";
 
 
 export class OnTimeDataCollection extends Component {
@@ -12,7 +13,14 @@ export class OnTimeDataCollection extends Component {
         super(props);
 
         this.state = {
-			Elements: [], championGoal: "", Standard: "", Type: "OnTime", newElementActual: "", newElementGoal: "", loading: true
+            Champion: {},
+            DataCollection: {},
+            Elements: [],
+            Standard: "",
+            Type: "OnTime",
+            newElementActual: "",
+            newElementGoal: "",
+            loading: true
         };
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -28,12 +36,10 @@ export class OnTimeDataCollection extends Component {
         this.handleStandardChange = this.handleStandardChange.bind(this);
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-			.then(data => {
-				this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
-            });
+    async componentDidMount() {
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id)
+        this.setState({ Elements: data.Elements, loading: false, Standard: data.Standard });
     }
 
 
@@ -66,25 +72,17 @@ export class OnTimeDataCollection extends Component {
     }
     
     async handleSave() {
-        var type = "OnTime";
-        var elements = this.state.Elements;
-        var standard = this.state.Standard;
-        var postData = {
-			_id: this.props.match.params.id,
-			DataCollection: {
-				Type: type,
-                Elements: elements,
-                Standard: standard
-  
-			}
-        };
-        //alert(JSON.stringify(postData));
-        //Post(postData, "Project", "UpdateDataCollection");
+        let dHandler = new DataHandler();
+        let elements = this.state.Elements;
 
-        let httpResponse = await Post(postData, "Project", "UpdateDataCollection");
-        if (httpResponse.status == 200) {
-            alert("Save Successful");
-        }
+        //elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
+
+        let postData = {
+           Elements: elements,
+        };
+
+        dHandler.modifyProject(postData, this.props.match.params.id);
+
     }
 
     handleStandardChange(event) {

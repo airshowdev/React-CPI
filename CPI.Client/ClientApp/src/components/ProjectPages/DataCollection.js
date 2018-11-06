@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import DataHandler from '../js/DataHandler';
 
 export class DataCollection extends Component {
 
@@ -11,7 +12,7 @@ export class DataCollection extends Component {
 	constructor(props) {
 		super(props);
         this.state = {
-            loading: true, selectedType: "", ProjectDataCollection: {}
+            loading: true, selectedType: "OnTime", project: {},
         };
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,15 +20,16 @@ export class DataCollection extends Component {
 		this.redirectPage = this.redirectPage.bind(this);
 	}
 
-	componentDidMount() {
-		fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
-			.then(response => response.json())
-			.then(data => this.setState({ ProjectDataCollection: data.DataCollection, loading: false }));
+     async componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data, loading: false });
     }
 
     handleSubmit() {
         this.redirectPage(this.state.selectedType);
-	}
+    }
+
     redirectPage(value) {
         switch (value) {
 			case "NVA":
@@ -44,7 +46,7 @@ export class DataCollection extends Component {
 	}
 
     render() {
-        this.redirectPage(this.state.ProjectDataCollection.Type);
+        this.redirectPage(this.state.project.Elements ? this.state.project.Elements[0].Type : "");
 		return (
 			this.state.loading ? <span>Loading</span> : 
 				<div>

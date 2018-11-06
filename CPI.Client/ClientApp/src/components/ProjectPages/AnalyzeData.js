@@ -9,6 +9,7 @@ import { PieChart } from './PieChart';
 import { PieChartLegend } from './PieChartLegend';
 import '../css/HallMartino.css';
 import { loadingSpinner } from '../loadingSpinner';
+import DataHandler from '../js/DataHandler';
 
 
 /*
@@ -25,15 +26,15 @@ export class AnalyzeData extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {Elements: [], championGoal: "", Type: "", loading: true, Standard: ""};   
+        this.state = {
+            Elements: [], Champion: {} , loading: true, Standard: ""};   
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ loading: false, DataCollection: data.DataCollection, championGoal: data.Champion.Goal, Elements: data.DataCollection.Elements, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
-            });
+    async componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+        this.setState({ loading: false, Elements: data.Elements, Champion: data.Champion, Type: data.Elements ? data.Elements[0].Type : "", Standard: data.Standard });
+            
     }
 
     //getBarLabels() {
@@ -146,8 +147,10 @@ export class AnalyzeData extends Component {
                 <div className="flexbox">
                     <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
                     <DataCollectionStatus {...this.state} />
-                    <BarChart data={this.getBarData(this.state.championGoal)} height={400} width={400} />
-                    <PieChart data={this.getPieData(this.state.championGoal)} height={400} width={400} radius={180} innerRadius={100} />
+
+                    <BarChart data={this.getBarData(this.state.Champion.Goal)} height={400} width={400} />
+                    <PieChart data={this.getPieData(this.state.Champion.Goal)} height={400} width={400} radius={180} innerRadius={140} />
+
                     <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
                 </div>
             )

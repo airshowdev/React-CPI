@@ -2,7 +2,9 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
-import { NavButtons } from './NavButtons';
+
+import DataHandler from './js/DataHandler';
+
 
 export class DetermineRootCause extends Component {
 
@@ -10,7 +12,7 @@ export class DetermineRootCause extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, rootCauses: [], tempCauseDescription: "", loading: true};
+        this.state = { rootCauses: [], tempCauseDescription: "", loading: true};
         
         this.handleAdd = this.handleAdd.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
@@ -18,12 +20,11 @@ export class DetermineRootCause extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false, rootCauses: data.RootCauses });
-            });
+    async componentDidMount() {
+        let dhanlder = new DataHandler();
+        let data = await dhanlder.getProject(this.props.match.params.id);
+        this.setState({ loading: false, rootCauses: data.RootCauses });
+            
     }
 
     handleAdd() {
@@ -43,14 +44,27 @@ export class DetermineRootCause extends Component {
         this.setState({ rootCauses: tempCauses });
     }
 
-    handleSubmit() {
-        if (this.state.tempCauseDescription !== "") {
-            alert("Please add or clear the current entry");
+    async handleSubmit() {
+        this.setState({ loading: true });
+
+        let dHandler = new DataHandler();
+        let sendData = { rootCauses: this.state.rootCauses }
+
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+        if (response !== 200) {
+            alert("There was an error submitting changes. Please try again or contact a system administrator")
         } else {
-            var tempProject = this.state.project;
-            tempProject.RootCauses = this.state.rootCauses;
-            Post(this.state.project, "Project", "UpdateProject");
+            this.setState({ loading: false });
         }
+
+
+        //if (this.state.tempCauseDescription !== "") {
+        //    alert("Please add or clear the current entry");
+        //} else {
+        //    var tempProject = this.state.project;
+        //    tempProject.RootCauses = this.state.rootCauses;
+        //    Post(this.state.project, "Project", "UpdateProject");
+        //}
     }
 
     handleDelete(event) {

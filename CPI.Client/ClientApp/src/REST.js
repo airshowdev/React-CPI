@@ -1,4 +1,5 @@
-﻿export default class REST {
+
+export default class REST {
     Post = function (data, controller, action) {
         console.log(data + controller + action);
     };
@@ -24,4 +25,5 @@ export async function Post(data, controller, action) {
     }
     );
 }
+
 

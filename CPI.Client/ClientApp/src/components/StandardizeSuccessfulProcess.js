@@ -1,8 +1,12 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+
+import DataHandler from './js/DataHandler';
+
 import { NavButtons } from './NavButtons';
 import { Post } from '../REST';
+
 
 export class StandardizeSuccessfulProcess extends Component {
     
@@ -10,55 +14,24 @@ export class StandardizeSuccessfulProcess extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true, Processes: [] };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+        this.state = { loading: true, rootCauses: [] };
     }
 
+    async componentDidMount() {
 
-    componentDidMount() {
-        fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false, Processes: data.SSProcesses });
-            });
-    }
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
 
-    handleChange(event) {
-        var tempProcesses = this.state.Processes;
-        var id = parseInt(event.target.id);
-        var value = event.target.value;
-      
-        switch (event.target.name) {
-            case "Item":
-                tempProcesses[id].Item = value;
-                break;
-            case "POC":
-                tempProcesses[id].POC = value;
-                break;
-            case "Date":
-                tempProcesses[id].Date = value;
-                break;
-            case "Status":
-                tempProcesses[id].Status = value;
-                break;
+        if (data !== Object(data)) {
+            alert('Bad Response');
+        } else {
+            this.setState({ rootCauses: data.RootCauses, loading: false });
         }
 
-        this.setState({ Processes: tempProcesses });
     }
+    render(project) {
 
-    handleSave() {
-        var tempProject = this.state.project;
-
-        tempProject.SSProcesses = this.state.Processes;
-
-        Post(this.state.project, "Project", "UpdateProject");
-        
-        this.setState({ project: tempProject });
-    }
-
-    render() {
         return (
             <div>
                 <NavButtons previous="ConfirmResults" projectId={this.props.match.params.id} />
@@ -79,15 +52,18 @@ export class StandardizeSuccessfulProcess extends Component {
                                 <th >Date</th>
                                 <th>Status</th>
                             </thead>
-                                <tbody>
-                                    {this.state.Processes.map((x, i) => 
-                                        (<tr>
-                                            <td style={{ padding: "0px" }}><input id={i} name="Item" type="text" placeholder="x" value={x.Item} onChange={this.handleChange} /></td>
-                                            <td style={{ padding: "0px" }}><input id={i} name="POC" type="text" placeholder="x" value={x.POC} onChange={this.handleChange} /></td>
-                                            <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input id={i} name="Date" type="text" placeholder="x" value={x.Date} onChange={this.handleChange} /></td>
-                                            <td style={{ padding: "0px" }}><input id={i} name="Status" type="text" placeholder="x" value={x.Status} onChange={this.handleChange} /></td>
-                                        </tr>)
-                                    )}
+
+                            <tbody>
+                                {this.state.rootCauses.map((el, i) =>
+                                    el.Countermeasures.map((cm, j) =>
+                                        <tr>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Description} /></td>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].ActionOfficer} /></td>
+                                            <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Date} /></td>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Status} /></td>
+                                        </tr>
+                                    ))}
+
                             </tbody>
                             </table>
                             <button onClick={this.handleSave}>Save</button>

@@ -1,8 +1,10 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+import DataHandler from './js/DataHandler';
 import { Post } from '../REST';
 import { NavButtons } from './NavButtons';
+
 
 export class SetImprovementTargets extends Component {
 
@@ -10,63 +12,60 @@ export class SetImprovementTargets extends Component {
 
     constructor(props, context) {
         super(props, context)
-		this.state = { project: {}, loading: true, ImprovementTarget: "" };
-		this.handleSave = this.handleSave.bind(this);
-	}
 
-	componentDidMount() {
-		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-			.then(response => response.json())
-			.then(data => {
-				this.setState({ project: data, loading: false, ImpovementTarget: data.ImporvementTarget});
-			});
-	}
+        this.state = { PerformanceGap: "", loading: true };
+    }
 
-	handleSave() {
-		var tempProject = this.state.project;
+    async componentDidMount() {
+        let dHandler = new DataHandler();
 
-		tempProject.ImprovementTarget = this.state.ImprovementTarget;
+        let response = await dHandler.getProject(this.props.match.params.id);
+        console.log(JSON.stringify(response))
+        console.log(response.status);
+        if (response !== Object(response)) {
+            alert("error!")
+        } else {
+            this.setState({ PerformanceGap: response.IdentifyPerformanceGap, loading: false });
+        }
 
-		this.setState({ project: tempProject });
-
-		Post(this.state.project, "Project", "UpdateProject");
-	}
+    }
 
     render() {
-        return (
-            <div>
-                <NavButtons next="DetermineRootCause" previous="IdentifyPerformanceGaps" projectId={this.props.match.params.id} />
-            <div className="paragraph">
-                <h1> PPSM Step 3 - Set Improvement Targets </h1>
-                <textarea className="set-improvement-text-area" placeholder="Performance Gap:"></textarea>
-                <table className = "centered-textarea">
-                    <tbody>
-                        <tr>
-							<td style={{ border: "hidden" }}></td>
-							<td style={{ borderTop: "hidden", borderRight: "hidden" }}><textarea value={this.state.ImprovementTarget} onChange={(event) => this.setState({ ImprovementTarget: event.target.value })}></textarea></td>
-                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}>Projected</td>
-                            <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                        </tr>
-						{/* <tr>
-                            <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>TIME FRAME</td>
-                            <td></td>
-                            <td style={{backgroundColor: "rgba(0, 113, 188, 0.5)"}}></td>
-                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                        </tr>
-                        <tr>
-                            <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>% On Time</td>
-                            <td></td>
-                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                            <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
-                        </tr> */}
-                    </tbody>
-				</table>
-				<button onClick={this.handleSave}>Save</button>
+        if (this.state.loading) {
+            return <span> loading... </span>
+        } else {
+            return (
+                <div className="paragraph">
+                    <h1> PPSM Step 3 - Set Improvement Targets </h1>
+                    <textarea className="set-improvement-text-area" placeholder="Performance Gap:" value={this.state.PerformanceGap} onChange={(event) => this.setState({ PerformanceGap: event.target.value })} ></textarea>
+                    <table className="centered-textarea">
+                        <tbody>
+                            <tr>
+                                <td style={{ border: "hidden" }}></td>
+                                <td style={{ borderTop: "hidden", borderRight: "hidden" }}>Baseline</td>
+                                <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                                <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}>Projected</td>
+                                <td style={{ borderTop: "hidden", borderRight: "hidden", backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            </tr>
+                            <tr>
+                                <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>TIME FRAME</td>
+                                <td></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            </tr>
+                            <tr>
+                                <td style={{ borderLeft: "hidden", borderBottom: "hidden" }}>% On Time</td>
+                                <td></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                                <td style={{ backgroundColor: "rgba(0, 113, 188, 0.5)" }}></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                </div>
-        )
+            )
+        }
+
     }
 }

@@ -5,11 +5,11 @@ import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+
+import DataHandler from '../js/DataHandler';
 import { Col, Grid, Row } from 'react-bootstrap';
 
 export class ProjectOverview extends Component {
-
-   
 
     displayName = ProjectOverview.name
 
@@ -18,12 +18,62 @@ export class ProjectOverview extends Component {
         this.state = { project: {}, loading: true };
     }
 
-	componentDidMount() {
-		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data, loading: false });
-            });
+    async componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = dHandler.getProject(this.props.match.params.id);
+        this.setState({ project: data, loading: false });
+    }
+
+    checkDataCollection() {
+        return this.state.project.DataCollection.Elements.length > 0;
+    }
+
+    checkChampMeeting() {
+        return (this.state.project.Champion.Name) &&
+            (this.state.project.WingDirectorate) &&
+            (this.state.project.ProcessOwner) &&
+            (this.state.project.TeamLeads.length > 0) &&
+            (this.state.project.Facilitators.length > 0) &&
+            (this.state.project.Mentor) &&
+            (this.state.project.Champion.Goal);
+    }
+
+    checkTeamLead() {
+        if (this.state.project.TeamLead.MembersIdentified.length > 0) {
+            return true;
+        }
+        else if (this.state.project.TeamLead.DateRange.Begin && this.state.project.TeamLead.DateRange.End) {
+            return true;
+        }
+        else {
+            for (var row in this.state.project.TeamLeadMeeting.SipocRows) {
+                if (row.Supplier || row.Input || row.Process || row.Output || row.Customer) {
+                    return true;
+                }
+            }
+        }
+        return false;
+            
+    }
+
+    checkCharter() {
+        return (this.state.project.DraftCharter.TeamLeadSig && this.state.project.DraftCharter.ChampSig);
+    }
+
+    checkClarifyAndValidate(){
+        return (this.state.project.ProblemStatement);
+    }
+
+    checkPerformanceGaps(){
+        return (this.state.project.IdentifyPerformanceGap);
+    }
+
+    checkSetImpTargets(){
+        return (this.state.project.ImprovementTarget);
+    }
+
+    checkRootCauses() {
+        return (this.state.project.RootCause.length > 0);
     }
 
     render() {
@@ -35,12 +85,12 @@ export class ProjectOverview extends Component {
 				<Col>
             <table style={{width: '85%'}}>
                 <thead>
-                    <th>Pre-Event Planning</th>
-                    <th>Pre-Event Preparation</th>
-                    <th>Pre-Event Preparation</th>
-                    <th>Event Execution</th>
-                    <th>Post-Event-Implementation</th>
-                    <th>Post-Event Follow Up</th>
+                        <th>Pre-Event Planning</th>
+                        <th>Pre-Event Preparation</th>
+                        <th>Pre-Event Preparation</th>
+                        <th>Event Execution</th>
+                        <th>Post-Event-Implementation</th>
+                        <th>Post-Event Follow Up</th>
                     </thead>
                 <tbody>
                     <td>
@@ -71,7 +121,7 @@ export class ProjectOverview extends Component {
                 <LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><p>Clarify and Validate the Problem</p></LinkContainer>
                 <LinkContainer to={"/Project/IdentifyProblemStatements/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
                 <LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><p>Set Improvement Target</p></LinkContainer>
-                <LinkContainer to={"/Project/DetermineRootCauses/" + this.props.match.params.id}><p>Determine Root Cause(s)</p></LinkContainer>
+                <LinkContainer to={"/Project/DetermineRootCause/" + this.props.match.params.id}><p>Determine Root Cause(s)</p></LinkContainer>
                 <LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><p>Develop Countermeasures</p></LinkContainer>
                     </td>
                     <td>

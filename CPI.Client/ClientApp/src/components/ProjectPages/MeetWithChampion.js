@@ -1,9 +1,9 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
-import { Post } from '../../REST';
 import PropTypes from 'prop-types';
 import { NavButtons } from '../NavButtons';
+import DataHandler from '../js/DataHandler';
 
 export class MeetWithChampion extends Component {
 
@@ -15,57 +15,90 @@ export class MeetWithChampion extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true };
-
+        this.state = {
+            WingDirectorate: "",
+            Unit: "",
+            Champion: {},
+            ProcessOwner: "",
+            TeamLeads: [],
+            Facilitators: [],
+            Facilitator: "",
+            loading: true
+        }
         this.handleSave = this.handleSave.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
     }
 
-    componentDidMount() {
-        fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ project: data,  loading: false });
-            });
+    async componentDidMount() {
+        var dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+
+        this.setState({
+            WingDirectorate: data.WingDirectorate,
+            Unit: data.Unit,
+            Champion: data.Champion,
+            ProcessOwner: data.ProcessOwner,
+            TeamLeads: data.TeamLeads,
+            Facilitators: data.Facilitators,
+            Facilitator: data.Facilitator,
+            loading: false
+        });
+            
     }
 
-    handleSave() {
-        alert(JSON.stringify(this.state.project));
-        Post(this.state.project, "Project", "UpdateProject");
-        alert("changes saved");
+    async handleSave() {
+        this.setState({ loading: true });
+        let dHandler = new DataHandler();
+       
+        var sendData = {
+            WingDirectorate: this.state.WingDirectorate,
+            Unit: this.state.Unit,
+            Champion: this.state.Champion,
+            ProcessOwner: this.state.ProcessOwner,
+            TeamLeads: this.state.TeamLeads,
+            Facilitators: this.state.Facilitators,
+            Facilitator: this.state.Facilitator,
+        }
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+        if (response !== 200) {
+            alert("There was an error saving changes. Please try again or contact a system administrator")
+        } else {
+            this.setState({ loading: false });
+        }
     }
 
     handleUpdate(event) {
-        var stateProject = this.state.project;
+        var tempChampion = this.state.Champion;
         switch (event.target.id) {
             case "WingDirectorate":
-                stateProject.WingDirectorate = event.target.value;
+                this.setState({ WingDirectorate: event.target.value })
                 break;
             case "Unit":
-                stateProject.Unit = event.target.value;
+                this.setState({ Unit: event.target.value });
                 break;
             case "ChampionName":
-                stateProject.Champion.Name = event.target.value;
+                tempChampion.Name = event.target.value;
+                this.setState({ Champion: tempChampion });
                 break;
             case "ProcessOwner":
-                stateProject.ProcessOwner = event.target.value;
+                this.setState({ ProcessOwner: event.target.value });
                 break;
             case "TeamLeads":
-                stateProject.TeamLeads = event.target.value.split('\n');
+                this.setState({ TeamLeads: event.target.value.split('\n') });
                 break;
             case "Facilitators":
-                stateProject.Facilitators = event.target.value.split('\n');
+                this.setState({ Facilitators: event.target.value.split('\n') });
                 break;
             case "Facilitator":
-                stateProject.Facilitator = event.target.value;
+                this.setState({ Facilitator: event.target.value });
                 break;
             case "ChampionGoal":
-                stateProject.Champion.Goal = event.target.value;
+                tempChampion.Goal = event.target.value;
+                this.setState({ Champion: tempChampion });
                 break;
             default:
                 break;
         }
-        this.setState({ project: stateProject });
     }
 
 
@@ -99,35 +132,35 @@ export class MeetWithChampion extends Component {
                                         <tbody>
                                             <tr>
                                                 <td>Wing/Directorate:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="WingDirectorate" value={this.state.project.WingDirectorate} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="WingDirectorate" value={this.state.WingDirectorate} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Unit:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Unit" value={this.state.project.Unit} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Unit" value={this.state.Unit} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Champion:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionName" value={this.state.project.Champion ? this.state.project.Champion.Name : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionName" value={this.state.Champion ? this.state.Champion.Name : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Process Owner:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ProcessOwner" value={this.state.project.ProcessOwner} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ProcessOwner" value={this.state.ProcessOwner} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>Event Team Leader(s):</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="TeamLeads" value={this.state.project.TeamLeads ? this.state.project.TeamLeads.map(TeamLead => TeamLead + "\n") : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="TeamLeads" value={this.state.TeamLeads ? this.state.TeamLeads.map(TeamLead => TeamLead + "\n") : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
-                                                <td>Facilitator(s)-in-Training:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitators" value={this.state.project.Evaluators ? this.state.project.Evaluators.map(Evaluator => Evaluator + "\n") : ""} onChange={this.handleUpdate} /></td>
+                                                    <td>Facilitator(s)-in-Training:</td>
+                                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitators" value={this.state.Evaluators ? this.state.project.Facilitators.map(Facilitator => Facilitator + "\n") : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>*Facilitator/Trainer:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitator" value={this.state.project.Facilitator} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitator" value={this.state.Facilitator} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>CHAMPION GOAL:</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionGoal" value={this.state.project.Champion ? this.state.project.Champion.Goal : ""} onChange={this.handleUpdate} /></td>
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ChampionGoal" value={this.state.Champion ? this.state.Champion.Goal : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr style={{ border: 'none' }}><td></td><td><button className="usa-button" style={{ float: 'right' }} onClick={this.handleSave}>Save</button></td></tr>
                                         </tbody>

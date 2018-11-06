@@ -1,66 +1,57 @@
 ﻿import { NavButtons } from "../NavButtons";
 import React, { Component } from 'react';
 import '../css/uswds.css';
-import { Post } from '../../REST';
 import { DataCollectionStatus } from '../DataCollectionStatus';
+import DataHandler from "../js/DataHandler";
 
 export class NVADataCollection extends Component {
-
+    
     constructor(props) {
+
         super(props);
+
         this.state = {
-            Elements: [], championGoal: "", Type: "NVA" ,newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: 0, loading: true
+            Elements: [],
+            newElementVA: "",
+            newElementNVA: "",
+            newElementName: "",
+            newElementGoal: 0,
+            loading: true
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleNVAChange = this.handleNVAChange.bind(this);
-        this.handleVAChange = this.handleVAChange.bind(this);
-        this.handleGoalChange = this.handleGoalChange.bind(this);
+        
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleClear = this.handleClear.bind(this);
         this.handleSave = this.handleSave.bind(this);
+
     }
 
-    componentDidMount() {
-		fetch('api/Project/GetProjectAsync?id=' + this.props.match.params.id)
-			.then(response => response.json())
-            .then(data => {
-                this.setState({ Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal});
-            });
-    }
-    
-    handleGoalChange(event) {
-        this.setState({ newElementGoal: event.target.value });
-    }
+    async componentDidMount() {
+        var dHandler = new DataHandler();
 
-    handleNameChange(event) {
-        this.setState({ newElementName: event.target.value });
+        let data = await dHandler.getProject(this.props.match.params.id);
+
+        this.setState({ Elements: data.Elements, Standard: data.Standard, loading: false });
     }
-
-    handleVAChange(event) {
-        this.setState({newElementVA: event.target.value });
-    }
-
-    handleNVAChange(event) {
-        this.setState({newElementNVA: event.target.value });
-	}
-
 
     handleAdd() {
+
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
-            var elements = this.state.Elements;
-            elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
+            let elements = this.state.Elements;
+            elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Type: "NVA", Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
-            alert("gib #");
+            alert("Valid entries required to add data");
         }
     }
+
     handleDelete(event) {
         var elements = this.state.Elements;
         elements.splice(event.target.id, 1);
         this.setState({ Elements: elements });
     }
+
     handleEdit(event) {
         if (this.state.newElementName || this.state.newElementNVA || this.state.newElementVA) {
             alert("Please ensure the current entries are empty. Please add or clear current entry");
@@ -71,28 +62,22 @@ export class NVADataCollection extends Component {
             this.setState({ newElementGoal: selected.Goal, newElementName: selected.Name, newElementNVA: selected.NVA, newElementVA: selected.VA, Elements: elements });
         }
     }
+
     handleClear() {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
     }
 
-    handleSave() {
+    async handleSave() {
+        let dHandler = new DataHandler();
+        let elements = this.state.Elements;
 
-        var type = "NVA";
-        var elements = this.state.Elements;
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
-		var postData = {
-			_id: this.props.match.params.id,
-			DataCollection: {
-				Type: type,
-				Elements: elements
-			}
-        };
-        alert(JSON.stringify(postData));
-
-		Post(postData, "Project", "UpdateDataCollection");
-
         
-        
+        let postData = {
+            Elements: elements
+        }
+
+        dHandler.modifyProject(postData, this.props.match.params.id);
     }
 
     NVAPercentage(nva, va) {
@@ -101,8 +86,10 @@ export class NVADataCollection extends Component {
         let total = flNVA + flVA;
         return Math.round((flNVA * 100) / total);
     }
+
+    
     NVAGoal(goal, nva, va) {
-        return goal > this.NVAPercentage(nva, va);
+        return goal >= this.NVAPercentage(nva, va);
     }
 
     calculateAverageGoal() {
@@ -112,6 +99,7 @@ export class NVADataCollection extends Component {
         }
         return total / this.state.Elements.length;
     }
+
     calculateUnsat() {
         var unsats = 0;
         this.state.Elements.forEach(
@@ -155,12 +143,12 @@ export class NVADataCollection extends Component {
                                     <td><button id={i} onClick={this.handleEdit}>Edit</button></td>
                                 </tr>
                                 )) : <div/>}
-                        <tr>
-                            <td><input type="text" id="Name" onChange={this.handleNameChange} value={this.state.newElementName} required aria-required /></td>
-                            <td><input type="text" id="VA" onChange={this.handleVAChange} value={this.state.newElementVA} required aria-required /></td>
-                            <td><input type="text" id="NVA" onChange={this.handleNVAChange} value={this.state.newElementNVA} required aria-required /></td>
-                            <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
-                            <td><input type="text" id="Goal" onChange={this.handleGoalChange} value={this.state.newElementGoal} required aria-required /></td>
+                            <tr>
+                                <td><input type="text" id="Name" onChange={(event) => this.setState({ newElementName: event.target.value })} value={this.state.newElementName} required aria-required /></td>
+                                <td><input type="text" id="VA" onChange={(event) => this.setState({ newElementVA: event.target.value })} value={this.state.newElementVA} required aria-required /></td>
+                                <td><input type="text" id="NVA" onChange={(event) => this.setState({ newElementNVA: event.target.value })} value={this.state.newElementNVA} required aria-required /></td>
+                                <td>{(isNaN(this.state.newElementNVA) || isNaN(this.state.newElementVA)) || (!this.state.newElementNVA) ? "Enter valid numbers" : (this.NVAPercentage(this.state.newElementNVA, this.state.newElementVA))}</td>
+                                <td><input type="text" id="Goal" onChange={(event) => this.setState({ newElementGoal: event.target.value })} value={this.state.newElementGoal} required aria-required /></td>
                             <td>{this.NVAGoal(this.state.newElementGoal, this.state.newElementNVA, this.state.newElementVA) ? "Success" : "Fail"}</td>
                             <td><input type="submit" value="Add" onClick={this.handleAdd} /></td>
                             <td><input type="submit" value="Clear" onClick={this.handleClear}/></td>
@@ -170,7 +158,7 @@ export class NVADataCollection extends Component {
                     <div style={{ float: 'right' }}>
                         <button onClick={this.handleSave}>Save Data</button>
                     </div>
-                    </div>
+                </div>
             );
         }
     }  

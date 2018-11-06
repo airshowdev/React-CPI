@@ -3,6 +3,9 @@ import './css/uswds.css';
 import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+import DataHandler from './js/DataHandler';
+
+
 
 export class Projects extends Component {  
     static contextTypes = {
@@ -15,15 +18,15 @@ export class Projects extends Component {
         this.state = { project: [], loading: true };
 	}
 
-	componentDidMount() {
-
-		fetch('api/Project/AllProjectsAsync')
-			.then(response => response.json())
-			.then(data => {
-				this.setState({ project: data, loading: false });
-			});
-
+    async componentDidMount() {
+        var dataHandler = new DataHandler();
+        let response = await dataHandler.getProjects();
+        this.setState({ project: response, loading: false });
 	}
+
+    componentDidCatch() {
+        alert("Oh no, it broke");
+    }
 
     renderProjectsTable(project) {
 		return (
