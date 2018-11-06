@@ -6,12 +6,11 @@ import { Post } from '../REST';
 import { NavButtons } from './NavButtons';
 
 export class SeeCountermeasuresThrough extends Component {
-
-    displayName = SeeCountermeasuresThrough.name;
-
     static contextTypes = {
         router: PropTypes.object
     }
+    displayName = SeeCountermeasuresThrough.name;
+
     constructor(props, context) {
         super(props, context)
 		this.state = { project: {}, loading: true, RootCauses: []};

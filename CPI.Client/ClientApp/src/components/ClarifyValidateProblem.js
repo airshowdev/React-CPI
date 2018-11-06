@@ -3,6 +3,7 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
 import { NavButtons } from './NavButtons';
+import { Grid, Col, Row } from 'react-bootstrap';
 
 export class ClarifyValidateProblem extends Component {
 
@@ -10,7 +11,7 @@ export class ClarifyValidateProblem extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { problemStatement: {}, loading: true };
+        this.state = { project: [], loading: true, problemStatement: "" };
 
         this.handleSave = this.handleSave.bind(this);
     }
@@ -26,31 +27,38 @@ export class ClarifyValidateProblem extends Component {
     handleSave() {
         var tempProj = this.state.project;
         tempProj.ProblemStatement = this.state.problemStatement;
-        Post(this.state.project, "Project", "UpdateProject");
+        alert(JSON.stringify(tempProj));
+        Post(tempProj, "Project", "UpdateProject");
+        this.setState({ project: tempProj });
     }
 
     render() {
         if (this.state.loading) {
-            return <span>Loading</span>;
+            return (<span>Loading...</span>)
         } else {
             return (
-                <div>
-                    <NavButtons next="IdentifyPerformanceGaps" previous="RoomSetup" projectId={this.props.match.params.id} />
-                <div className="paragraph">
-                    <h1> PPSM Step 1 - Clarify and Validate the Problem </h1>
-                    <p>Using the information below, create a problem statement<br />What is the Process and Issue?<br />What organization owns the process?<br />What organizations are affected by the process?<br />What is happening in the process?<br />What should be happening in the process?<br />What is the critical to (x) factor? (time, cost, quality, variation)</p>
-                    <div className="text-area-align">
-                        <div style={{ width: "50%", display: "inline-block" }}>
-                            <textarea value={this.state.problemStatement} onChange={(event) => { this.setState({ problemStatement: event.target.value }) }}>Problem Statement:</textarea>
+                <Grid>
+                    <Col style={{ paddingBottom: 50}}>
+                        <NavButtons next="IdentifyPerformanceGaps" previous="RoomSetup" projectId={this.props.match.params.id} />
+                    </Col>
+                    <Col>
+                        <div className="paragraph">
+                            <h1> PPSM Step 1 - Clarify and Validate the Problem </h1>
+                            <p>Using the information below, create a problem statement<br />What is the Process and Issue?<br />What organization owns the process?<br />What organizations are affected by the process?<br />What is happening in the process?<br />What should be happening in the process?<br />What is the critical to (x) factor? (time, cost, quality, variation)</p>
+                            <div className="text-area-align">
+                                <div style={{ width: "50%", display: "inline-block" }}>
+                                    <textarea value={this.state.problemStatement} onChange={(event) => this.setState({ problemStatement: event.target.value })} placeholder="Problem Statement" />
+                                </div>
+                                <div style={{ border: "solid 1px", padding: "3px", float: "right", marginTop: "10px", marginRight: "25px" }} >
+                                    <p>Example:  From 1 Jan 2015 to 1 Jan 2016, 77 of 250 775th<br /> Mission Support Group  EPRs returned to MPS after<br /> suspense. VOC is 250 of 250 EPRs turned in to MPS NLT<br /> suspense date.</p>
+                                </div>
+                            </div>
+                            <button onClick={this.handleSave}>Save</button>
                         </div>
-                        <div style={{ border: "solid 1px", padding: "3px", float: "right", marginTop: "10px", marginRight: "25px" }} >
-                            <p>Example:  From 1 Jan 2015 to 1 Jan 2016, 77 of 250 775th<br /> Mission Support Group  EPRs returned to MPS after<br /> suspense. VOC is 250 of 250 EPRs turned in to MPS NLT<br /> suspense date.</p>
-                        </div>
-                    </div>
-                    <button onClick={this.handleSave}>Save</button>
-                    </div>
-                    </div>
+                    </Col>
+                </Grid>
             )
         }
     }
+    
 }

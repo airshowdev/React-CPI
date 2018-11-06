@@ -2,17 +2,63 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { NavButtons } from './NavButtons';
+import { Post } from '../REST';
 
 export class StandardizeSuccessfulProcess extends Component {
-
+    
     displayName = StandardizeSuccessfulProcess.name
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true };
+        this.state = { project: {}, loading: true, Processes: [] };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
-    render(project) {
+
+    componentDidMount() {
+        fetch("api/Project/GetProjectAsync?id=" + this.props.match.params.id)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ project: data, loading: false, Processes: data.SSProcesses });
+            });
+    }
+
+    handleChange(event) {
+        var tempProcesses = this.state.Processes;
+        var id = parseInt(event.target.id);
+        var value = event.target.value;
+      
+        switch (event.target.name) {
+            case "Item":
+                tempProcesses[id].Item = value;
+                break;
+            case "POC":
+                tempProcesses[id].POC = value;
+                break;
+            case "Date":
+                tempProcesses[id].Date = value;
+                break;
+            case "Status":
+                tempProcesses[id].Status = value;
+                break;
+        }
+
+        this.setState({ Processes: tempProcesses });
+    }
+
+    handleSave() {
+        var tempProject = this.state.project;
+
+        tempProject.SSProcesses = this.state.Processes;
+
+        Post(this.state.project, "Project", "UpdateProject");
+        
+        this.setState({ project: tempProject });
+    }
+
+    render() {
         return (
             <div>
                 <NavButtons previous="ConfirmResults" projectId={this.props.match.params.id} />
@@ -29,19 +75,22 @@ export class StandardizeSuccessfulProcess extends Component {
                         <table className="standardize-process-table">
                             <thead>
                                 <th style={{ minWidth: "400px" }}>Task</th>
-                                <th>Action Officer</th>
+                                <th>POC</th>
                                 <th >Date</th>
                                 <th>Status</th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                </tr>
+                                <tbody>
+                                    {this.state.Processes.map((x, i) => 
+                                        (<tr>
+                                            <td style={{ padding: "0px" }}><input id={i} name="Item" type="text" placeholder="x" value={x.Item} onChange={this.handleChange} /></td>
+                                            <td style={{ padding: "0px" }}><input id={i} name="POC" type="text" placeholder="x" value={x.POC} onChange={this.handleChange} /></td>
+                                            <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input id={i} name="Date" type="text" placeholder="x" value={x.Date} onChange={this.handleChange} /></td>
+                                            <td style={{ padding: "0px" }}><input id={i} name="Status" type="text" placeholder="x" value={x.Status} onChange={this.handleChange} /></td>
+                                        </tr>)
+                                    )}
                             </tbody>
-                        </table>
+                            </table>
+                            <button onClick={this.handleSave}>Save</button>
                     </div>
                 </div>
                 </div>

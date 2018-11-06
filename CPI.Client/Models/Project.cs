@@ -67,7 +67,6 @@ namespace CPI.Client.Models
         [BsonDefaultValue(new string[0])]         
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new string[0];
-
         
          
         [JsonProperty("TeamLeads")]
@@ -76,7 +75,6 @@ namespace CPI.Client.Models
         [BsonIgnoreIfDefault]
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new string[0];
-  
         
          
         [JsonProperty("Facilitator")]
@@ -121,7 +119,24 @@ namespace CPI.Client.Models
 
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
-        
+
+        [JsonProperty("SSProcesses")]
+        public IList<Process> SSProcesses { get; set; } = new List<Process>();
+    }
+
+    public partial class Process
+    {
+        [JsonProperty("Item")]
+        public string Item { get; set; } = "";
+
+        [JsonProperty("POC")]
+        public string POC { get; set; } = "";
+
+        [JsonProperty("Date")]
+        public string Date { get; set; } = "";
+
+        [JsonProperty("Status")]
+        public string Status { get; set; } = "";
     }
 
     public partial class DesiredEffects

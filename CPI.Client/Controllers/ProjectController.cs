@@ -690,7 +690,9 @@ namespace CPI.Client.Controllers
                     .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
                     .Set(x => x.Dates, updateProject.Dates)
                     .Set(x => x.Name, updateProject.Name)
-                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap);
+                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap)
+                    .Set(x => x.ProblemStatement, updateProject.ProblemStatement)
+                    .Set(x => x.SSProcesses, updateProject.SSProcesses);
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
 
