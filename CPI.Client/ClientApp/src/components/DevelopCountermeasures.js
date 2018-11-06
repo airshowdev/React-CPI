@@ -3,7 +3,9 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Post } from "../REST";
+
 import DataHandler from './js/DataHandler';
+
 
 export class DevelopCountermeasures extends Component {
 
@@ -96,6 +98,8 @@ export class DevelopCountermeasures extends Component {
             return (<div style={{ left: '50vw', top: '50vh', position: 'absolute' }}>Loading Data</div>);
         } else {
             return (
+                <div>
+                    <NavButtons next="SeeCountermeasuresThrough" previous="DetermineRootCause" projectId={this.props.match.params.id} />
                 <div className="paragraph">
                     <h1> PPSM Step 5 - Develop Countermeasures </h1>
                     <div style={{ border: "solid", borderLeft: "hidden", borderRight: "hidden", borderBottom: "hidden", marginLeft: "20px", marginRight: "20px", marginBottom: "3px" }}>
@@ -130,7 +134,8 @@ export class DevelopCountermeasures extends Component {
                     </div>
 
                     <button onClick={this.handleSave}>Yeet</button>
-                </div>
+                    </div>
+                    </div>
             );
         }
     }

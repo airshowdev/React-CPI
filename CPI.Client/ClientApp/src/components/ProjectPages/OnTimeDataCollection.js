@@ -82,6 +82,7 @@ export class OnTimeDataCollection extends Component {
         };
 
         dHandler.modifyProject(postData, this.props.match.params.id);
+
     }
 
     handleStandardChange(event) {

@@ -2,7 +2,12 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+
 import DataHandler from './js/DataHandler';
+
+import { NavButtons } from './NavButtons';
+import { Col, Grid, Row } from 'react-bootstrap';
+
 
 export class IdentifyPerformanceGaps extends Component {
 
@@ -21,6 +26,7 @@ export class IdentifyPerformanceGaps extends Component {
             
     }
 
+
     async handleSave() {
         
         let dHandler = new DataHandler();
@@ -34,19 +40,31 @@ export class IdentifyPerformanceGaps extends Component {
         } else {
             this.setState({ loading: false });
         }
+
     }
 
     render() {
-        return (
-            <div className="paragraph">
-                <h1> PPSM Step 2 - Identify Performance Gaps </h1>
-                <div><h3>Chart goes here</h3></div>
-                <p>Identify the performance Gaps in the current process by comparing current performance to the process goal</p>
-                <div className="paragraph" style={{ border: "none" }}>
-                    <textarea onChange={(event) => this.setState({ PerformanceGap: event.target.value })} value={this.state.PerformanceGap} placeholder="Performance Gap" className="performance-gap-text-area"></textarea>   
-                </div>
-                <button onClick={this.handleSave}>Save</button>
-            </div>
-        )
+        if (this.state.loading) {
+            return (<span>Loading</span>)
+        } else {
+            return (
+                <Grid>
+                    <Col style={{ paddingBottom: 50 }}>
+                        <NavButtons next="SetImprovementTargets" previous="ClarifyValidateProblem" projectId={this.props.match.params.id} />
+                    </Col>
+                    <Col>
+                        <div className="paragraph">
+                            <h1> PPSM Step 2 - Identify Performance Gaps </h1>
+                            <div><h3>Chart goes here</h3></div>
+                            <p>Identify the performance Gaps in the current process by comparing current performance to the process goal</p>
+                            <div className="paragraph" style={{ border: "none" }}>
+                                <textarea onChange={(event) => this.setState({ PerformanceGap: event.target.value })} value={this.state.PerformanceGap} placeholder="Performance Gap" className="performance-gap-text-area" />
+                            </div>
+                            <button onClick={this.handleSave}>Save</button>
+                        </div>
+                    </Col>
+                </Grid>
+            )
+        }
     }
 }

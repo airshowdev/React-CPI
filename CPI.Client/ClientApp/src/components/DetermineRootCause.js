@@ -2,7 +2,9 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import { Post } from '../REST';
+
 import DataHandler from './js/DataHandler';
+
 
 export class DetermineRootCause extends Component {
 
@@ -76,6 +78,8 @@ export class DetermineRootCause extends Component {
             return (<div style={{ left: '50vw', top: '50vh', position: 'absolute' }}>Loading Data</div>);
         } else {
             return (
+                <div>
+                    <NavButtons next="DevelopCountermeasures" previous="SetImprovementTargets" projectId={this.props.match.params.id} />
                 <div className="paragraph">
                     <h1> PPSM Step 4 - Determine Root Cause </h1>
                     <div style={{ textAlign: "left", margin: "20px", border: "solid 1px", width: "15vw", paddingLeft: "5px", backgroundColor: "rgba(0, 113, 188, 0.8)", color: "white" }}>
@@ -113,7 +117,8 @@ export class DetermineRootCause extends Component {
                     <div>
                         <p>CHART HERE</p>
                     </div>
-                </div>
+                    </div>
+                    </div>
             )
         }
     }

@@ -12,18 +12,18 @@ export class Layout extends Component {
       return (
         <Grid>
         <Row>
-        <Col>
-            <MenuHeader />
-        </Col>
+            <Col>
+                <MenuHeader />
+            </Col>
         </Row>
-			  <Row style={{paddingTop: "30px"}}>
-            <Col style={{ float: 'left', width: '15%' }}>
-                      <Route path="/Project/:Page/:id" component={SideNav} />
-                  </Col>
-                  <Col style={{width: '85%', float: 'right'}}>
-                    {this.props.children}
-                </Col>
-            </Row>
+              <Row>
+                  <Col style={{ float: 'left', width: '15%' }}>
+                <Route path="/Project/:Page/:id" component={SideNav} />
+            </Col>
+            <Col style={{ width: '70%', left: '15%', margin: 'auto'}}>
+                {this.props.children}
+            </Col>
+        </Row>
         </Grid>
     );
   }

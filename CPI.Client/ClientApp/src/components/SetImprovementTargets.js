@@ -2,6 +2,9 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import DataHandler from './js/DataHandler';
+import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
+
 
 export class SetImprovementTargets extends Component {
 
@@ -9,6 +12,7 @@ export class SetImprovementTargets extends Component {
 
     constructor(props, context) {
         super(props, context)
+
         this.state = { PerformanceGap: "", loading: true };
     }
 
@@ -62,5 +66,6 @@ export class SetImprovementTargets extends Component {
                 </div>
             )
         }
+
     }
 }

@@ -49,10 +49,17 @@ namespace CPI.Client.Controllers
         [HttpPost("[action]")]
         public async Task<Response> UpdateDataCollection()
         {
+            Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             string json = "";
 
-            Response httpResponse = new Response();
+            
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -129,6 +136,13 @@ namespace CPI.Client.Controllers
         {
 
            Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             string json = "";
 
             JObject jObj;
@@ -214,6 +228,12 @@ namespace CPI.Client.Controllers
 
             Response httpResponse = new Response();
 
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
             {
@@ -282,6 +302,12 @@ namespace CPI.Client.Controllers
             string json = "";
 
             Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -356,6 +382,12 @@ namespace CPI.Client.Controllers
         {
             string json = "";
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
 
             JObject jObj;
             using (StreamReader reader = new StreamReader(Request.Body))
@@ -484,7 +516,8 @@ namespace CPI.Client.Controllers
 
                 Log4NetLogger.Info("Get project process completed succesfully");
 
-                return (await cursor.FirstAsync());
+                return await cursor.FirstAsync();
+                
             }
             catch (Exception E)
             {
@@ -499,6 +532,13 @@ namespace CPI.Client.Controllers
             Log4NetLogger.Info("Create project process started");
 
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
+
             try
             {
                 string json = "";
@@ -517,6 +557,7 @@ namespace CPI.Client.Controllers
                 string projectName = project.GetValue("Name").ToString();
 
                 Project newProject = Project.FromJson(json);
+				newProject.id = new ObjectId();
 
                 MongoClient client;
                 if (Client == null)
@@ -529,12 +570,12 @@ namespace CPI.Client.Controllers
                 IMongoDatabase database = client.GetDatabase("CPI_Database");
 
                 IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                await projects.InsertOneAsync(newProject);
+                   await projects.InsertOneAsync(newProject);
 
                 Log4NetLogger.Info("Create project process completed succesfully");
 
                 httpResponse.Status = "200";
-                httpResponse.Body = "Project delete successfully completed";
+                httpResponse.Body = newProject.id.ToString();
             }
 
             catch (Exception E)
@@ -552,6 +593,12 @@ namespace CPI.Client.Controllers
         {
 
             CPI.Client.Response httpResponse = new Response();
+
+            if (!CurrentUser.IsAuthenticated)
+            {
+                httpResponse.Status = "401";
+                httpResponse.Body = "User does not have valid permissions";
+            }
             try
             {
                 MongoClient client;
@@ -643,11 +690,11 @@ namespace CPI.Client.Controllers
                     .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
                     .Set(x => x.Dates, updateProject.Dates)
                     .Set(x => x.Name, updateProject.Name)
-                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap);
+                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap)
+                    .Set(x => x.ProblemStatement, updateProject.ProblemStatement)
+                    .Set(x => x.SSProcesses, updateProject.SSProcesses);
 
                 UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
-
-                //Response.Body = result.ToJson().ToStream();
 
                 Log4NetLogger.Info("Update project process completed succesfully");
 
@@ -684,7 +731,7 @@ namespace CPI.Client.Controllers
                 Project project = await GetProjectAsync(id);
 
 
-                switch (page.ToUpper())
+                switch (page.ToUpper().Replace(" ", ""))
                 {
                     case "DATACOLLECTION":
                         returnObj =  project.DataCollection;
@@ -714,6 +761,13 @@ namespace CPI.Client.Controllers
                         break;
                     case "CAUSEANDCOUNTERS":
                         returnObj = project.RootCauses;
+                        break;
+                    case "ANALYZEDATA":
+                        returnObj = new
+                        {
+                            project.Champion,
+                            project.DataCollection
+                        };
                         break;
                     default:
                         returnObj = null;

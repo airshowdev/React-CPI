@@ -1,5 +1,4 @@
-﻿var address = 'https://localhost:5001/v1';
-            /*http://10.10.3.27:1337/v1 */
+﻿var address = 'https:/cpi.dev.595scsdevelopment.com/api/v1';
 export default class DataHandler {
 
     //GET
@@ -62,6 +61,12 @@ export default class DataHandler {
             body: JSON.stringify(project)
         })
         return response.status;
+
+    }
+
+    async getNVADataCollection(id, component) {
+        let project = await this.getProject(id);
+        component.setState({ Elements: project.DataCollection.Elements, loading: false, championGoal: project.Champion.Goal, Type: project.DataCollection.Type })
     }
 
 

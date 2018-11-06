@@ -3,21 +3,27 @@ import './css/uswds.css';
 import { NavButtons } from './NavButtons';
 import DataHandler from './js/DataHandler';
 
+import { Post } from '../REST';
+
+
 export class ProjectInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { project: {}, loading: true };
+        this.state = { project: {}, loading: true, dataHandler: new DataHandler() };
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
 
     async componentDidMount() {
         let dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
         console.log(JSON.stringify(data));
 		this.setState({ project: data, loading: false });
+
+
     }
 
     handleUpdate(event) {
@@ -49,6 +55,7 @@ export class ProjectInfo extends Component {
 
 
     async handleSubmit() {
+
         let dHandler = new DataHandler();
         let sendData = this.state.project;
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
@@ -59,6 +66,7 @@ export class ProjectInfo extends Component {
             this.setState({ loading: false });
         }
         
+
     }
 
     
@@ -68,8 +76,10 @@ export class ProjectInfo extends Component {
         } else {
 			return (
 				<div>
+
 					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
                 <div id="projectInfo">
+
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
                         <div className="usa-width-one-half">
                             <label htmlFor="ID">ID</label>
@@ -96,8 +106,10 @@ export class ProjectInfo extends Component {
 								<label htmlFor="Mentor">Mentor</label>
 								<input id="Mentor" name="Mentor" type="text" onChange={this.handleUpdate} value={this.state.project.Mentor} /> */}
                                 <button id="Submit" onClick={this.handleSubmit}>Save Changes</button>
+
                         </div>
                     </div>
+
 						</div>
 				</div>
             );

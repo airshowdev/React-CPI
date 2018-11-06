@@ -5,7 +5,9 @@ import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
+
 import DataHandler from '../js/DataHandler';
+import { Col, Grid, Row } from 'react-bootstrap';
 
 export class ProjectOverview extends Component {
 
@@ -75,9 +77,12 @@ export class ProjectOverview extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
+		return (
+			<Grid>
+                <Col style={{ paddingBottom: 15 }}>
+                    <NavButtons next="DataCollection" previous="ProjectInfo" projectId={this.props.match.params.id} title="Project Overview" />
+				</Col>
+				<Col>
             <table style={{width: '85%'}}>
                 <thead>
                         <th>Pre-Event Planning</th>
@@ -114,7 +119,7 @@ export class ProjectOverview extends Component {
                     </td>
                     <td>
                 <LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><p>Clarify and Validate the Problem</p></LinkContainer>
-                <LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
+                <LinkContainer to={"/Project/IdentifyProblemStatements/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
                 <LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><p>Set Improvement Target</p></LinkContainer>
                 <LinkContainer to={"/Project/DetermineRootCause/" + this.props.match.params.id}><p>Determine Root Cause(s)</p></LinkContainer>
                 <LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><p>Develop Countermeasures</p></LinkContainer>
@@ -128,8 +133,9 @@ export class ProjectOverview extends Component {
                         <LinkContainer to={"/Project/StandardizeSuccessfulProcess/" + this.props.match.params.id}><p>Standardize Successful Process</p></LinkContainer>
                     </td>
                 </tbody>
-                </table>
-            </div>
+					</table>
+				</Col>
+			</Grid>
         );
     }
 }

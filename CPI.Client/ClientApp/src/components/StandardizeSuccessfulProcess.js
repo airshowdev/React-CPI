@@ -1,14 +1,20 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+
 import DataHandler from './js/DataHandler';
 
-export class StandardizeSuccessfulProcess extends Component {
+import { NavButtons } from './NavButtons';
+import { Post } from '../REST';
 
+
+export class StandardizeSuccessfulProcess extends Component {
+    
     displayName = StandardizeSuccessfulProcess.name
 
     constructor(props, context) {
         super(props, context)
+
         this.state = { loading: true, rootCauses: [] };
     }
 
@@ -25,7 +31,10 @@ export class StandardizeSuccessfulProcess extends Component {
 
     }
     render(project) {
+
         return (
+            <div>
+                <NavButtons previous="ConfirmResults" projectId={this.props.match.params.id} />
             <div className="usa-grid">
                 <div className="paragraph">
                     <h1> PPSM Step 8 - Standardize Successful Process </h1>
@@ -39,10 +48,11 @@ export class StandardizeSuccessfulProcess extends Component {
                         <table className="standardize-process-table">
                             <thead>
                                 <th style={{ minWidth: "400px" }}>Task</th>
-                                <th>Action Officer</th>
+                                <th>POC</th>
                                 <th >Date</th>
                                 <th>Status</th>
                             </thead>
+
                             <tbody>
                                 {this.state.rootCauses.map((el, i) =>
                                     el.Countermeasures.map((cm, j) =>
@@ -53,11 +63,14 @@ export class StandardizeSuccessfulProcess extends Component {
                                             <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Status} /></td>
                                         </tr>
                                     ))}
+
                             </tbody>
-                        </table>
+                            </table>
+                            <button onClick={this.handleSave}>Save</button>
                     </div>
                 </div>
-            </div>
+                </div>
+                </div>
         )
     }
 }

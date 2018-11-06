@@ -108,7 +108,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/ClarifyValidateProblem/" + this.props.match.params.id}><a>1. Clarify and Validate the Problem</a></LinkContainer>
                             </li>
                             <li>
-							<LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><a>2. Identify Performance Gaps</a></LinkContainer>
+							<LinkContainer to={"/Project/IdentifyProblemStatements/" + this.props.match.params.id}><a>2. Identify Performance Gaps</a></LinkContainer>
                             </li>
 							<li>
 							<LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><a>3. Set Improvement Targets</a></LinkContainer>
@@ -128,7 +128,7 @@ export class SideNav extends Component {
 							<LinkContainer to={"/Project/SeeCountermeasuresThrough/" + this.props.match.params.id}><a>6. See Countermeasures Through</a></LinkContainer>
                                 </li>
                                 <li>
-							<LinkContainer to={"/Project/ValidateResults/" + this.props.match.params.id}><a>7. Validate Results</a></LinkContainer>
+							<LinkContainer to={"/Project/ConfirmResults/" + this.props.match.params.id}><a>7. Validate Results</a></LinkContainer>
                                 </li>
                             </ul>
 					</li>

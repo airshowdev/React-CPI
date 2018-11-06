@@ -95,6 +95,7 @@ export class MeetWithTeamLead extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
         if (response !== 200) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
+
         }
     }
 

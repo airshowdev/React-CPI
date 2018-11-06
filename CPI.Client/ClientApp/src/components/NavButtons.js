@@ -1,6 +1,7 @@
 ﻿import React, { Component } from "react";
 import './css/uswds.css';
 import PropTypes from 'prop-types';
+import { Col, Grid, Row } from 'react-bootstrap';
 
 export class NavButtons extends Component {
     static contextTypes = {
@@ -8,18 +9,17 @@ export class NavButtons extends Component {
     }
 
     displayName = NavButtons.name
+
     render() {
 		return (
-			<div className="button-nav">
-				<span id="left">
-					<button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button">Previous</button>
-                </span>
-                <span id="center"><label style={{ fontSize: '30px' }}>{this.props.title}</label></span>
-
-				<span id="right">
-					<button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button">Next</button>
-				</span>
-			</div>
+			<Grid>
+                <Col style={{ float: 'left' }}>
+                    <button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button" style={!this.props.previous ? { display: "none" } : {}}>Previous</button>
+				</Col>
+                <Col style={{ float: 'right' }}>
+                    <button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button" style={!this.props.next ? { display: "none" } : {}}>Next</button>
+				</Col>
+			</Grid>
         );
     }
 }

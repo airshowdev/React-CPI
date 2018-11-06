@@ -2,15 +2,19 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 import PropTypes from 'prop-types';
+
 import DataHandler from './js/DataHandler';
 
+import { Post } from '../REST';
+import { NavButtons } from './NavButtons';
+
+
 export class SeeCountermeasuresThrough extends Component {
-
-    displayName = SeeCountermeasuresThrough.name;
-
     static contextTypes = {
         router: PropTypes.object
     }
+    displayName = SeeCountermeasuresThrough.name;
+
     constructor(props, context) {
         super(props, context)
         this.state = { loading: true, rootCauses: [] };
@@ -65,5 +69,6 @@ export class SeeCountermeasuresThrough extends Component {
                 </div>
             )
         }
+
     }
 }

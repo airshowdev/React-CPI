@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
 import '../css/HallMartino.css';
+import { NavButtons } from '../NavButtons';
 
 export class ValidateDataCollection extends Component {
 
@@ -13,10 +14,13 @@ export class ValidateDataCollection extends Component {
 
     render() {
         return (
+            <div>
+                <NavButtons next="ObtainSupplies" previous="TeamKickOffAwarenessTraining" projectId={this.props.match.params.id} />
             <div className="paragraph">
                 <h1> Validate Data Collection </h1>
                 <p>A successful event relies on accurate data. Faulty data may point the team in the wrong<br /> direction it will be difficult to get “buy-in” from the team if they do not believe the data being<br /> used in the event. During this portion of the Kick-off, present data to Subject Matter Experts<br /> (SMEs) and allow them to provide feedback. If the data is not accurate or additional<br /> information needs to be gathered, now is the time!</p>
-            </div>
+                </div>
+                </div>
         );
     }
 }

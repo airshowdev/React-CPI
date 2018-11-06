@@ -21,6 +21,12 @@ namespace CPI.Client.Models
             };
         }
 
+        [JsonProperty("IdentifyPerformanceGap")]
+        public string IdentifyPerformanceGap { get; set; } = "";
+
+        [JsonProperty("ImprovementTarget")]
+        public string ImprovementTarget { get; set; } = "";
+
         [BsonIgnore]
         [JsonProperty("_id")]
         public string ID { get { return id.ToString(); } set { id = new ObjectId(value); } }
@@ -58,13 +64,14 @@ namespace CPI.Client.Models
         public string WingDirectorate { get; set; } = "";
 
 
+
         [BsonDefaultValue(new string[0])]
 
+
+        [BsonDefaultValue(new string[0])]         
+
         [JsonProperty("Evaluators")]
-
         public IList<string> Evaluators { get; set; } = new string[0];
-
-
 
         [JsonProperty("TeamLeads")]
         public IList<string> TeamLeads { get; set; } = new string[0];
@@ -73,7 +80,8 @@ namespace CPI.Client.Models
         [JsonProperty("Facilitators")]
         public IList<string> Facilitators { get; set; } = new string[0];
 
-        [JsonProperty("SSProcesses")]
+
+        [JsonProperty("Processes")]
         public IList<Process> SSProcesses { get; set; } = new List<Process>();
 
         [JsonProperty("Facilitator")]
@@ -81,6 +89,7 @@ namespace CPI.Client.Models
 
         [JsonProperty("IdentifyPerformanceGap")]
         public string IdentifyPerformanceGap { get; set; } = "";
+
 
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
@@ -121,6 +130,24 @@ namespace CPI.Client.Models
 
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
+
+        [JsonProperty("SSProcesses")]
+        public IList<Process> SSProcesses { get; set; } = new List<Process>();
+    }
+
+    public partial class Process
+    {
+        [JsonProperty("Item")]
+        public string Item { get; set; } = "";
+
+        [JsonProperty("POC")]
+        public string POC { get; set; } = "";
+
+        [JsonProperty("Date")]
+        public string Date { get; set; } = "";
+
+        [JsonProperty("Status")]
+        public string Status { get; set; } = "";
     }
 
     public partial class Process
@@ -181,6 +208,7 @@ namespace CPI.Client.Models
         public string Status { get; set; } = "";
     }
 
+    
     public partial class Champion
     {
         
@@ -228,8 +256,6 @@ namespace CPI.Client.Models
 
     public partial class Response
     {
-        
-         
         [JsonProperty("Concur")]
         public string Concur { get; set; } = "";
     }
