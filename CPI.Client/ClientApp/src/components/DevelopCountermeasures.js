@@ -3,6 +3,7 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Post } from "../REST";
+import { NavButtons } from "./NavButtons";
 
 import DataHandler from './js/DataHandler';
 
