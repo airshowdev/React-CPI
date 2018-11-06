@@ -16,7 +16,7 @@
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "mochatest":  "mocha",
+    "mochatest": "mocha",
     "eject": "react-scripts eject"
   }
 }

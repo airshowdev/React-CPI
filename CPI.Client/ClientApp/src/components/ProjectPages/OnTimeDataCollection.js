@@ -39,7 +39,7 @@ export class OnTimeDataCollection extends Component {
     async componentDidMount() {
         let dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id)
-        this.setState({ DataCollection: data, Elements: data.DataCollection.Elements, loading: false, championGoal: data.Champion.Goal, Type: data.DataCollection.Type, Standard: data.DataCollection.Standard });
+        this.setState({ Elements: data.Elements, loading: false, Standard: data.Standard });
     }
 
 
@@ -72,21 +72,16 @@ export class OnTimeDataCollection extends Component {
     }
     
     async handleSave() {
-        var type = "OnTime";
-        var elements = this.state.Elements;
-        var standard = this.state.Standard;
-        var postData = {
-			_id: this.props.match.params.id,
-			DataCollection: {
-				Type: type,
-                Elements: elements,
-                Standard: standard
-  
-			}
-        };
-        alert(JSON.stringify(postData));
+        let dHandler = new DataHandler();
+        let elements = this.state.Elements;
 
-        Post(postData, "Project", "UpdateDataCollection");
+        //elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
+
+        let postData = {
+           Elements: elements,
+        };
+
+        dHandler.modifyProject(postData, this.props.match.params.id);
     }
 
     handleStandardChange(event) {

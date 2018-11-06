@@ -41,13 +41,13 @@ export class MeetWithTeamLead extends Component {
     
 
     handleChange(event) {
-        var stateProject = this.state.project;
+        var tempTLM = this.state.TeamLeadMeeting;
         switch (event.target.id) {
             case 'Members':
-                stateProject.TeamLeadMeeting.MembersIdentified = event.target.value.split('\n');
+                tempTLM.MembersIdentified = event.target.value.split('\n');
                 break;
         }
-        this.setState({ project: stateProject });
+        this.setState({ TeamLeadMeeting: tempTLM });
     }
 
 
@@ -67,10 +67,18 @@ export class MeetWithTeamLead extends Component {
         let tempTLM = this.state.TeamLeadMeeting;
         switch (event.target.id) {
             case "startDate":
-                tempTLM.DateRange.Begin = event.target.value;
+                tempTLM.DateRange ? tempTLM.DateRange.Begin = event.target.value :
+                    tempTLM.DateRange = {
+                        Begin: event.target.value,
+                        End: ""
+                    };
                 break;
             case "endDate":
-                tempTLM.DateRange.End = event.target.value;
+                tempTLM.DateRange ? tempTLM.DateRange.End = event.target.value :
+                    tempTLM.DateRange = {
+                        Begin: "",
+                        End: event.target.value
+                    };
                 break;
             default:
                 alert("oh no, this is the problem");
@@ -80,16 +88,13 @@ export class MeetWithTeamLead extends Component {
     }
 
     async handleSave() {
-        this.setState({ loading: true });
         
         let dHandler = new DataHandler();
         var sendData = { TeamLeadMeeting: this.state.TeamLeadMeeting  }
 
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
-        if (response.status !== 200) {
+        if (response !== 200) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
-        } else {
-            this.setState({ loading: false });
         }
     }
 
@@ -147,15 +152,15 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                    <textarea id="Members" type="text" value={this.state.project.TeamLeadMeeting.MembersIdentified.join('\n') || ""} onChange={this.handleChange} />
+                                    <textarea id="Members" type="text" value={this.state.TeamLeadMeeting.MembersIdentified.join('\n') || ""} onChange={this.handleChange} />
 
                                 </div>
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                                                 <tbody>
-                                                    <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange.Begin || ""} /></td>
-                                                        <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange.End || ""} /></td></tr>
+                                                    <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.Begin : "" } /></td>
+                                                        <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.End : "" }/></td></tr>
                                         </tbody>
                                     </table>
                                 </div>

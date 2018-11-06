@@ -10,28 +10,26 @@ export class IdentifyPerformanceGaps extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true, PerformanceGap: "" };
+        this.state = {loading: true, PerformanceGap: "" };
         this.handleSave = this.handleSave.bind(this);
     }
 
     async componentDidMount() {
         let dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: data, loading: false, PerformanceGap: data.IdentifyPerformanceGap });
+        this.setState({loading: false, PerformanceGap: data.IdentifyPerformanceGap });
             
     }
 
     async handleSave() {
         
         let dHandler = new DataHandler();
-        var tempProject = this.state.project;
-        tempProject.IdentifyPerformanceGap = this.state.PerformanceGap;
-        this.setState({ project: tempProject, loading: true });
-        let sendData = { IdentifyPerforamceGap: this.state.PerformanceGap };
+
+        let sendData = { IdentifyPerformanceGap: this.state.PerformanceGap };
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
 
-        if (response.status !== 200) {
+        if (response !== 200) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
         } else {
             this.setState({ loading: false });

@@ -17,7 +17,7 @@ export class ClarifyValidateProblem extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: response, problemStatement: response.ProblemStatement, loading: false})
+        this.setState({problemStatement: response.ProblemStatement, loading: false})
     }
 
     async handleSave() {
@@ -30,7 +30,7 @@ export class ClarifyValidateProblem extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
 
-        if (response.status !== 200) {
+        if (response !== 200) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
         } else {
             this.setState({ loading: false });

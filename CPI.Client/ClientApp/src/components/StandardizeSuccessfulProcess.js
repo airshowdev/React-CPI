@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+import DataHandler from './js/DataHandler';
 
 export class StandardizeSuccessfulProcess extends Component {
 
@@ -8,9 +9,21 @@ export class StandardizeSuccessfulProcess extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = { project: {}, loading: true };
+        this.state = { loading: true, rootCauses: [] };
     }
 
+    async componentDidMount() {
+
+        let dHandler = new DataHandler();
+        let data = await dHandler.getProject(this.props.match.params.id);
+
+        if (data !== Object(data)) {
+            alert('Bad Response');
+        } else {
+            this.setState({ rootCauses: data.RootCauses, loading: false });
+        }
+
+    }
     render(project) {
         return (
             <div className="usa-grid">
@@ -31,12 +44,15 @@ export class StandardizeSuccessfulProcess extends Component {
                                 <th>Status</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input type="text" placeholder="x" /></td>
-                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" /></td>
-                                </tr>
+                                {this.state.rootCauses.map((el, i) =>
+                                    el.Countermeasures.map((cm, j) =>
+                                        <tr>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Description} /></td>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].ActionOfficer} /></td>
+                                            <td style={{ padding: "0px", maxWidth: "100px", minWidth: "100px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Date} /></td>
+                                            <td style={{ padding: "0px" }}><input type="text" placeholder="x" value={this.state.rootCauses[i].Countermeasures[j].Status} /></td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>

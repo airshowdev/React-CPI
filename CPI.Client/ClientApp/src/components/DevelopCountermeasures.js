@@ -11,8 +11,7 @@ export class DevelopCountermeasures extends Component {
 
     constructor(props, context) {
         super(props, context)
-        this.state = {
-            project: {}, loading: true, rootCauses: [], newCountermeasures: [] 
+        this.state = { loading: true, rootCauses: [], newCountermeasures: [] 
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -22,11 +21,11 @@ export class DevelopCountermeasures extends Component {
     }
     async componentDidMount() {
         let dHandler = new DataHandler();
-        let data = dHandler.getProject(this.props.match.params.id);
+        let data = await dHandler.getProject(this.props.match.params.id);
 
         let tempNewCountermeasures = [];
-        data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" }));
-        this.setState({ project: data, loading: false, rootCauses: data.RootCauses, newCountermeasures: tempNewCountermeasures });
+        data.RootCauses ? data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : null;
+        this.setState({ loading: false, rootCauses: data.RootCauses ? data.RootCauses : [], newCountermeasures: tempNewCountermeasures });
           
     }
 
@@ -53,13 +52,20 @@ export class DevelopCountermeasures extends Component {
     }
 
     async handleSave() {
+        let dHandler = new DataHandler();
+        let sendData = {
+            RootCauses: this.state.rootCauses
+        }
+        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
+        if (response !== 200) {
+            alert('bad uwu \n ' + response)
+        } else {
+            //GO ON BB
+        }
 
-        var tempProj = this.state.project;
-        tempProj.RootCauses = this.state.rootCauses;
-        this.setState({ project: tempProj });
-        Post(this.state.project, "Project", "UpdateProject");
     }
+
      //if (this.state.newCountermeasures.length !== this.state.rootCauses.length) {
         //    var tempCountermeasures = [];
         //    for (var i = 0; i < this.state.rootCauses.length; i++) {

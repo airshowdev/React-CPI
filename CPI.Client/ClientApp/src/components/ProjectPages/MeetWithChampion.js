@@ -60,7 +60,7 @@ export class MeetWithChampion extends Component {
             Facilitator: this.state.Facilitator,
         }
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
-        if (response.status !== 200) {
+        if (response !== 200) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
         } else {
             this.setState({ loading: false });
