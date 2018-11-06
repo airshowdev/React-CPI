@@ -33,7 +33,12 @@ export class AnalyzeData extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
         let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ loading: false, Elements: data.Elements, Champion: data.Champion, Type: data.Elements ? data.Elements[0].Type : "", Standard: data.Standard });
+        let type = data.Elements ? data.Elements[0].Type : "";
+        let standard = this.calculateAverageGoal(data.Elements);
+        
+        this.setState({
+            loading: false, Elements: data.Elements, Champion: data.Champion, Type: type, Standard: standard
+        });
             
     }
 
@@ -42,6 +47,24 @@ export class AnalyzeData extends Component {
     //    this.state.project.DataCollection.Elements.map(x => out.push(x.Name));
     //    return out;
     //}
+
+    calculateAverageGoal(Elements) {
+
+        let type = Elements ? Elements[0].Type : 0;
+
+        switch (type) {
+            case "NVA":
+                var total = 0;
+                Elements.map(x => total += parseFloat(x.Goal));
+                console.log("total is ", total);
+                return Math.round(total/Elements.length);
+            case "OnTime":
+                return this.state.Standard;
+            default:
+                return 0;
+        }
+    }
+
 
     getBarData() {
         let out = [];
