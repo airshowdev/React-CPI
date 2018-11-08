@@ -59,7 +59,15 @@ export class MeetWithTeamLead extends Component {
         }
     }
     
-
+	async handleSave() {
+		let dHandler = new DataHandler();
+		let sendData = { TeamLeadMeeting: this.state.TeamLeadMeeting }
+		console.log(sendData);
+		let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
+		if (!response.successful) {
+			alert("There was an error saving changes. Please try again or contact a system administrator");
+		}
+	}
     handleChange(event) {
         var tempTLM = this.state.TeamLeadMeeting;
         switch (event.target.id) {
@@ -101,21 +109,9 @@ export class MeetWithTeamLead extends Component {
                     };
                 break;
             default:
-                alert("oh no, this is the problem");
                 break;
         }
         this.setState({TeamLeadMeeting: tempTLM })
-    }
-
-    async handleSave() {
-        
-        let dHandler = new DataHandler();
-        var sendData = { TeamLeadMeeting: this.state.TeamLeadMeeting  }
-
-        let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
-        if (!response.successful) {
-            alert("There was an error saving changes. Please try again or contact a system administrator");
-        }
     }
 
     isDate(date) {
@@ -172,7 +168,7 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                            <textarea id="Members" type="text" value={this.state.TeamLeadMeeting ? (this.state.TeamLeadMeeting.MemebersIdentified ? this.state.TeamLeadMeeting.MembersIdentified.join('\n') : "") : ""} onChange={this.handleChange} />
+                                            <textarea id="Members" type="text" value={this.state.TeamLeadMeeting ? (this.state.TeamLeadMeeting.MembersIdentified ? this.state.TeamLeadMeeting.MembersIdentified.join('\n') : "") : ""} onChange={this.handleChange} />
 
                                 </div>
                                 <div>
@@ -204,12 +200,12 @@ export class MeetWithTeamLead extends Component {
 										</tr>	
                                                 {
                                                     this.state.TeamLeadMeeting ? this.state.TeamLeadMeeting.SipocRows.map((el, i) => (
-												<tr>
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Process" onChange={this.handleSipocChange} value={el.Process} /></td>{/*Process*/}
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Output" onChange={this.handleSipocChange} value={el.Output} /></td>{/*Outputs*/}
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
+														<tr key={i}>
+															<td style={{ padding: "0px" }}><input type="text" placeholder="x" key={i} id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
+															<td style={{ padding: "0px" }}><input type="text" placeholder="x" key={i} id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
+															<td style={{ padding: "0px" }}><input type="text" placeholder="x" key={i} id={i} name="Process" onChange={this.handleSipocChange} value={el.Process} /></td>{/*Process*/}
+															<td style={{ padding: "0px" }}><input type="text" placeholder="x" key={i} id={i} name="Output" onChange={this.handleSipocChange} value={el.Output} /></td>{/*Outputs*/}
+															<td style={{ padding: "0px" }}><input type="text" placeholder="x" key={i} id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
                                                 </tr>)) : null}
                                     </tbody>
                                 </table>

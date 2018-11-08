@@ -38,7 +38,7 @@ export class NVADataCollection extends Component {
     handleAdd() {
 
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
-            let elements = this.state.Elements;
+            let elements = this.state.Elements ? this.state.Elements: []
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Type: "NVA", Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
@@ -78,8 +78,8 @@ export class NVADataCollection extends Component {
             Elements: elements
         }
 
-        let response = dHandler.modifyProject(postData, this.props.match.params.id);
-
+        let response = await dHandler.modifyProject(postData, this.props.match.params.id);
+		console.log(response);
         response.successful ? this.setState({ loading: false }) : alert('error saving data');
     }
 
