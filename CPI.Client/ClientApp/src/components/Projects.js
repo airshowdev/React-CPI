@@ -15,13 +15,18 @@ export class Projects extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { project: [], loading: true };
+        this.state = { projects: [], loading: true };
 	}
 
     async componentDidMount() {
         var dataHandler = new DataHandler();
         let response = await dataHandler.getProjects();
-        this.setState({ project: response, loading: false });
+        
+        if (response === Object(response)) {
+            this.setState({ projects: response, loading: false });
+        } else {
+            alert("something went wrong :(");
+        }
 	}
 
     componentDidCatch() {
@@ -41,12 +46,12 @@ export class Projects extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {project.map(project =>(
-                            <tr key={project.ID} onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + project.ID)}>
-                                <th scope="row">{project.ID}</th>
-                                <td>{project.Name}</td>
-                                <td>{project.Creator}</td>
-                                <td>{project.Unit}</td>
+                        {project.map(x =>(
+                            <tr key={x.ID} onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + x.ID)}>
+                                <th scope="row">{x.ID}</th>
+                                <td>{x.Name}</td>
+                                <td>{x.Creator}</td>
+                                <td>{x.Unit}</td>
                             </tr>
                             ))}
                         </tbody>
@@ -55,11 +60,10 @@ export class Projects extends Component {
         );
     }
     render() {
-        let contents = this.state.loading ? <p><em>Loading...</em></p> : this.renderProjectsTable(this.state.project);
+        let contents = this.state.loading ? <p><em>Loading...</em></p> : this.renderProjectsTable(this.state.projects);
 
         return (
             <div>
-				
 				<span> <h2>Existing Projects</h2>
 					<LinkContainer style={{float:'right', marginRight: '15vw'}} to="/CreateProject">
 						<button>Create Project</button>

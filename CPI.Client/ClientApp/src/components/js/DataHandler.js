@@ -1,4 +1,6 @@
-﻿var address = 'https:/cpi.dev.595scsdevelopment.com/api/v1';
+﻿var address = 'https://localhost:5001/v1';
+    //'http://10.10.3.27:1337'
+    //'http://cpi.dev.595scsdevelopment.com/api/v1';
 export default class DataHandler {
 
     //GET
