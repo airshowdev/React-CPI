@@ -9,7 +9,7 @@ export class BarChart extends Component {
         
         return (
             <div className="App">
-                <XYPlot height={this.props.height} width={this.props.width} xType={'ordinal'}>
+                <XYPlot height={this.props.height} width={this.props.width} xType={'ordinal'} colorType='literal'>
                     <HorizontalGridLines />
                     <labelSeries />
                     <XAxis />

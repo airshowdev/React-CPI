@@ -32,12 +32,14 @@ export class AnalyzeData extends Component {
 
     async componentDidMount() {
         var dHandler = new DataHandler();
+
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
             this.setState({ loading: false, Elements: response.data.Elements ? response.data.Elements : [], Champion: response.data.Champion ? response.data.Champion : {}, Type: response.data.Elements ? response.data.Elements[0].Type : "", Standard: response.data.Standard });
         } else {
             alert('error');
         }
+
     }
 
     //getBarLabels() {
@@ -46,28 +48,57 @@ export class AnalyzeData extends Component {
     //    return out;
     //}
 
-    getBarData(goal) {
-        var out = [
-            {  x: "Actual",
-                y: 0 },
-            {
-                x: 'Goal',
-                y: parseFloat(goal)
-            }
-        ];
-        var totalNVA = 0;
-        var totalVA = 0;
+    calculateAverageGoal(Elements) {
+
+        let type = Elements ? Elements[0].Type : 0;
+
+        switch (type) {
+            case "NVA":
+                var total = 0;
+                Elements.map(x => total += parseFloat(x.Goal));
+                console.log("total is ", total);
+                return Math.round(total/Elements.length);
+            case "OnTime":
+                return this.state.Standard;
+            default:
+                return 0;
+        }
+    }
+
+
+    getBarData() {
+        let out = [];
         switch (this.state.Type) {
             case "NVA":
-                this.state.Elements.map(x => { totalNVA += x.NVA; totalVA += x.VA });
-                out[0].y = this.calculateTotalNVA();
+                out = [
+                    {
+                        x: "NVA Percentage",
+                        y: parseFloat(this.calculateTotalNVAPercentage()),
+                        color: '#00477e'
+                    },
+                    {
+                        x: 'Goal',
+                        y: parseFloat(this.state.Champion.Goal),
+                        color: '#e06000'
+                    }
+                ]
                 break;
             case "OnTime":
+               out = [
+                    {
+                        x: "Actual",
+                       y: this.calculateOnTimePercentage(),
+                       color: '#00477e'
+                    },
+                    {
+                        x: 'Goal',
+                        y: parseFloat(this.state.Champion.Goal),
+                        color: '#e06000'
+                    }
+                ]
                 break;
         }
-        out.push({ x: "Goal", y: parseFloat(goal) });
         
-
         return out;
 
         //return {
@@ -77,31 +108,40 @@ export class AnalyzeData extends Component {
         //};
     }
 
-    getPieData(goal) {
-        var out = [
-            {
-                angle: 0,
-                lable: "Actual",
-                color: 'rgb(18, 147, 154)'
-            },
-            {
-                angle: parseFloat(goal),
-                lable: "Goal",
-                color: 'rgb(18, 147, 0)'
-            }
-        ];
-
-        var totalNVA = 0;
-        var totalVA = 0;
+    getPieData() {
+        var out = [];
+        
         switch (this.state.Type) {
             case "NVA":
-                this.state.Elements.map(x => { totalNVA += x.NVA; totalVA += x.VA });
-                out[0].angle = this.calculateTotalNVA();
+                out =[
+                    {
+                        angle: parseFloat(this.calculateTotalNVAPercentage()),
+                        lable: "NVA Percentage",
+                        color: '#00477e'
+                    },
+                    {
+                        angle: parseFloat(100 - this.calculateTotalNVAPercentage()),
+                        lable: "Goal",
+                        color: '#e06000'
+                    }
+                ]
                 break;
             case "OnTime":
+                out = [
+                    {
+                        angle: parseFloat(this.calculateOnTimePercentage()),
+                        lable: "Actual",
+                        color: '#00477e'
+                    },
+                    {
+                        angle: parseFloat(this.calculateLatePercentage()),
+                        lable: "Goal",
+                        color: '#e06000'
+                    }
+                ]
+
                 break;
         }
-        out.push({ angle: parseFloat(goal) });
 
         return out;
     }
@@ -109,19 +149,46 @@ export class AnalyzeData extends Component {
     getLegendData() {
         var name = "Garcia";
         var type = "Absolute";
+        var data = this.getPieData();
+        var out = [];
 
-        var out = [
-            {
-                title: 'Actual',
-                color: 'rgb(18, 147, 154)'
-            },
-            {
-                title: 'Goal',
-                color: 'rgb(18, 147, 0)'
-            }
-        ];
-
+        switch (this.state.Type) {
+            case "NVA":
+                out = [
+                    {
+                        title: 'NVA Percentage',
+                        color: data[0].color
+                    },
+                    {
+                        title: 'Goal',
+                        color: data[1].color
+                    }
+                ]
+                break;
+            case "OnTime":
+                out = [
+                    {
+                        title: 'Actual',
+                        color: data[0].color
+                    },
+                    {
+                        title: 'Goal',
+                        color: data[1].color
+                    }
+                ]
+                break;
+        }
         return out;
+    }
+
+    calculateOnTimePercentage() {
+        let out = 0;
+        this.state.Elements.map(x => x.Goal >= x.actual ? out++ : out = out)
+        return out;
+    }
+
+    calculateLatePercentage() {
+        return 100 - this.calculateOnTimePercentage();
     }
 
     calculateNVA(va, nva) {
@@ -131,7 +198,7 @@ export class AnalyzeData extends Component {
         return parseFloat((fltNVA * 100) / (fltNVA + fltVA));
     }
 
-    calculateTotalNVA() {
+    calculateTotalNVAPercentage() {
         var totalNVA = 0;
         var totalVA = 0;
         this.state.Elements.map(x => {
@@ -140,6 +207,17 @@ export class AnalyzeData extends Component {
         });
 
         return this.calculateNVA(totalVA, totalNVA);
+    }
+
+    calculateTotalVAAmount() {
+        let out = 0;
+        this.state.Elements.map(x => out += x.VA);
+        return out;
+    }
+    calculateTotalNVAAmount() {
+        let out = 0;
+        this.state.Elements.map(x => out += x.VA);
+        return out;
     }
 
     render() {
@@ -152,7 +230,7 @@ export class AnalyzeData extends Component {
                     <DataCollectionStatus {...this.state} />
 
                     <BarChart data={this.getBarData(this.state.Champion.Goal)} height={400} width={400} />
-                    <PieChart data={this.getPieData(this.state.Champion.Goal)} height={400} width={400} radius={180} innerRadius={140} />
+                    <PieChart data={this.getPieData()} height={400} width={400} radius={180} innerRadius={140} />
 
                     <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
                 </div>

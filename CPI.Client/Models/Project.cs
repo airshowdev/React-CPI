@@ -60,14 +60,6 @@ namespace CPI.Client.Models
 
 
 
-        [JsonProperty("WingDirectorate")]
-        public string WingDirectorate { get; set; } = "";
-
-
-
-        /*[BsonDefaultValue(new string[0])]  Duplicate of line below?*/
-        [BsonDefaultValue(new string[0])]         
-
 
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new string[0];
@@ -86,16 +78,12 @@ namespace CPI.Client.Models
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
 
-        /*[JsonProperty("IdentifyPerformanceGap")]
-        public string IdentifyPerformanceGap { get; set; } = "";*/
-        
+
 
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
 
-        /*[JsonProperty("ImprovementTarget")]
-        public string ImprovementTarget { get; set; } = "";*/
-         
+
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
 
@@ -130,8 +118,7 @@ namespace CPI.Client.Models
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
 
-        /*[JsonProperty("SSProcesses")]
-        public IList<Process> SSProcesses { get; set; } = new List<Process>();*/
+
     }
 
     public partial class Process
@@ -148,22 +135,7 @@ namespace CPI.Client.Models
         [JsonProperty("Status")]
         public string Status { get; set; } = "";
     }
-    /*
-    public partial class Process
-    {
-        [JsonProperty("Item")]
-        public string Item { get; set; } = "";
 
-        [JsonProperty("POC")]
-        public string POC { get; set; } = "";
-
-        [JsonProperty("Date")]
-        public string Date { get; set; } = "";
-        [JsonProperty("Status")]
-        public string Status { get; set; } = "";
-
-    }
-    */
     public partial class DesiredEffects
     {
         
@@ -395,7 +367,6 @@ namespace CPI.Client.Models
                 new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AssumeUniversal }
             },
         };
-
     }
 
     public partial class FishboneBranch

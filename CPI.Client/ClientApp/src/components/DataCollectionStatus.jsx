@@ -53,13 +53,13 @@ export class DataCollectionStatus extends Component {
 
         let total = flNVA + flVA;
 
-        let out = flNVA * 100 / (flNVA + flVA);
+        let out = flNVA * 100 / (total);
 
         return Math.round(out);
     }
 
     NVAGoal(goal, nva, va) {
-        return parseFloat(goal) > this.NVAPercentage(nva, va);
+        return parseFloat(goal) >= this.NVAPercentage(nva, va);
     }
 
 	calculateAverageGoal() {
@@ -94,7 +94,7 @@ export class DataCollectionStatus extends Component {
 		var unsats = 0;
 		switch (this.state.Type) {
             case "NVA":
-                this.state.Elements.map((x) => !this.NVAGoal(this.state.Standard, x.NVA, x.VA) ? unsats = unsats : unsats++);
+                this.state.Elements.map(x => this.NVAGoal(x.Goal, x.NVA, x.VA) ? unsats = unsats : unsats++);
 				break;
 			case "OnTime":
 				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
@@ -104,11 +104,12 @@ export class DataCollectionStatus extends Component {
     }
 
     calculateGap() {
-        return Math.round(((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.calculateAverageGoal())));
+        return Math.round((this.TotalCalculated() - parseFloat(this.calculateAverageGoal())));
     }
 
     calculateRevisedGap() {
-        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal)) ? "0" : Math.round((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal));
+        return isNaN((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal)) ? "0"
+            : Math.round((this.calculateUnsat() * 100 / this.state.Elements.length) - parseFloat(this.state.Champion.Goal));
     }
 
     render() {
