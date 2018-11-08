@@ -31,18 +31,21 @@ export class MeetWithChampion extends Component {
 
     async componentDidMount() {
         var dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-
-        this.setState({
-            WingDirectorate: data.WingDirectorate,
-            Unit: data.Unit,
-            Champion: data.Champion,
-            ProcessOwner: data.ProcessOwner,
-            TeamLeads: data.TeamLeads,
-            Facilitators: data.Facilitators,
-            Facilitator: data.Facilitator,
-            loading: false
-        });
+        let response = await dHandler.getProject(this.props.match.params.id);
+        if (response.successful) {
+            this.setState({
+                WingDirectorate: response.data.WingDirectorate,
+                Unit: response.data.Unit,
+                Champion: response.data.Champion,
+                ProcessOwner: response.data.ProcessOwner,
+                TeamLeads: response.data.TeamLeads,
+                Facilitators: response.data.Facilitators,
+                Facilitator: response.data.Facilitator,
+                loading: false
+            });
+        } else {
+            alert('error');
+        }
             
     }
 
@@ -60,7 +63,7 @@ export class MeetWithChampion extends Component {
             Facilitator: this.state.Facilitator,
         }
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
-        if (response !== 200) {
+        if (!response.successful) {
             alert("There was an error saving changes. Please try again or contact a system administrator")
         } else {
             this.setState({ loading: false });

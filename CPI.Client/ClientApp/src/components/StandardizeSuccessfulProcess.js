@@ -21,13 +21,14 @@ export class StandardizeSuccessfulProcess extends Component {
     async componentDidMount() {
 
         let dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
+        let response = await dHandler.getProject(this.props.match.params.id);
 
-        if (data !== Object(data)) {
-            alert('Bad Response');
+        if (response.successful) {
+            this.setState({ rootCauses: response.data.RootCauses, loading: false });
         } else {
-            this.setState({ rootCauses: data.RootCauses, loading: false });
-        }
+            alert('error');
+            this.setState({ loading: false })
+        }   
 
     }
     render(project) {

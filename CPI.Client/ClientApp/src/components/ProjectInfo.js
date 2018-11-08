@@ -10,7 +10,7 @@ export class ProjectInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { project: {}, loading: true, dataHandler: new DataHandler() };
+        this.state = { project: {}, loading: true};
 
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,9 +19,14 @@ export class ProjectInfo extends Component {
 
     async componentDidMount() {
         let dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-        console.log(JSON.stringify(data));
-		this.setState({ project: data, loading: false });
+        let response = await dHandler.getProject(this.props.match.params.id);
+        console.log(JSON.stringify(response.data));
+
+        if (response.successful) {
+            this.setState({ project: response.data, loading: false });
+        } else {
+            alert('error')
+        }
 
 
     }
@@ -60,11 +65,10 @@ export class ProjectInfo extends Component {
         let sendData = this.state.project;
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
-        if (response !== 200) {
+        if (!response.successful) {
             alert("There was an error submitting changes. Please try again or contact a system administrator")
-        } else {
-            this.setState({ loading: false });
         }
+        this.setState({loading: false})
         
 
     }

@@ -5,6 +5,21 @@ import { NavButtons } from '../NavButtons';
 import PropTypes from 'prop-types';
 import DataHandler from '../js/DataHandler';
 
+var blankTeamLead = {
+
+    SipocRows: [
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+        { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
+    ],
+    MembersIdentified: []
+
+}
+
 export class MeetWithTeamLead extends Component {
 
     static contextTypes = {
@@ -12,6 +27,7 @@ export class MeetWithTeamLead extends Component {
     }
 
     displayName = MeetWithTeamLead.name;
+
 
     
     constructor(props, context) {
@@ -32,11 +48,15 @@ export class MeetWithTeamLead extends Component {
 
     async componentDidMount() {
         var dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({
-            TeamLeadMeeting: data.TeamLeadMeeting,
-            loading: false
-        });
+        let response = await dHandler.getProject(this.props.match.params.id);
+        if (response.successful) {
+            this.setState({
+                TeamLeadMeeting: response.data.TeamLeadMeeting ? response.data.TeamLeadMeeting : blankTeamLead,
+                loading: false
+            });
+        } else {
+            alert('error');
+        }
     }
     
 
@@ -93,9 +113,8 @@ export class MeetWithTeamLead extends Component {
         var sendData = { TeamLeadMeeting: this.state.TeamLeadMeeting  }
 
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
-        if (response !== 200) {
-            alert("There was an error saving changes. Please try again or contact a system administrator")
-
+        if (!response.successful) {
+            alert("There was an error saving changes. Please try again or contact a system administrator");
         }
     }
 
@@ -153,15 +172,15 @@ export class MeetWithTeamLead extends Component {
                                 </div>
                                 <div>
                                     <p>Add additional Team Members Selected</p>
-                                    <textarea id="Members" type="text" value={this.state.TeamLeadMeeting.MembersIdentified.join('\n') || ""} onChange={this.handleChange} />
+                                            <textarea id="Members" type="text" value={this.state.TeamLeadMeeting ? (this.state.TeamLeadMeeting.MemebersIdentified ? this.state.TeamLeadMeeting.MembersIdentified.join('\n') : "") : ""} onChange={this.handleChange} />
 
                                 </div>
                                 <div>
                                     <p>Type in Proposed Event Date <br />(example: 12-20 July 2018) </p>
                                     <table style={{ marginLeft: "auto", marginRight: "auto" }}>
                                                 <tbody>
-                                                    <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.Begin : "" } /></td>
-                                                        <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.End : "" }/></td></tr>
+                                                    <tr><td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="startDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateBegin} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting ? (this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.Begin : "") : "" } /></td>
+                                                        <td style={{ padding: "0px" }}><input className="column-input-box" type="text" id="endDate" placeholder="MM/DD/YYYY" onBlur={this.formatDateEnd} onChange={this.handleDateChange} value={this.state.TeamLeadMeeting ? (this.state.TeamLeadMeeting.DateRange ? this.state.TeamLeadMeeting.DateRange.End : "") : ""}/></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -184,14 +203,14 @@ export class MeetWithTeamLead extends Component {
                                             <td>Who receives the outputs of the process?</td>
 										</tr>	
                                                 {
-                                                    this.state.TeamLeadMeeting.SipocRows.map((el, i) => (
+                                                    this.state.TeamLeadMeeting ? this.state.TeamLeadMeeting.SipocRows.map((el, i) => (
 												<tr>
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Supplier" onChange={this.handleSipocChange} value={el.Supplier} /></td>{/*Suppliers*/}
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Input" onChange={this.handleSipocChange} value={el.Input} /></td>{/*Inputs*/}
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Process" onChange={this.handleSipocChange} value={el.Process} /></td>{/*Process*/}
 												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Output" onChange={this.handleSipocChange} value={el.Output} /></td>{/*Outputs*/}
-												<td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
-											</tr>)) }
+                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id={i} name="Customer" onChange={this.handleSipocChange} value={el.Customer} /></td>{/*Customers*/}
+                                                </tr>)) : null}
                                     </tbody>
                                 </table>
                             </td>

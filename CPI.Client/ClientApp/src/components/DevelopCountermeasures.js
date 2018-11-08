@@ -3,7 +3,7 @@ import './css/uswds.css';
 import './css/HallMartino.css';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { Post } from "../REST";
-
+import { NavButtons } from './NavButtons'
 import DataHandler from './js/DataHandler';
 
 
@@ -23,15 +23,19 @@ export class DevelopCountermeasures extends Component {
     }
     async componentDidMount() {
         let dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
+        let response = await dHandler.getProject(this.props.match.params.id);
 
-        let tempNewCountermeasures = [];
-        data.RootCauses ? data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : null;
-        this.setState({ loading: false, rootCauses: data.RootCauses ? data.RootCauses : [], newCountermeasures: tempNewCountermeasures });
-          
+        if (response.successful) {
+            let tempNewCountermeasures = [];
+            response.data.RootCauses ? response.data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : null;
+            this.setState({ loading: false, rootCauses: response.data.RootCauses ? response.data.RootCauses : [], newCountermeasures: tempNewCountermeasures });
+        } else {
+            alert("Error pulling data");
+        }
     }
 
-    handleAdd(event) {
+    async handleAdd(event) {
+        
         var tempRootCauses = this.state.rootCauses;
 
         var tempNewCountermeasures = this.state.newCountermeasures;
@@ -41,8 +45,6 @@ export class DevelopCountermeasures extends Component {
         tempRootCauses[indexToUpdate].Countermeasures.push(tempNewCountermeasures[indexToUpdate]);
         tempNewCountermeasures[indexToUpdate] = { Description: "" };
         this.setState({ rootCauses: tempRootCauses, newCountermeasures: tempNewCountermeasures });
-
-        
     }
 
     handleDelete(event) {
@@ -60,11 +62,9 @@ export class DevelopCountermeasures extends Component {
         }
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
-        if (response !== 200) {
-            alert('bad uwu \n ' + response)
-        } else {
-            //GO ON BB
-        }
+        if (!response.successful) {
+            alert('bad uwu \n ' + response);
+        } 
 
     }
 

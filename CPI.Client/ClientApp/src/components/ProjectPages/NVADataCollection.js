@@ -30,9 +30,9 @@ export class NVADataCollection extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
 
-        let data = await dHandler.getProject(this.props.match.params.id);
+        let response = await dHandler.getProject(this.props.match.params.id);
 
-        this.setState({ Elements: data.Elements, Standard: data.Standard, loading: false });
+        response.successful ? this.setState({ Elements: response.data.Elements, Standard: response.data.Standard, loading: false }) : alert('Error pulling data');
     }
 
     handleAdd() {
@@ -68,6 +68,7 @@ export class NVADataCollection extends Component {
     }
 
     async handleSave() {
+        this.setState({ loading: true });
         let dHandler = new DataHandler();
         let elements = this.state.Elements;
 
@@ -77,7 +78,9 @@ export class NVADataCollection extends Component {
             Elements: elements
         }
 
-        dHandler.modifyProject(postData, this.props.match.params.id);
+        let response = dHandler.modifyProject(postData, this.props.match.params.id);
+
+        response.successful ? this.setState({ loading: false }) : alert('error saving data');
     }
 
     NVAPercentage(nva, va) {
@@ -131,7 +134,7 @@ export class NVADataCollection extends Component {
                         </tr>
                     </thead>
                         <tbody>
-                            {(this.state.Elements.length > 0) ? this.state.Elements.map((x, i) =>
+                            {this.state.Elements ? this.state.Elements.map((x, i) =>
                                 (<tr key={i} >
                                     <td>{x.Name}</td>
                                     <td>{x.VA}</td>

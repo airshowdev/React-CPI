@@ -14,7 +14,6 @@ export class OnTimeDataCollection extends Component {
 
         this.state = {
             Champion: {},
-            DataCollection: {},
             Elements: [],
             Standard: "",
             Type: "OnTime",
@@ -38,8 +37,13 @@ export class OnTimeDataCollection extends Component {
 
     async componentDidMount() {
         let dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id)
-        this.setState({ Elements: data.Elements, loading: false, Standard: data.Standard });
+        let response = await dHandler.getProject(this.props.match.params.id);
+        if (response.successful) {
+            this.setState({ Elements: response.data.Elements, loading: false, Standard: response.data.Standard, Champion: response.data.Champion });
+        } else {
+            alert('error loading data');
+            this.setState({loading: false})
+        }
     }
 
 

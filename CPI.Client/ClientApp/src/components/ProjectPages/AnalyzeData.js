@@ -32,9 +32,12 @@ export class AnalyzeData extends Component {
 
     async componentDidMount() {
         var dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ loading: false, Elements: data.Elements, Champion: data.Champion, Type: data.Elements ? data.Elements[0].Type : "", Standard: data.Standard });
-            
+        let response = await dHandler.getProject(this.props.match.params.id);
+        if (response.successful) {
+            this.setState({ loading: false, Elements: response.data.Elements ? response.data.Elements : [], Champion: response.data.Champion ? response.data.Champion : {}, Type: response.data.Elements ? response.data.Elements[0].Type : "", Standard: response.data.Standard });
+        } else {
+            alert('error');
+        }
     }
 
     //getBarLabels() {
