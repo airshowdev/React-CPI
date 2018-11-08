@@ -18,16 +18,14 @@ export class SetImprovementTargets extends Component {
 
     async componentDidMount() {
         let dHandler = new DataHandler();
-
         let response = await dHandler.getProject(this.props.match.params.id);
-        console.log(JSON.stringify(response))
         console.log(response.status);
-        if (response !== Object(response)) {
-            alert("error!")
+        if (!response.successful) {
+            alert("error!");
+            this.setState({ loading: false })
         } else {
-            this.setState({ PerformanceGap: response.IdentifyPerformanceGap, loading: false });
+            this.setState({ PerformanceGap: response.data.IdentifyPerformanceGap, loading: false });
         }
-
     }
 
     render() {

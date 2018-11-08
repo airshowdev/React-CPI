@@ -22,8 +22,9 @@ export class DataCollection extends Component {
 
      async componentDidMount() {
         var dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: data, loading: false });
+         let response = await dHandler.getProject(this.props.match.params.id);
+         response.successful ? this.setState({ project: response.data, loading: false })
+             : alert('error');
     }
 
     handleSubmit() {

@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+
 import { Col, Row, Grid } from 'react-bootstrap'
 import { NavButtons } from './NavButtons';
 import DataHandler from './js/DataHandler';
@@ -22,7 +23,12 @@ export class ClarifyValidateProblem extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
-        this.setState({problemStatement: response.ProblemStatement, loading: false})
+        if (response.successful) {
+            this.setState({ problemStatement: response.data.ProblemStatement, loading: false })
+        } else {
+            alert('error pulling data');
+            this.setState({ loading: false });
+        }
     }
 
 
@@ -36,11 +42,10 @@ export class ClarifyValidateProblem extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
 
-        if (response !== 200) {
-            alert("There was an error saving changes. Please try again or contact a system administrator")
-        } else {
-            this.setState({ loading: false });
+        if (!response.successful) {
+            alert("There was an error saving changes. Please try again or contact a system administrator");
         }
+        this.setState({ loading: false });
 
     }
 

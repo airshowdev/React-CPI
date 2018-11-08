@@ -21,8 +21,13 @@ export class IdentifyPerformanceGaps extends Component {
 
     async componentDidMount() {
         let dHandler = new DataHandler();
-        let data = await dHandler.getProject(this.props.match.params.id);
-        this.setState({loading: false, PerformanceGap: data.IdentifyPerformanceGap });
+        let response = await dHandler.getProject(this.props.match.params.id);
+        if (response.successful) {
+            this.setState({ loading: false, PerformanceGap: response.data.IdentifyPerformanceGap });
+        } else {
+            alert('error pulling data');
+            this.setState({ loading: false });
+        }
             
     }
 
@@ -35,8 +40,9 @@ export class IdentifyPerformanceGaps extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
 
-        if (response !== 200) {
-            alert("There was an error saving changes. Please try again or contact a system administrator")
+        if (!response.successful) {
+            alert("There was an error saving changes. Please try again or contact a system administrator");
+            this.setState({ loading: false });
         } else {
             this.setState({ loading: false });
         }

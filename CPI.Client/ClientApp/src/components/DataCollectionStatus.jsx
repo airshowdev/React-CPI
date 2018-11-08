@@ -5,7 +5,7 @@ export class DataCollectionStatus extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Champion: this.props.Champion, Type: this.props.Elements ? this.props.Elements[0].Type : "" , Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}
+            Champion: this.props.Champion, Type: this.props.Type, Elements: this.props.Elements, Standard: this.props.Standard, LabelProps: {}
         };
     }
 

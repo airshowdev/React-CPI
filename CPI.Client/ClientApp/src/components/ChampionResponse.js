@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import './css/HallMartino.css';
+import DataHandler from './js/DataHandler';
 
 export class ChampionResponse extends Component {
 
@@ -9,10 +10,8 @@ export class ChampionResponse extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = { project: {}, loading: true};
-        this.handleChange = this.handleChange.bind(this);
     }
 
- 
 
     render()
     {

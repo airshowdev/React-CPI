@@ -60,10 +60,6 @@ namespace CPI.Client.Models
 
 
 
-        [JsonProperty("WingDirectorate")]
-
-        public string WingDirectorate { get; set; } = "";
-       
 
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new string[0];
@@ -87,7 +83,7 @@ namespace CPI.Client.Models
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
 
-         
+
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
 
@@ -122,6 +118,7 @@ namespace CPI.Client.Models
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
 
+
     }
 
     public partial class Process
@@ -138,6 +135,7 @@ namespace CPI.Client.Models
         [JsonProperty("Status")]
         public string Status { get; set; } = "";
     }
+
     public partial class DesiredEffects
     {
         

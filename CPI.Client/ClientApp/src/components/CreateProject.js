@@ -1,11 +1,15 @@
 ﻿import React, { Component } from 'react';
 import './css/uswds.css';
 import { Post } from '../REST';
-import PropTypes from 'prop-types';
+
+import { PropTypes } from 'prop-types'
+
 import DataHandler from './js/DataHandler';
+import { ProjectInfo } from './ProjectInfo';
 
 
 export class CreateProject extends Component {
+
     displayName = CreateProject.name
 
     static contextTypes = {
@@ -31,8 +35,9 @@ export class CreateProject extends Component {
             Unit: this.state.unit
         };
 
-
-        handler.addProject(data);
+        let response = await handler.addProject(data);
+        response.successful ? this.context.router.history.push("/Project/ProjectInfo/" + response.data)
+            : alert('could not save project');
 
     }
 
@@ -50,7 +55,10 @@ export class CreateProject extends Component {
 
 						<label htmlFor="options">Select Base</label>
 						<input id="Base" onChange={(event) => this.setState({ base: event.target.value })} required aria-required="true" />
-                
+
+
+                    <input type="submit" className="usa-button" value="Create Project" onClick={this.handleSubmit} />
+
                     <button type="submit" className="usa-button" onClick={this.handleSubmit}>Create Project</button>
             </div>
 
