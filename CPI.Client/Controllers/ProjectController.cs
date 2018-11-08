@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.ComponentModel;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -25,10 +24,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace CPI.Client.Controllers
 {
-
-
-    
-
     [Route("api/[controller]")]
     public class ProjectController :  Controller , IProjectController
     {

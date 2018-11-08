@@ -61,8 +61,9 @@ namespace CPI.Client.Models
 
 
         [JsonProperty("WingDirectorate")]
+
         public string WingDirectorate { get; set; } = "";
-        
+       
 
         [JsonProperty("Evaluators")]
         public IList<string> Evaluators { get; set; } = new string[0];
@@ -80,12 +81,12 @@ namespace CPI.Client.Models
 
         [JsonProperty("Facilitator")]
         public string Facilitator { get; set; } = "";
-        
+
 
 
         [JsonProperty("ProcessOwner")]
         public string ProcessOwner { get; set; } = "";
-        
+
          
         [JsonProperty("Mentor")]
         public string Mentor { get; set; } = "";
@@ -120,7 +121,7 @@ namespace CPI.Client.Models
 
         [JsonProperty("ProblemStatement")]
         public string ProblemStatement { get; set; } = "";
-        
+
     }
 
     public partial class Process
@@ -137,7 +138,6 @@ namespace CPI.Client.Models
         [JsonProperty("Status")]
         public string Status { get; set; } = "";
     }
-
     public partial class DesiredEffects
     {
         
@@ -369,7 +369,6 @@ namespace CPI.Client.Models
                 new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeStyles = System.Globalization.DateTimeStyles.AssumeUniversal }
             },
         };
-
     }
 
     public partial class FishboneBranch
