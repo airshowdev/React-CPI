@@ -671,7 +671,6 @@ namespace CPI.Client.Controllers
                     .Set(x => x.Base, updateProject.Base)
                     .Set(x => x.Creator, updateProject.Creator)
                     .Set(x => x.Unit, updateProject.Unit)
-                    .Set(x => x.WingDirectorate, updateProject.WingDirectorate)
                     .Set(x => x.Evaluators, updateProject.Evaluators)
                     .Set(x => x.TeamLeads, updateProject.TeamLeads)
                     .Set(x => x.Facilitators, updateProject.Facilitators)
