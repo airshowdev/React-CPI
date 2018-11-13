@@ -16,7 +16,7 @@ export class IdentifyEventLocation extends Component {
         return (
             <div>
                 <NavButtons next="DistributeEventNotification" previous="ReviewKPI" projectId={this.props.match.params.id} />
-            <div className="left-aligned-paragraph">
+            <div className="paragraph">
                 <h1> Identify Event Location </h1>
                 <div className="image-alignment">
                 </div>

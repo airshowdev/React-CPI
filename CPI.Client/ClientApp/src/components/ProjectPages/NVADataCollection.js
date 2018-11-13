@@ -117,7 +117,7 @@ export class NVADataCollection extends Component {
             return (<span>Loading Data</span>);
         } else {
             return (
-				<div className="usa-grid">
+				<div>
 					<div style={{paddingBottom: 15}}>
 						<NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
 					</div>

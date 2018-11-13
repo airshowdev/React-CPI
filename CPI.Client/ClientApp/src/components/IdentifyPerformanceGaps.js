@@ -55,9 +55,7 @@ export class IdentifyPerformanceGaps extends Component {
         } else {
             return (
                 <Grid>
-                    <Col style={{ paddingBottom: 50 }}>
                         <NavButtons next="SetImprovementTargets" previous="ClarifyValidateProblem" projectId={this.props.match.params.id} />
-                    </Col>
                     <Col>
                         <div className="paragraph">
                             <h1> PPSM Step 2 - Identify Performance Gaps </h1>
