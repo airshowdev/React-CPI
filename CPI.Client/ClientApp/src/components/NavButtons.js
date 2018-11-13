@@ -13,8 +13,8 @@ export class NavButtons extends Component {
     render() {
 		return (
 			<Grid>
-                <Col style={{ float: 'left' }}>
-                    <button onClick={() => this.context.router.history.push('/Project/' + this.props.previous + '/' + this.props.projectId)} className="usa-button" style={!this.props.previous ? { display: "none" } : {}}>Previous</button>
+				<Col style={{ float: 'left' }}>
+					<button onClick={() => this.context.router.history.push(this.props.previous == "Projects" ? "/" : `/Project/${this.props.previous}/${this.props.projectId}`)} className="usa-button" style={!this.props.previous ? { display: "none" } : {}}>Previous</button>
 				</Col>
                 <Col style={{ float: 'right' }}>
                     <button onClick={() => this.context.router.history.push('/Project/' + this.props.next + '/' + this.props.projectId)} className="usa-button" style={!this.props.next ? { display: "none" } : {}}>Next</button>

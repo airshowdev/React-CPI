@@ -38,12 +38,12 @@ export class DetermineRootCause extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
         response.successful ? this.setState({ loading: false })
-            : alert("There was an error, please try again or call 867-5309");
+            : alert("There was an error, please try again");
     }
 
     handleAdd() {
         if (this.state.tempCauseDescription !== "") {
-            var tempCauses = this.state.rootCauses;
+            var tempCauses = this.state.rootCauses || [];
             tempCauses.push({ Description: this.state.tempCauseDescription });
             this.setState({ rootCauses: tempCauses, tempCauseDescription: "" });
         }
@@ -88,15 +88,15 @@ export class DetermineRootCause extends Component {
                         </div>
                         <div>
                             <table className="root-cause-table" >
-                                <tbody>
-                                    {this.state.rootCauses.map((Cause, i) => (
+								<tbody>
+									{this.state.rootCauses ? this.state.rootCauses.map((Cause, i) => (
                                         <tr>
                                             <td style={{ width: "14em" }}>Root Cause {i + 1}</td>
                                             <td style={{ padding: "0px" }}><input id={i} type="text" placeholder="x" onChange={this.handleEdit} value={Cause.Description} /></td>
                                             <td><button id={i} onClick={this.handleDelete}>Delete</button></td>
-                                        </tr>))}
+                                        </tr>)) : null}
                                     <tr>
-                                        <td style={{ width: "14em" }}>Root Cause {this.state.rootCauses.length + 1}</td>
+                                        <td style={{ width: "14em" }}>Root Cause {this.state.rootCauses? this.state.rootCauses.length + 1 : 1}</td>
                                         <td style={{ padding: "0px" }}><input id="temp" type="text" placeholder="x" value={this.state.tempCauseDescription} onChange={(event) => this.setState({ tempCauseDescription: event.target.value })} /></td>
                                         <td><button onClick={this.handleAdd}>Add</button></td>
                                     </tr>

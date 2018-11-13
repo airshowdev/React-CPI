@@ -19,7 +19,7 @@ export class CreateProject extends Component {
     constructor(props) {
         super(props);
 		this.state = {
-			creatorFirstName: "", creatorLastName: "", base: "", name: "", unit: "", loading: false
+			creatorName: "", base: "", name: "", unit: "", loading: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -29,7 +29,7 @@ export class CreateProject extends Component {
         var handler = new DataHandler();
 
         var data = {
-            Creator: this.state.creatorFirstName + " " + this.state.creatorLastName,
+            Creator: this.state.creatorName,
             Base: this.state.base,
             Name: this.state.name,
             Unit: this.state.unit
@@ -50,15 +50,12 @@ export class CreateProject extends Component {
                     <input id="ProjectName" type="text" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name}required aria-required="true"/>
 
 
-						<label htmlFor="CreatorLast">Last Name</label>
-						<input id="CreatorLast" onChange={(event) => this.setState({ creatorLastName: event.target.value })} type="text" required aria-required="true" />
+						<label htmlFor="CreatorLast">Creator Name</label>
+						<input id="CreatorLast" onChange={(event) => this.setState({ creatorName: event.target.value })} type="text" required aria-required="true" />
 
 						<label htmlFor="options">Select Base</label>
 						<input id="Base" onChange={(event) => this.setState({ base: event.target.value })} required aria-required="true" />
-
-
-                    <input type="submit" className="usa-button" value="Create Project" onClick={this.handleSubmit} />
-
+				
                     <button type="submit" className="usa-button" onClick={this.handleSubmit}>Create Project</button>
             </div>
 

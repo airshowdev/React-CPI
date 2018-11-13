@@ -77,7 +77,8 @@ export class SeeCountermeasuresThrough extends Component {
             return <span>Loading...</span>
         } else {
             return (
-                <div className="usa-grid">
+				<div className="usa-grid">
+					<NavButtons next="ConfirmResults" previous="DevelopCountermeasures" projectId={this.props.match.params.id} />
                     <div className="paragraph">
                         <h1> PPSM Step 6 - See Countermeasures Through </h1>
                         <div style={{ border: "solid", borderLeft: "hidden", borderRight: "hidden", borderBottom: "hidden", marginLeft: "20px", marginRight: "20px", marginBottom: "3px" }}>

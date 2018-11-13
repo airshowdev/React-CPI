@@ -67,10 +67,11 @@ export class NVADataCollection extends Component {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
     }
 
-    async handleSave() {
-        this.setState({ loading: true });
-        let dHandler = new DataHandler();
-        let elements = this.state.Elements;
+	async handleSave() {
+		this.setState({ loading: true });
+
+		let dHandler = new DataHandler();
+		let elements = this.state.Elements
 
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
         
@@ -79,7 +80,7 @@ export class NVADataCollection extends Component {
         }
 
         let response = await dHandler.modifyProject(postData, this.props.match.params.id);
-		console.log(response);
+		console.log("Response", response);
         response.successful ? this.setState({ loading: false }) : alert('error saving data');
     }
 
@@ -103,7 +104,7 @@ export class NVADataCollection extends Component {
         return total / this.state.Elements.length;
     }
 
-    calculateUnsat() {
+    calculateUnsat(){
         var unsats = 0;
         this.state.Elements.forEach(
             (x) => { (!(parseFloat(x.NVA) / (parseFloat(x.VA) + parseFloat(x.NVA)) > x.Goal) ? unsats++ : unsats) });

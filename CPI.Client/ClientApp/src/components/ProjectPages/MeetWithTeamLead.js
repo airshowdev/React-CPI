@@ -7,6 +7,10 @@ import DataHandler from '../js/DataHandler';
 
 var blankTeamLead = {
 
+	DateRange: {
+		Begin: "",
+		End: ""
+	},
     SipocRows: [
         { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
         { Supplier: "", Input: "", Process: "", Output: "", Customer: "" }, 
@@ -55,7 +59,7 @@ export class MeetWithTeamLead extends Component {
                 loading: false
             });
         } else {
-            alert('error');
+            alert('There was an error: ', response);
         }
     }
     
@@ -65,7 +69,7 @@ export class MeetWithTeamLead extends Component {
 		console.log(sendData);
 		let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 		if (!response.successful) {
-			alert("There was an error saving changes. Please try again or contact a system administrator");
+			alert("There was an error: ", response);
 		}
 	}
     handleChange(event) {
@@ -79,15 +83,15 @@ export class MeetWithTeamLead extends Component {
     }
 
 
-    formatDateBegin() {
+	formatDateBegin() {
         if (!this.isDate(this.state.TeamLeadMeeting.DateRange.Begin)) {
-            alert("Please Enter a valid date for the new element's \"begin\" value ");
+            //alert("Please Enter a valid date for the new element's \"begin\" value ");
         }
     }
 
     formatDateEnd() {
         if (!this.isDate(this.state.TeamLeadMeeting.DateRange.End)) {
-            alert(this.state.dateEndTemp);
+			//alert("Please Enter a valid date for the new element's \"end\" value ");
         }
     }
 
@@ -115,7 +119,7 @@ export class MeetWithTeamLead extends Component {
     }
 
     isDate(date) {
-        console.log(Date.parse(date));
+        console.log("date parsed: ", Date.parse(date));
         return !isNaN(Date.parse(date));
     }
 
@@ -213,7 +217,7 @@ export class MeetWithTeamLead extends Component {
                         </tr>
                     </tbody>
                 </table>
-                <button onClick={this.handleSave}>SAVE!</button>
+                <button onClick={this.handleSave}>Save</button>
                     </div>
                     </div>
             )

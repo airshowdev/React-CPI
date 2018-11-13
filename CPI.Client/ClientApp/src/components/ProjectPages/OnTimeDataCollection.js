@@ -153,7 +153,7 @@ export class OnTimeDataCollection extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {(this.state.Elements.length > 0) ? this.state.Elements.map((x, i) =>
+                            {this.state.Elements? this.state.Elements.map((x, i) =>
 								(<tr key={i} >
 									<td>{x.Goal}</td>
 									<td>{x.Actual}</td>

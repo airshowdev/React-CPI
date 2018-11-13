@@ -224,16 +224,18 @@ export class AnalyzeData extends Component {
         if (this.state.loading) {
             return <loadingSpinner/>;
         } else {
-            return (
+			return (
+				<div>
+					<NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} />
                 <div className="flexbox">
-                    <NavButtons next="RequestMentor" previous="DataCollection" projectId={this.props.match.params.id} title="Analyze Data" />
                     <DataCollectionStatus {...this.state} />
 
                     <BarChart data={this.getBarData(this.state.Champion.Goal)} height={400} width={400} />
                     <PieChart data={this.getPieData()} height={400} width={400} radius={180} innerRadius={140} />
 
                     <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
-                </div>
+					</div>
+				</div>
             )
         }
     }    

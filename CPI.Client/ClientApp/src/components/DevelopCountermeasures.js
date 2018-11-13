@@ -63,7 +63,7 @@ export class DevelopCountermeasures extends Component {
         let response = await dHandler.modifyProject(sendData, this.props.match.params.id);
 
         if (!response.successful) {
-            alert('bad uwu \n ' + response);
+            alert('There was an error:  ' + response);
         } 
 
     }
@@ -133,7 +133,7 @@ export class DevelopCountermeasures extends Component {
                         )}
                     </div>
 
-                    <button onClick={this.handleSave}>Yeet</button>
+                    <button onClick={this.handleSave}>Save</button>
                     </div>
                     </div>
             );
