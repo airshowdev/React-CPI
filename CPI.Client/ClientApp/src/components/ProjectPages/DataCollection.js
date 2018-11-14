@@ -24,7 +24,8 @@ export class DataCollection extends Component {
         var dHandler = new DataHandler();
          let response = await dHandler.getProject(this.props.match.params.id);
          response.successful ? this.setState({ project: response.data, loading: false })
-             : alert('error');
+			 : alert('error');
+		 console.log(response.data);
     }
 
     handleSubmit() {

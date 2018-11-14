@@ -27,7 +27,7 @@ export class AnalyzeData extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            Elements: [], Champion: {} , loading: true, Standard: ""};   
+			Elements: [], Champion: {}, loading: true, Standard: "", Type: ""};   
     }
 
     async componentDidMount() {
@@ -35,7 +35,7 @@ export class AnalyzeData extends Component {
 
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({ loading: false, Elements: response.data.Elements ? response.data.Elements : [], Champion: response.data.Champion ? response.data.Champion : {}, Type: response.data.Elements ? response.data.Elements[0].Type : "", Standard: response.data.Standard });
+            this.setState({ loading: false, Elements: response.data.Elements || [], Champion: response.data.Champion || {}, Type: response.data.Elements ? response.data.Elements[0].Type : "", Standard: response.data.Standard || "" });
         } else {
             alert('error');
         }
@@ -50,7 +50,7 @@ export class AnalyzeData extends Component {
 
     calculateAverageGoal(Elements) {
 
-        let type = Elements ? Elements[0].Type : 0;
+		let type = this.state.Type;
 
         switch (type) {
             case "NVA":

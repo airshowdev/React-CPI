@@ -63,9 +63,9 @@ export class OnTimeDataCollection extends Component {
         this.setState({ Elements: elements });
     }
     handleAdd() {
-        var elements = this.state.Elements;
+        var elements = this.state.Elements || [];
         if (this.isDate(this.state.newElementGoal) && this.isDate(this.state.newElementActual)) {
-			elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual });
+			elements.push({ Goal: this.state.newElementGoal, Actual: this.state.newElementActual, Type: "OnTime" });
 			this.setState({ Elements: elements });
         } else {
             alert("New element dates are not formatted correctly");
@@ -81,8 +81,9 @@ export class OnTimeDataCollection extends Component {
 
         //elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
 
-        let postData = {
-           Elements: elements,
+		let postData = {
+			Standard: this.state.Standard,
+			Elements: elements,
         };
 
         dHandler.modifyProject(postData, this.props.match.params.id);

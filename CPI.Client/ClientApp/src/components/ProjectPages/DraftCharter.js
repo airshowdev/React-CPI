@@ -77,8 +77,8 @@ export class DraftCharter extends Component {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
-            return (
-                <div style={{ height: '11in', width: '8.5in', fontSize: '12px' }}>
+			return (
+				<div style={{ height: '11in', width: '8.5in', fontSize: '12px', alignContent: 'center' }}>
                     <h2>{this.state.project.Name + " Event Charter"}</h2>
                     <table className="charterTable" style={{ padding: '0', width: '100%' }}>
                         <thead>

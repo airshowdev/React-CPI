@@ -4349,7 +4349,7 @@ fieldset {
 .usa-nav-submenu {
 	/*TODO TODO TODO TODO TODO 
 		REMOVE 'display: none;'*/
-	display: none;
+	/*display: none;*/
   margin-top: 0;
   margin-bottom: 0;
   list-style-type: none;
