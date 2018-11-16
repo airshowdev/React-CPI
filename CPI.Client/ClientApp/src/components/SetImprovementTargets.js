@@ -24,7 +24,7 @@ export class SetImprovementTargets extends Component {
             alert("error!");
             this.setState({ loading: false })
         } else {
-            this.setState({ PerformanceGap: response.data.IdentifyPerformanceGap, loading: false });
+            this.setState({ PerformanceGap: response.data.IdentifyPerformanceGap || "", loading: false });
         }
     }
 

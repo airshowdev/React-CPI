@@ -23,8 +23,8 @@ export class DetermineRootCause extends Component {
     async componentDidMount() {
         let dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
-        response.successful ? this.setState({ loading: false, rootCauses: response.data.RootCauses })
-            : alert("There was an error, please try again or call 867-5309");
+        response.successful ? this.setState({ loading: false, rootCauses: response.data.RootCauses || [] })
+            : alert("There was an error retrieving projects");
         
 
     }

@@ -21,7 +21,7 @@ export class ProjectOverview extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
         let data = dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: data, loading: false });
+		this.setState({ project: data || {}, loading: false });
     }
 
     checkDataCollection() {

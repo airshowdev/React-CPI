@@ -230,9 +230,8 @@ export class AnalyzeData extends Component {
 					<DataCollectionStatus {...this.state} />
 					<div style={{display: 'flex'}}>
 
-                    <BarChart data={this.getBarData(this.state.Champion.Goal)} height={400} width={400} />
-                    <PieChart data={this.getPieData()} height={400} width={400} radius={180} innerRadius={140} />
-
+                    <BarChart data={this.getBarData(this.state.Champion.Goal)} height={400} width={600} />
+                    <PieChart data={this.getPieData()} height={400} width={600} radius={180} innerRadius={140} />
                     <PieChartLegend legendItems={this.getLegendData()} height={200} width={100}/>
 					</div>
 				</div>

@@ -23,7 +23,7 @@ export class DataCollection extends Component {
      async componentDidMount() {
         var dHandler = new DataHandler();
          let response = await dHandler.getProject(this.props.match.params.id);
-         response.successful ? this.setState({ project: response.data, loading: false })
+		 response.successful ? this.setState({ project: response.data || {}, loading: false })
 			 : alert('error');
 		 console.log(response.data);
     }

@@ -39,7 +39,7 @@ export class OnTimeDataCollection extends Component {
         let dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({ Elements: response.data.Elements, loading: false, Standard: response.data.Standard, Champion: response.data.Champion });
+			this.setState({ Elements: response.data.Elements || [], loading: false, Standard: response.data.Standard, Champion: response.data.Champion || {} });
         } else {
             alert('error loading data');
             this.setState({loading: false})

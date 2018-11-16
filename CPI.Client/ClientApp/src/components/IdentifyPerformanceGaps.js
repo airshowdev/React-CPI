@@ -23,7 +23,7 @@ export class IdentifyPerformanceGaps extends Component {
         let dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({ loading: false, PerformanceGap: response.data.IdentifyPerformanceGap });
+            this.setState({ loading: false, PerformanceGap: response.data.IdentifyPerformanceGap || ""});
         } else {
             alert('error pulling data');
             this.setState({ loading: false });

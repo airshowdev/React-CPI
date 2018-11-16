@@ -23,7 +23,7 @@ export class ProjectInfo extends Component {
         console.log(JSON.stringify(response.data));
 
         if (response.successful) {
-            this.setState({ project: response.data, loading: false });
+			this.setState({ project: response.data || {}, loading: false });
         } else {
             alert('error')
         }

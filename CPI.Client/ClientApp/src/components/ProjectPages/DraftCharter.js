@@ -25,7 +25,7 @@ export class DraftCharter extends Component {
     async componentDidMount() {
         let dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
-        response.successful ? this.setState({ project: response.data, loading: false })
+		response.successful ? this.setState({ project: response.data || {}, loading: false })
             : alert('error')
     }
 
@@ -138,31 +138,31 @@ export class DraftCharter extends Component {
                                 <td ><strong>CUSTOMERS</strong><br />Who receives the outputs of the process?</td>
                             </tr>
                             <tr>
-								<td>
+								<td style={{ whiteSpace: 'pre' }}>
 									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Supplier
                                     )) : "None Entered"
                                     }
                                 </td>
-                                <td>
+								<td style={{ whiteSpace: 'pre' }}>
 									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Input
 									)) : "None Entered"
                                     }
                                 </td>
-                                <td>
+								<td style={{ whiteSpace: 'pre' }}>
 									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Process
 									)) : "None Entered"
                                     }
-                                </td>
-                                <td>
+								</td>
+								<td style={{ whiteSpace:'pre'}}>
 									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
 										(i === 0 ? "" : "\n") + x.Output
 									)) : "None Entered"
                                     }
                                 </td>
-                                <td>
+								<td style={{ whiteSpace: 'pre' }}>
 									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
 										(i === 0 ? "" : "\n") + x.Customer
 									)) : "None Entered"

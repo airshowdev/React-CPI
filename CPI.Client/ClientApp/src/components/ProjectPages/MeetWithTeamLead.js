@@ -55,7 +55,7 @@ export class MeetWithTeamLead extends Component {
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
             this.setState({
-                TeamLeadMeeting: response.data.TeamLeadMeeting ? response.data.TeamLeadMeeting : blankTeamLead,
+                TeamLeadMeeting: response.data.TeamLeadMeeting || blankTeamLead,
                 loading: false
             });
         } else {

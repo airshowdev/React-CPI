@@ -32,7 +32,7 @@ export class NVADataCollection extends Component {
 
         let response = await dHandler.getProject(this.props.match.params.id);
 
-        response.successful ? this.setState({ Elements: response.data.Elements, Standard: response.data.Standard, loading: false }) : alert('Error pulling data');
+        response.successful ? this.setState({ Elements: response.data.Elements || [], Standard: response.data.Standard || "", loading: false }) : alert('Error pulling data');
     }
 
     handleAdd() {

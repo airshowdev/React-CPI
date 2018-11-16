@@ -24,7 +24,7 @@ export class ClarifyValidateProblem extends Component {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({ problemStatement: response.data.ProblemStatement, loading: false })
+			this.setState({ problemStatement: response.data.ProblemStatement || "", loading: false })
         } else {
             alert('error pulling data');
             this.setState({ loading: false });
