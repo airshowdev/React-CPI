@@ -4,10 +4,10 @@ namespace CpiApi.Models
 {
     public partial class DateRange
     {
-        [JsonProperty("begin")]
+        [JsonProperty("Begin")]
         public string Begin { get; set; } = "";
 
-        [JsonProperty("end")]
+        [JsonProperty("End")]
         public string End { get; set; } = "";
     }
 }

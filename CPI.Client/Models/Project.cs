@@ -24,73 +24,76 @@ namespace CpiApi.Models
 
         [BsonId]
         [JsonIgnore]
-        private ObjectId id { get; set; } = new ObjectId();
+        public ObjectId id { get; set; } = new ObjectId();
 
         [JsonProperty("Name")]
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = null;
 
         [JsonProperty("MajCom")]
-        public string MajCom { get; set; } = "";
+        public string MajCom { get; set; } = null;
 
         [JsonProperty("Base")]
-        public string Base { get; set; } = "";
+        public string Base { get; set; } = null;
 
         [JsonProperty("Creator")]
-        public string Creator { get; set; } = "";
+        public string Creator { get; set; } = null;
 
         [JsonProperty("Unit")]
-        public string Unit { get; set; } = "";
+        public string Unit { get; set; } = null;
 
         [JsonProperty("WingDirectorate")]
-        public string WingDirectorate { get; set; } = "";
+        public string WingDirectorate { get; set; } = null;
+
+        [JsonProperty("Standard")]
+        public string Standard { get; set; } = null;
 
         [BsonDefaultValue(new string[0])]
 
         [JsonProperty("Evaluators")]
-        public IList<string> Evaluators { get; set; } = new string[0];
+        public IList<string> Evaluators { get; set; } = null;
 
         [JsonProperty("TeamLeads")]
-        public IList<string> TeamLeads { get; set; } = new string[0];
+        public IList<string> TeamLeads { get; set; } = null;
 
         [BsonIgnoreIfDefault]
         [JsonProperty("Facilitators")]
-        public IList<string> Facilitators { get; set; } = new string[0];
+        public IList<string> Facilitators { get; set; } = null;
 
         [JsonProperty("Facilitator")]
-        public string Facilitator { get; set; } = "";
+        public string Facilitator { get; set; } = null;
 
         [JsonProperty("IdentifyPerformanceGap")]
-        public string IdentifyPerformanceGap { get; set; } = "";
+        public string IdentifyPerformanceGap { get; set; } = null;
 
         [JsonProperty("ImprovementTarget")]
-        public string ImprovementTarget { get; set; } = "";
+        public string ImprovementTarget { get; set; } = null;
 
         [JsonProperty("ProcessOwner")]
-        public string ProcessOwner { get; set; } = "";
+        public string ProcessOwner { get; set; } = null;
 
         [JsonProperty("Mentor")]
-        public string Mentor { get; set; } = "";
+        public string Mentor { get; set; } = null;
 
         [JsonProperty("Elements")]
-        public Dictionary<string, decimal> Elements { get; set; } = new Dictionary<string, decimal>();
+        public IList<Element> Elements { get; set; } = null;
 
         [JsonProperty("Champion")]
-        public Champion Champion { get; set; } = new Champion();
+        public Champion Champion { get; set; } = null;
 
         [JsonProperty("TeamLeadMeeting")]
-        public TeamLeadMeeting TeamLeadMeeting { get; set; } = new TeamLeadMeeting();
+        public TeamLeadMeeting TeamLeadMeeting { get; set; } =null;
 
         [JsonProperty("RootCauses")]
-        public IList<RootCause> RootCauses { get; set; } = new List<RootCause>();
+        public IList<RootCause> RootCauses { get; set; } =null;
 
         [JsonProperty("DesiredEffects")]
-        public DesiredEffects DesiredEffects { get; set; } = new DesiredEffects();
+        public DesiredEffects DesiredEffects { get; set; } = null;
 
         [JsonProperty("DateRange")]
         public DateRange Dates { get; set; } = new DateRange();
 
         [JsonProperty("ProblemStatement")]
-        public string ProblemStatement { get; set; } = "";
+        public string ProblemStatement { get; set; } = null;
     }
 
 

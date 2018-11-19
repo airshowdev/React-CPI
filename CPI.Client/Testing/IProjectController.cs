@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using CPI.Client.Models;
+using CpiApi;
+using CpiApi.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace CPI.Client.Testing

@@ -2,6 +2,7 @@
 using CpiApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace CpiApi
         [ValidateModelState]
         public virtual IActionResult GetProject([FromRoute][Required]string projectId)
         {
-            return StatusCode(StatusCodes.Status200OK, Projects.Find(x => x.ID == projectId).First());
+            return StatusCode(StatusCodes.Status200OK, Projects.Find(x => x.id == new ObjectId(projectId)).First());
         }
 
         /// <summary>

@@ -5,6 +5,9 @@ namespace CpiApi.Models
 {
     public partial class TeamLeadMeeting
     {
+		[JsonProperty("DateRange")]
+		public DateRange DateRange { get; set; } = new DateRange();
+
         [JsonProperty("MembersIdentified")]
         public IList<string> MembersIdentified { get; set; } = new string[0];
 
