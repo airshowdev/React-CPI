@@ -1,11 +1,11 @@
+﻿using CpiApi.Etc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CPI.Client
+namespace CpiApi
 {
     public class Startup
     {
@@ -19,17 +19,19 @@ namespace CPI.Client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(
-            
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddCors(options =>
             {
-                configuration.RootPath = "ClientApp/build";
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
             });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,32 +43,13 @@ namespace CPI.Client
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
-
-
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
-            });
+            app.UseMvc();
+            app.UseSentry();
         }
     }
 }

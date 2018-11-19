@@ -1,860 +1,131 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Security.Cryptography.X509Certificates;
-using System.ComponentModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-using MongoDB.Driver;
-using MongoDB.Bson;
-
-using Microsoft.AspNetCore.Mvc;
-
-using CPI.Client.Models;
-using CPI.Client;
-using CPI.Client.Testing;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using CpiApi.Etc;
+using CpiApi.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using static CpiApi.Program;
 
-namespace CPI.Client.Controllers
+namespace CpiApi
 {
-    [Route("api/[controller]")]
-    public class ProjectController :  Controller , IProjectController
+    public class ProjectsApiController : Controller
     {
-
-        MongoClient Client = null;
-        User CurrentUser { get => Models.User.CurrentUser; }
-
-
         /// <summary>
-        /// Post action with data format
-        /// {   id:"",
-        ///     DataCollection:{Elements: [
-        ///         {Goal: "", Actual:"", Name:"", Type:""}],
-        ///     Type: "",
-        ///     Standard: ""} }
+        /// Add a new project to the database
         /// </summary>
-        /// <returns>HttpResponse</returns>
-        [HttpPost("[action]")]
-        public async Task<Response> UpdateDataCollection()
+
+        /// <param name="body">Project object that needs to be added to the database</param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Bad format</response>
+        [HttpPost]
+        [Route("/v1/projects")]
+        [ValidateModelState]
+        public virtual IActionResult AddProject([FromBody]Project body)
         {
-            Response httpResponse = new Response();
+            //TODO: Validate input
+            // return StatusCode(400);
+            Projects.InsertOne(body);
 
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-
-            string json = "";
-
-            
-
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
-
-                jObj = (JObject) JsonConvert.DeserializeObject(json);
-            }
-
-            string projID = jObj.GetValue("_id").ToString();
-
-			JObject jCollection = (JObject)jObj.GetValue("DataCollection");
-
-            DataCollection collection = CPI.Client.DataCollection.FromJson(jCollection.ToString());
-
-
-            try
-            {
-                MongoClient client;
-
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
-
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
-
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.DataCollection, collection);
-
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Data collection update successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
-
+            return StatusCode(StatusCodes.Status200OK, body.ID);
         }
 
         /// <summary>
-        /// Post action with data format
-        /// {   
-        ///     id:"",
-        ///     Champion:{
-        ///         Name:"",
-        ///         Deficiency: "",
-        ///         Expectation: "",
-        ///         Recommendation: "",
-        ///         Goal: "",
-        ///         Response: {
-        ///         Concur :""
-        ///         }
-        ///     }
-        /// }
+        /// Delete an existing Project
         /// </summary>
-        /// <returns>HttpResponse</returns>
 
-        [HttpPost("[action]")]
-        public async Task<Response> UpdateChampMeet()
+        /// <param name="projectId">ID of project to be deleted</param>
+        /// <response code="404">Project not found</response>
+        [HttpDelete]
+        [Route("/v1/projects/{projectId}")]
+        [ValidateModelState]
+        public virtual IActionResult DeleteProject([FromRoute][Required]string projectId)
         {
+            //TODO: Check if project exists
+            // return StatusCode(404);
 
-           Response httpResponse = new Response();
+            Projects.DeleteOne(x => x.ID == projectId);
 
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-
-            string json = "";
-
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
-
-                jObj = (JObject)JsonConvert.DeserializeObject(json);
-            }
-
-            string projID = jObj.GetValue("_id").ToString();
-
-            JObject jChamp = (JObject)jObj.GetValue("Champion");
-
-
-            Champion champion = Champion.FromJson(jChamp.ToString());
-
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
-
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
-
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.Champion, champion);
-
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Champion update successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
+            return StatusCode(StatusCodes.Status200OK);
         }
 
         /// <summary>
-        /// Post action with data format
-        /// {
-        /// id:"",
-        /// TeamLeadMeet: {
-        ///     MemebersIdentified: [""]
-        ///     DateRange: {
-        ///         begin: "",
-        ///         end: ""
-        ///         }
-        ///     SipocRows:[
-        ///             {
-        ///             Supplier:"",
-        ///             Input:"",
-        ///             Process:"",
-        ///             Output: "",
-        ///             Customer:""
-        ///             }
-        ///         ]
-        ///     },
-        /// }
+        /// Get a project by Id from the database
         /// </summary>
-        /// <returns>HttpResponse</returns>
 
-        [HttpPost("[action]")]
-
-        public async Task<Response> UpdateTeamLeadMeet()
-
+        /// <param name="projectId">ID of project that needs to be fetched</param>
+        /// <response code="200">Successful operation</response>
+        [HttpGet]
+        [Route("/v1/projects/{projectId}")]
+        [ValidateModelState]
+        public virtual IActionResult GetProject([FromRoute][Required]string projectId)
         {
-            string json = "";
-
-            Response httpResponse = new Response();
-
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
-
-                jObj = (JObject)JsonConvert.DeserializeObject(json);
-            }
-
-            string projID = jObj.GetValue("_id").ToString();
-
-            JObject jMeeting = (JObject)jObj.GetValue("TeamLeadMeeting");
-
-            TeamLeadMeeting meeting = TeamLeadMeeting.FromJson(jMeeting.ToString());
-
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient( await GetConnectionString());
-                }
-                 client = Client;
-                
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
-
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
-
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.TeamLeadMeeting, meeting);
-
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Team lead meeting successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
+            return StatusCode(StatusCodes.Status200OK, Projects.Find(x => x.ID == projectId).First());
         }
-
-
 
         /// <summary>
-        /// Post action with data format
-        /// {   id:"",
-        ///     DataCollection:{Elements: [
-        ///         {Goal: "", Actual:"", Name:"", Type:""}],
-        ///     Type: "",
-        ///     Standard: ""} }
+        /// Get all projects from the database
         /// </summary>
-        /// <returns>HttpResponse</returns>
 
-        [HttpPost("[action]")]
-        public async Task<Response>UpdateDraftCharter()
+        /// <response code="200">Successful operation</response>
+        [HttpGet]
+        [Route("/v1/projects")]
+        [ValidateModelState]
+        public virtual IActionResult GetProjects()
         {
-            string json = "";
+            var allProjects = Projects.Find(_ => true).ToList();
 
-            Response httpResponse = new Response();
-
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
-
-                jObj = (JObject)JsonConvert.DeserializeObject(json);
-            }
-
-            string projID = jObj.GetValue("_id").ToString();;
-
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
-
-                Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
-
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.Dates.Begin, (jObj.GetValue("Dates") as JObject).GetValue("Begin"))
-                    .Set(x => x.Dates.End, (jObj.GetValue("Dates") as JObject).GetValue("End"))
-                    .Set(x => x.Name, jObj.GetValue("Name").ToString())
-                    .Set(x => x.Unit, jObj.GetValue("Unit").ToString())
-                    .Set(x => x.Creator, jObj.GetValue("Creator").ToString())
-                    .Set(x => x.Champion, Champion.FromJson(jObj.GetValue("Champion").ToString()))
-                    .Set(x => x.TeamLeads, JsonConvert.DeserializeObject<IList<string>>(jObj.GetValue("TeamLeads").ToString()))
-                    .Set(x => x.Facilitators, JsonConvert.DeserializeObject<IList<string>>(jObj.GetValue("Facilitators").ToString()))
-                    .Set(x => x.Mentor, jObj.GetValue("Mentor").ToString())
-                    .Set(x => x.TeamLeadMeeting, TeamLeadMeeting.FromJson(jObj.GetValue("TeamLeadMeeting").ToString()))
-                    .Set(x => x.DesiredEffects, DesiredEffects.FromJson(jObj.GetValue("DesiredEffects").ToString()));
-                UpdateResult result = projects.UpdateOne(x => x.id == new ObjectId(projID), updateDefinition);
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Draft charter updated successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
+            return StatusCode(StatusCodes.Status200OK, allProjects.Select(x => x.ToStub()));
         }
-
 
         /// <summary>
-        /// Post action with data format
-        /// {   id:"",
-        ///     RootCauses: [
-        ///             {
-        ///                 Description: "",
-        ///                 CounterMeasures: [""]
-        ///             }
-        ///         ]
-        ///  }
+        /// Modify an existing Project
         /// </summary>
-        /// <returns>HttpResponse</returns>
-        [HttpPost("[action]")]
-        public async Task<Response> UpdateRootCauses()
+
+        /// <param name="body">Project object to be modify with</param>
+        /// <param name="projectId">ID of project to be modified</param>
+        /// <response code="400">Bad ID or body format</response>
+        /// <response code="404">Project not found</response>
+        /// <response code="405">Validation exception</response>
+        [HttpPatch]
+        [Route("/v1/projects/{projectId}")]
+        [ValidateModelState]
+        public virtual IActionResult ModifyProject([FromBody]Project body, [FromRoute][Required]string projectId)
         {
-            string json = "";
-            CPI.Client.Response httpResponse = new Response();
+            //TODO: Handle for Bad ID
+            //TODO: Handle for project not found
+            //TODO: Validate body
 
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
+            var source = Projects.Find(x => x.ID == projectId).First();
 
-            JObject jObj;
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                json = reader.ReadToEnd();
+            source.MergeValues(body);
 
-                jObj = (JObject)JsonConvert.DeserializeObject(json);
-            }
+            Projects.ReplaceOne(x => x.ID == projectId, source);
 
-            string projID = jObj.GetValue("_id").ToString();
-
-            JObject jCauses = (JObject)jObj.GetValue("RootCauses");
-
-            IList<RootCause> rootCause = Converter.ListFromJson<RootCause>(jCauses.ToJson());
-
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-               FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(projID));
-
-               Project projToUpdate = await (await projects.FindAsync<Project>(filter)).FirstAsync();
-
-                UpdateDefinition<Project> updateDefinition = Builders<Project>.Update.Set(x => x.RootCauses, rootCause);
-
-                UpdateResult result = await projects.UpdateOneAsync(filter, updateDefinition);
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Root causes update successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
+            return StatusCode(StatusCodes.Status200OK);
         }
 
+        /// <summary>
+        /// Replace an existing Project
+        /// </summary>
 
-
-
-
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<Stub>> AllProjectsAsync()
+        /// <param name="body">Project object that to replace with</param>
+        /// <param name="projectId">ID of project to be replaced</param>
+        /// <response code="400">Bad ID or body format</response>
+        /// <response code="404">Project not found</response>
+        /// <response code="405">Validation exception</response>
+        [HttpPut]
+        [Route("/v1/projects/{projectId}")]
+        [ValidateModelState]
+        public virtual IActionResult ReplaceProject([FromBody]Project body, [FromRoute][Required]string projectId)
         {
+            //TODO: Handle for Bad ID
+            //TODO: Handle for project not found
+            //TODO: Validate body
 
-            Log4NetLogger.Info("Get all projects process started");
+            Projects.ReplaceOne(x => x.ID == projectId, body);
 
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                IList<Project> returnProjects = await (await projects.FindAsync(_ => true)).ToListAsync();
-
-                IList<Stub> stubs = new List<Stub>();
-
-                foreach (Project proj in returnProjects)
-                {
-                    stubs.Add(proj.ToStub());
-                }
-
-                Log4NetLogger.Info("Get all projects process completed succesfully");
-                return stubs;
-            }
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                throw;
-            }
-        }
-
-
-        [HttpGet("[action]")]
-        public async Task<Project> GetProjectAsync(string id)
-        {
-
-            Log4NetLogger.Info($"Get project process started with parameter id = {id ?? "null"}");
-            try
-            {
-
-                if (String.IsNullOrEmpty(id))
-                {
-                    return null;
-                }
-
-                MongoClient client;
-
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
-
-                IAsyncCursor<Project> cursor = await projects.FindAsync<Project>(filter);
-
-                Log4NetLogger.Info("Get project process completed succesfully");
-
-                return await cursor.FirstAsync();
-                
-            }
-            catch (Exception E)
-            {
-                Log4NetLogger.Error("ID ==" + id + "\n" + E.ToString());
-                throw;
-            }
-        }
-
-        [HttpPost("[action]")]
-        public async Task<Response> CreateProject()
-        {
-            Log4NetLogger.Info("Create project process started");
-
-            CPI.Client.Response httpResponse = new Response();
-
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-
-            try
-            {
-                string json = "";
-
-                using (Stream stream = Request.Body)
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    json = sr.ReadToEnd();
-                }
-
-                JObject project = (JObject)JsonConvert.DeserializeObject(json);
-
-                string name = project.GetValue("Creator").ToString();
-                string assignedBase = project.GetValue("Base").ToString();
-                string unit = project.GetValue("Unit").ToString();
-                string projectName = project.GetValue("Name").ToString();
-
-                Project newProject = Project.FromJson(json);
-				newProject.id = new ObjectId();
-
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-                   await projects.InsertOneAsync(newProject);
-
-                Log4NetLogger.Info("Create project process completed succesfully");
-
-                httpResponse.Status = "200";
-                httpResponse.Body = newProject.id.ToString();
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
-        }
-
-        [HttpGet("[action]")]
-        public async Task<Response> DeleteProject(string id)
-        {
-
-            CPI.Client.Response httpResponse = new Response();
-
-            if (!CurrentUser.IsAuthenticated)
-            {
-                httpResponse.Status = "401";
-                httpResponse.Body = "User does not have valid permissions";
-            }
-            try
-            {
-                MongoClient client;
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
-
-                DeleteResult result = await projects.DeleteOneAsync(filter);
-                httpResponse.Status = "200";
-                httpResponse.Body = "Project delete successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
-        }
-
-        [HttpPost("[action]")]
-
-        public async Task<Response> UpdateProject()
-        {
-
-            Log4NetLogger.Info("Update project process started");
-
-            CPI.Client.Response httpResponse = new Response();
-
-            try
-            {
-                string json = "";
-
-                using (Stream stream = Request.Body)
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    json = sr.ReadToEnd();
-                } 
-
-                JObject project = (JObject)JsonConvert.DeserializeObject(json);
-
-                string id = project.GetValue("_id").ToString();
-
-                Project updateProject = Project.FromJson(json);
-                updateProject.ID = id;
-                MongoClient client;
-
-                if (Client == null)
-                {
-                    Client = new MongoClient(await GetConnectionString());
-                }
-                client = Client;
-
-
-                IMongoDatabase database = client.GetDatabase("CPI_Database");
-
-                IMongoCollection<Project> projects = database.GetCollection<Project>("Projects");
-
-                FilterDefinition<Project> filter = Builders<Project>.Filter.Eq("_id", new ObjectId(id));
-
-
-                UpdateDefinition<Project> updateDef = Builders<Project>.Update
-                    .Set(x => x.MajCom, updateProject.MajCom)
-                    .Set(x => x.Base, updateProject.Base)
-                    .Set(x => x.Creator, updateProject.Creator)
-                    .Set(x => x.Unit, updateProject.Unit)
-                    .Set(x => x.Evaluators, updateProject.Evaluators)
-                    .Set(x => x.TeamLeads, updateProject.TeamLeads)
-                    .Set(x => x.Facilitators, updateProject.Facilitators)
-                    .Set(x => x.ProcessOwner, updateProject.ProcessOwner)
-                    .Set(x => x.Mentor, updateProject.Mentor)
-                    .Set(x => x.DataCollection, updateProject.DataCollection)
-                    .Set(x => x.Champion, updateProject.Champion)
-                    .Set(x => x.TeamLeadMeeting, updateProject.TeamLeadMeeting)
-                    .Set(x => x.DraftCharter, updateProject.DraftCharter)
-                    .Set(x => x.RootCauses, updateProject.RootCauses)
-                    .Set(x => x.DesiredEffects, updateProject.DesiredEffects)
-                    .Set(x => x.Dates, updateProject.Dates)
-                    .Set(x => x.Name, updateProject.Name)
-                    .Set(x => x.IdentifyPerformanceGap, updateProject.IdentifyPerformanceGap)
-                    .Set(x => x.ProblemStatement, updateProject.ProblemStatement)
-                    .Set(x => x.SSProcesses, updateProject.SSProcesses);
-
-                UpdateResult result = await projects.UpdateOneAsync(filter, updateDef);
-
-                Log4NetLogger.Info("Update project process completed succesfully");
-
-
-                httpResponse.Status = "200";
-                httpResponse.Body = "Project update successfully completed";
-            }
-
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                httpResponse.Status = "500";
-                httpResponse.InternalException = E;
-            }
-
-            return httpResponse;
-        }
-
-        private async Task<object> GetPage(string id, string page)
-        {
-            if (String.IsNullOrEmpty(id))
-            {
-                return "404 ID not found";
-            }
-            else if (String.IsNullOrEmpty(page))
-            {
-                return "404 Page not found";
-            }
-            Log4NetLogger.Info($"Get page process started with parameters id = {id??"null"}, page = {page??"null"}");
-
-            object returnObj = null;
-            try
-            {
-                Project project = await GetProjectAsync(id);
-
-
-                switch (page.ToUpper().Replace(" ", ""))
-                {
-                    case "DATACOLLECTION":
-                        returnObj =  project.DataCollection;
-                        break;
-                    case "CHAMPMEET":
-                        returnObj =  project.Champion;
-                        break;
-                    case "TEAMLEADMEET":
-                        returnObj = project.TeamLeadMeeting;
-                        break;
-                    case "DRAFTCHARTER":
-                        returnObj = new
-                        {
-                            project.Dates,
-                            project.Name,
-                            project.Unit,
-                            project.Base,
-                            project.Creator,
-                            project.Champion,
-                            project.TeamLeads,
-                            project.Facilitators,
-                            project.Mentor,
-                            project.TeamLeadMeeting,
-                            project.DesiredEffects,
-                            project.DraftCharter
-                        };
-                        break;
-                    case "CAUSEANDCOUNTERS":
-                        returnObj = project.RootCauses;
-                        break;
-                    case "ANALYZEDATA":
-                        returnObj = new
-                        {
-                            project.Champion,
-                            project.DataCollection
-                        };
-                        break;
-                    default:
-                        returnObj = null;
-                        break;
-                }
-            }
-            catch (Exception E)
-            {
-                Log4NetLogger.Error(E);
-                throw;
-            }
-
-            Log4NetLogger.Info("Get page process completed succesfully");
-
-            return returnObj;
-        }
-
-        [HttpGet("[action]")]
-        public async Task<object> DraftCharter(string id)
-        {
-            return await GetPage(id, "DraftCharter");
-        }
-        [HttpGet("[action]")]
-        public async Task<object> DataCollection(string id)
-        {
-            return (await GetPage(id, "DataCollection"));
-        }
-        [HttpGet("[action]")]
-        public async Task<object> ChampMeet(string id)
-        {
-            return await GetPage(id, "ChampMeet");
-        }
-        [HttpGet("[action]")]
-        public async Task<object> TeamLeadMeet(string id)
-        {
-            return await GetPage(id, "TeamLeadMeet");
-        }
-        [HttpGet("[action]")]
-        public async Task<object> CausesAndCounters(string id)
-        {
-            return await GetPage(id, "CauseAndCounters");
-        }
-        public static async Task<string> GetConnectionString()
-        {
-            try
-            {
-                string json = "";
-                Log4NetLogger.Info("Get connection string process started");
-                using (Stream stream = new FileStream(".\\connectionString.json", FileMode.Open))
-                using (TextReader tr = new StreamReader(stream))
-                {
-
-                    Log4NetLogger.Info("Get connection string process completed succesfully");
-                    json = await tr.ReadLineAsync();
-                }
-
-                JObject connStringObj = JsonConvert.DeserializeObject<JObject>(json);
-
-                #if DEBUG
-                    return connStringObj.GetValue("debug").ToString();
-                #else
-                    return connStringObj.GetValue("prod").ToString();
-                #endif
-            }
-            catch (ArgumentOutOfRangeException oorEx)
-            {
-                Log4NetLogger.Error(oorEx);
-                return null;
-            }
-            catch (ObjectDisposedException odEx)
-            {
-                Log4NetLogger.Error(odEx);
-                return null;
-            }
-            catch (InvalidOperationException invalidOpEx)
-            {
-                Log4NetLogger.Error(invalidOpEx);
-                return null;
-            }
-        }
-
-
-
-
-    }
-
-    public static class Converter
-    {
-        public static IList<T> ListFromJson<T>(string json)
-        {
-            IList<T> list = JsonConvert.DeserializeObject<IList<T>>(json);
-
-            return list;
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }
