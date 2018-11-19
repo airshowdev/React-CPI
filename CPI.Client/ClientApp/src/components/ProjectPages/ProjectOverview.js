@@ -21,7 +21,7 @@ export class ProjectOverview extends Component {
     async componentDidMount() {
         var dHandler = new DataHandler();
         let data = dHandler.getProject(this.props.match.params.id);
-        this.setState({ project: data, loading: false });
+		this.setState({ project: data || {}, loading: false });
     }
 
     checkDataCollection() {
@@ -102,7 +102,7 @@ export class ProjectOverview extends Component {
                         <LinkContainer to={"/Project/DraftCharter/" + this.props.match.params.id}><p>Draft Charter</p></LinkContainer>
                     </td>
                     <td>
-                    <LinkContainer to={"/Project/Process/" + this.props.match.params.id}><p>Process Walk</p></LinkContainer>
+                    <LinkContainer to={"/Project/ProcessWalk/" + this.props.match.params.id}><p>Process Walk</p></LinkContainer>
                     <LinkContainer to={"/Project/FinalizeCharter/" + this.props.match.params.id}><p>Finalize Charter</p></LinkContainer>
                     <LinkContainer to={"/Project/ReviewKPI/" + this.props.match.params.id}><p>Review KPI</p></LinkContainer>
                     <LinkContainer to={"/Project/IdentifyEventLocation/" + this.props.match.params.id}><p>Identify Event Location</p></LinkContainer>
@@ -118,11 +118,11 @@ export class ProjectOverview extends Component {
                         <LinkContainer to={"/Project/RoomSetUp/" + this.props.match.params.id}><p>Room Set-Up</p></LinkContainer>
                     </td>
                     <td>
-                <LinkContainer to={"/Project/ClairfyValidateProblem/" + this.props.match.params.id}><p>Clarify and Validate the Problem</p></LinkContainer>
-                <LinkContainer to={"/Project/IdentifyProblemStatements/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
+                <LinkContainer to={"/Project/ClarifyValidateProblem/" + this.props.match.params.id}><p>Clarify and Validate the Problem</p></LinkContainer>
+                <LinkContainer to={"/Project/IdentifyPerformanceGaps/" + this.props.match.params.id}><p>Identify Performance Gaps</p></LinkContainer>
                 <LinkContainer to={"/Project/SetImprovementTargets/" + this.props.match.params.id}><p>Set Improvement Target</p></LinkContainer>
                 <LinkContainer to={"/Project/DetermineRootCause/" + this.props.match.params.id}><p>Determine Root Cause(s)</p></LinkContainer>
-                <LinkContainer to={"/Project/DevelopeCountermeasures/" + this.props.match.params.id}><p>Develop Countermeasures</p></LinkContainer>
+                <LinkContainer to={"/Project/DevelopCountermeasures/" + this.props.match.params.id}><p>Develop Countermeasures</p></LinkContainer>
                     </td>
                     <td>
                     <LinkContainer to={"/Project/SeeCountermeasuresThrough/" + this.props.match.params.id}><p>See Countermeasures Through</p></LinkContainer>

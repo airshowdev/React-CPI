@@ -24,7 +24,7 @@ export class StandardizeSuccessfulProcess extends Component {
         let response = await dHandler.getProject(this.props.match.params.id);
 
         if (response.successful) {
-            this.setState({ rootCauses: response.data.RootCauses, loading: false });
+            this.setState({ rootCauses: response.data.RootCauses || [], loading: false });
         } else {
             alert('error');
             this.setState({ loading: false })

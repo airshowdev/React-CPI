@@ -24,7 +24,7 @@ export class SetImprovementTargets extends Component {
             alert("error!");
             this.setState({ loading: false })
         } else {
-            this.setState({ PerformanceGap: response.data.IdentifyPerformanceGap, loading: false });
+            this.setState({ PerformanceGap: response.data.IdentifyPerformanceGap || "", loading: false });
         }
     }
 
@@ -32,7 +32,10 @@ export class SetImprovementTargets extends Component {
         if (this.state.loading) {
             return <span> loading... </span>
         } else {
-            return (
+			return (
+				<div>
+					<NavButtons next="DetermineRootCause" previous="IdentifyPerformanceGaps" projectId={this.props.match.params.id} />
+
                 <div className="paragraph">
                     <h1> PPSM Step 3 - Set Improvement Targets </h1>
                     <textarea className="set-improvement-text-area" placeholder="Performance Gap:" value={this.state.PerformanceGap} onChange={(event) => this.setState({ PerformanceGap: event.target.value })} ></textarea>
@@ -61,7 +64,8 @@ export class SetImprovementTargets extends Component {
                             </tr>
                         </tbody>
                     </table>
-                </div>
+					</div>
+					</div>
             )
         }
 

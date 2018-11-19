@@ -32,13 +32,13 @@ export class NVADataCollection extends Component {
 
         let response = await dHandler.getProject(this.props.match.params.id);
 
-        response.successful ? this.setState({ Elements: response.data.Elements, Standard: response.data.Standard, loading: false }) : alert('Error pulling data');
+        response.successful ? this.setState({ Elements: response.data.Elements || [], Standard: response.data.Standard || "", loading: false }) : alert('Error pulling data');
     }
 
     handleAdd() {
 
         if (this.state.newElementName && this.state.newElementNVA && !isNaN(this.state.newElementNVA) && !isNaN(this.state.newElementVA) && !isNaN(this.state.newElementGoal) && this.state.newElementVA) {
-            let elements = this.state.Elements;
+            let elements = this.state.Elements ? this.state.Elements: []
             elements.push({ VA: parseFloat(this.state.newElementVA), NVA: parseFloat(this.state.newElementNVA), Type: "NVA", Goal: parseInt(this.state.newElementGoal), Name: this.state.newElementName });
             this.setState({ Elements: elements, newElementName: "", newElementNVA: "", newElementVA: "" });
         } else {
@@ -67,10 +67,11 @@ export class NVADataCollection extends Component {
         this.setState({ newElementVA: "", newElementNVA: "", newElementName: "", newElementGoal: "" });
     }
 
-    async handleSave() {
-        this.setState({ loading: true });
-        let dHandler = new DataHandler();
-        let elements = this.state.Elements;
+	async handleSave() {
+		this.setState({ loading: true });
+
+		let dHandler = new DataHandler();
+		let elements = this.state.Elements
 
         elements.forEach((x) => { x.Actual = (this.NVAPercentage(x.NVA, x.VA)) });
         
@@ -78,8 +79,8 @@ export class NVADataCollection extends Component {
             Elements: elements
         }
 
-        let response = dHandler.modifyProject(postData, this.props.match.params.id);
-
+        let response = await dHandler.modifyProject(postData, this.props.match.params.id);
+		console.log("Response", response);
         response.successful ? this.setState({ loading: false }) : alert('error saving data');
     }
 
@@ -103,7 +104,7 @@ export class NVADataCollection extends Component {
         return total / this.state.Elements.length;
     }
 
-    calculateUnsat() {
+    calculateUnsat(){
         var unsats = 0;
         this.state.Elements.forEach(
             (x) => { (!(parseFloat(x.NVA) / (parseFloat(x.VA) + parseFloat(x.NVA)) > x.Goal) ? unsats++ : unsats) });
@@ -116,7 +117,7 @@ export class NVADataCollection extends Component {
             return (<span>Loading Data</span>);
         } else {
             return (
-				<div className="usa-grid">
+				<div>
 					<div style={{paddingBottom: 15}}>
 						<NavButtons previous="ProjectOverview" title="NVA Data Collection" next="AnalyzeData" projectId={this.props.match.params.id} />
 					</div>

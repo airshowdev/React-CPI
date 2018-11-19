@@ -76,8 +76,8 @@ export default class DataHandler {
 
     //DELETE 
     //Empty response, status code only
-    async deleteProject(id) {
-        return await this.handleResponse(await fetch(`${address}/projects/${id}`, {
+	async deleteProject(id) {
+		return await this.handleDataEdit(await fetch(`${address}/projects/${id}`, {
             method: 'DELETE',
             mode: 'cors',
             cache: 'no-cache',

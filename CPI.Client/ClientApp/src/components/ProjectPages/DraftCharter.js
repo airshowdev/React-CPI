@@ -25,7 +25,7 @@ export class DraftCharter extends Component {
     async componentDidMount() {
         let dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
-        response.successful ? this.setState({ project: response.data, loading: false })
+		response.successful ? this.setState({ project: response.data || {}, loading: false })
             : alert('error')
     }
 
@@ -77,19 +77,19 @@ export class DraftCharter extends Component {
         if (this.state.loading) {
             return <span>Loading</span>;
         } else {
-            return (
-                <div style={{ height: '11in', width: '8.5in', fontSize: '12px' }}>
+			return (
+				<div style={{ height: '11in', width: '8.5in', fontSize: '12px', alignContent: 'center' }}>
                     <h2>{this.state.project.Name + " Event Charter"}</h2>
                     <table className="charterTable" style={{ padding: '0', width: '100%' }}>
                         <thead>
                             <th />
                             <th>Name/Rank</th>
                         </thead>
-                        <tbody>
-                            <tr><td>Champion/Owner</td><td>{this.state.project.Champion.Name}</td></tr>
+						<tbody>
+							<tr><td>Champion/Owner</td><td>{this.state.project.Champion ? this.state.project.Champion.Name : ""}</td></tr>
                             <tr><td>Process Owner</td><td>{this.state.project.ProcessOwner}</td></tr>
                             <tr><td>Unit AF CPI POC:</td><td>{this.state.project.Facilitator}</td></tr>
-                            <tr><td>Facilitator(s) in Training</td><td>{this.state.project.Evaluators.join(" ")}</td></tr>
+                            <tr><td>Facilitator(s) in Training</td><td>{this.state.project.Evaluators ? this.state.project.Evaluators.join(" ") : ""}</td></tr>
                             <tr><td>Facilitator / Trainer</td><td>{this.state.project.Facilitator}</td></tr>
                         </tbody>
                     </table>
@@ -122,8 +122,8 @@ export class DraftCharter extends Component {
                     <table id="expectedImprovementTable" className="charterTable" style={{ padding: '0', width: '100%' }}>
                         <tbody>
                             <tr>
-                                <td style={{ width: '25%', wordWrap: 'wrap' }}>What specific, quantifiable goals should the team strive toward during the event?<strong>This helps with the improvement target.</strong></td>
-                                <td>{this.state.project.Champion.Expectation}</td>
+								<td style={{ width: '25%', wordWrap: 'wrap' }}>What specific, quantifiable goals should the team strive toward during the event?<strong>This helps with the improvement target.</strong></td>
+								<td>{this.state.project.Champion ? this.state.project.ChampionExpectation : ""}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,34 +138,34 @@ export class DraftCharter extends Component {
                                 <td ><strong>CUSTOMERS</strong><br />Who receives the outputs of the process?</td>
                             </tr>
                             <tr>
-                                <td>
-                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+								<td style={{ whiteSpace: 'pre' }}>
+									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Supplier
-                                    ))
+                                    )) : "None Entered"
                                     }
                                 </td>
-                                <td>
-                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+								<td style={{ whiteSpace: 'pre' }}>
+									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Input
-                                    ))
+									)) : "None Entered"
                                     }
                                 </td>
-                                <td>
-                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+								<td style={{ whiteSpace: 'pre' }}>
+									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
                                         (i === 0 ? "" : "\n") + x.Process
-                                    ))
+									)) : "None Entered"
+                                    }
+								</td>
+								<td style={{ whiteSpace:'pre'}}>
+									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+										(i === 0 ? "" : "\n") + x.Output
+									)) : "None Entered"
                                     }
                                 </td>
-                                <td>
-                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
-                                        (i === 0 ? "" : "\n") + x.Output
-                                    ))
-                                    }
-                                </td>
-                                <td>
-                                    {this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
-                                        (i === 0 ? "" : "\n") + x.Customer
-                                    ))
+								<td style={{ whiteSpace: 'pre' }}>
+									{this.state.project.TeamLeadMeeting ? this.state.project.TeamLeadMeeting.SipocRows.map((x, i) => (
+										(i === 0 ? "" : "\n") + x.Customer
+									)) : "None Entered"
                                     }
                                 </td>
                             </tr>
@@ -179,14 +179,14 @@ export class DraftCharter extends Component {
                                 <th>NAME/RANK</th>
                                 <th>ORGANIZATION</th>
                             </thead>
-                            <tbody>
-                                {this.state.project.Evaluators.map((x, i) => (
+							<tbody>
+								{this.state.project.Evaluators ? this.state.project.Evaluators.map((x, i) => (
                                     i < this.state.project.Evaluators.length / 2 ?
                                         <tr>
                                             <td>{x}</td>
                                             <td>Unit?</td>
                                         </tr> : null
-                                ))}
+                                )) : null}
                             </tbody>
                         </table>
                         <table id="teamMemberTable2" className="charterTable" style={{ padding: '0', width: '45%' }}>
@@ -195,13 +195,13 @@ export class DraftCharter extends Component {
                                 <th>ORGANIZATION</th>
                             </thead>
                             <tbody>
-                                {this.state.project.Evaluators.map((x, i) => (
+                                {this.state.project.Evaluators ? this.state.project.Evaluators.map((x, i) => (
                                     i >= this.state.project.Evaluators.length / 2 ?
                                         <tr>
                                             <td>{x}</td>
                                             <td>Unit?</td>
                                         </tr> : null
-                                ))}
+                                )) : null}
                             </tbody>
                         </table>
                     </div>

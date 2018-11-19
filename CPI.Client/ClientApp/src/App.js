@@ -44,7 +44,6 @@ import { MeetingChampionPpt } from './components/MeetingChampionPpt'; //Added by
 import { MeetWithTeamLeadPpt } from './components/MeetWithTeamLeadPpt'; //Testing PowerPoint
 import { EventCharter } from './components/EventCharter'; //Added by Cyriac 15 Oct 2018 for viewing the Event Charter
 import { Graph } from './components/Graph'; //Added by Cyriac 17 Oct 2019 to use as a template for graphs
-
 import { EightSPSM } from './components/EightSPSM'; 
 
 //adding in more routes to test pages

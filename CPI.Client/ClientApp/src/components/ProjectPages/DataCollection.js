@@ -23,8 +23,9 @@ export class DataCollection extends Component {
      async componentDidMount() {
         var dHandler = new DataHandler();
          let response = await dHandler.getProject(this.props.match.params.id);
-         response.successful ? this.setState({ project: response.data, loading: false })
-             : alert('error');
+		 response.successful ? this.setState({ project: response.data || {}, loading: false })
+			 : alert('error');
+		 console.log(response.data);
     }
 
     handleSubmit() {
@@ -47,17 +48,21 @@ export class DataCollection extends Component {
 	}
 
     render() {
-        this.redirectPage(this.state.project.Elements ? this.state.project.Elements[0].Type : "");
-		return (
-			this.state.loading ? <span>Loading</span> : 
+        
+		if (this.state.loading) {
+			return <span>Loading</span>
+		} else {
+			this.state.project.Elements ? this.redirectPage(this.state.project.Elements.length > 0 ? this.state.project.Elements[0].Type : "") : null;
+			return (
 				<div>
 					<h3> Please Select a project type</h3>
-                    <select onChange={this.handleChange} value={this.state.selectedType}>
-                    <option value="OnTime">On Time</option>
-					<option value="NVA">NVA</option>
+					<select onChange={this.handleChange} value={this.state.selectedType}>
+						<option value="OnTime">On Time</option>
+						<option value="NVA">NVA</option>
 					</select>
 					<button onClick={this.handleSubmit}>Select</button>
-                </div>
+				</div>
 			)
+		}
 	}
 }

@@ -33,14 +33,14 @@ export class MeetWithChampion extends Component {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({
-                WingDirectorate: response.data.WingDirectorate,
-                Unit: response.data.Unit,
-                Champion: response.data.Champion,
-                ProcessOwner: response.data.ProcessOwner,
-                TeamLeads: response.data.TeamLeads,
-                Facilitators: response.data.Facilitators,
-                Facilitator: response.data.Facilitator,
+			this.setState({
+				WingDirectorate: response.data.WingDirectorate || "",
+				Unit: response.data.Unit || "",
+				Champion: response.data.Champion || {},
+                ProcessOwner: response.data.ProcessOwner || "",
+                TeamLeads: response.data.TeamLeads || [],
+                Facilitators: response.data.Facilitators || [],
+                Facilitator: response.data.Facilitator || "",
                 loading: false
             });
         } else {
@@ -71,7 +71,7 @@ export class MeetWithChampion extends Component {
     }
 
     handleUpdate(event) {
-        var tempChampion = this.state.Champion;
+		var tempChampion = this.state.Champion ? this.state.Champion : {}
         switch (event.target.id) {
             case "WingDirectorate":
                 this.setState({ WingDirectorate: event.target.value })
@@ -89,8 +89,8 @@ export class MeetWithChampion extends Component {
             case "TeamLeads":
                 this.setState({ TeamLeads: event.target.value.split('\n') });
                 break;
-            case "Facilitators":
-                this.setState({ Facilitators: event.target.value.split('\n') });
+			case "Facilitators":
+				this.setState({ Facilitators: event.target.value.split('\n') });
                 break;
             case "Facilitator":
                 this.setState({ Facilitator: event.target.value });
@@ -150,12 +150,12 @@ export class MeetWithChampion extends Component {
                                                 <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="ProcessOwner" value={this.state.ProcessOwner} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
-                                                <td>Event Team Leader(s):</td>
-                                                <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="TeamLeads" value={this.state.TeamLeads ? this.state.TeamLeads.map(TeamLead => TeamLead + "\n") : ""} onChange={this.handleUpdate} /></td>
+													<td>Event Team Leader(s):</td>
+													<td style={{ padding: "0px" }}><textarea type="text" placeholder="x" id="TeamLeads" value={this.state.TeamLeads ? this.state.TeamLeads.join("\n"): ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
-                                                    <td>Facilitator(s)-in-Training:</td>
-                                                    <td style={{ padding: "0px" }}><input type="text" placeholder="x" id="Facilitators" value={this.state.Evaluators ? this.state.project.Facilitators.map(Facilitator => Facilitator + "\n") : ""} onChange={this.handleUpdate} /></td>
+													<td>Facilitator(s)-in-Training:</td>
+													<td style={{ padding: "0px" }}><textarea type="text" placeholder="x" id="Facilitators" value={this.state.Facilitators ? this.state.Facilitators.join('\n') : ""} onChange={this.handleUpdate} /></td>
                                             </tr>
                                             <tr>
                                                 <td>*Facilitator/Trainer:</td>

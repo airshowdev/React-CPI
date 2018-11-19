@@ -2,7 +2,7 @@
 import './css/uswds.css';
 import './css/HallMartino.css';
 
-import { Col, Row, Grid } from 'react-bootstrap'
+import { Col, Row, Grid } from 'react-bootstrap';
 import { NavButtons } from './NavButtons';
 import DataHandler from './js/DataHandler';
 
@@ -24,7 +24,7 @@ export class ClarifyValidateProblem extends Component {
         var dHandler = new DataHandler();
         let response = await dHandler.getProject(this.props.match.params.id);
         if (response.successful) {
-            this.setState({ problemStatement: response.data.ProblemStatement, loading: false })
+			this.setState({ problemStatement: response.data.ProblemStatement || "", loading: false })
         } else {
             alert('error pulling data');
             this.setState({ loading: false });
@@ -55,9 +55,7 @@ export class ClarifyValidateProblem extends Component {
         } else {
             return (
                 <Grid>
-                    <Col style={{ paddingBottom: 50}}>
                         <NavButtons next="IdentifyPerformanceGaps" previous="RoomSetup" projectId={this.props.match.params.id} />
-                    </Col>
                     <Col>
                         <div className="paragraph">
                             <h1> PPSM Step 1 - Clarify and Validate the Problem </h1>

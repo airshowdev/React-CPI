@@ -23,7 +23,7 @@ export class ProjectInfo extends Component {
         console.log(JSON.stringify(response.data));
 
         if (response.successful) {
-            this.setState({ project: response.data, loading: false });
+			this.setState({ project: response.data || {}, loading: false });
         } else {
             alert('error')
         }
@@ -81,7 +81,7 @@ export class ProjectInfo extends Component {
 			return (
 				<div>
 
-					<NavButtons next="ProjectOverview" previous="ProjectInfo" projectId={this.props.match.params.id} />
+					<NavButtons next="ProjectOverview" previous="Projects" projectId={this.props.match.params.id} />
                 <div id="projectInfo">
 
                     <div className="usa-grid" style={{ float: 'left', margin: 'auto' }} >
@@ -89,11 +89,11 @@ export class ProjectInfo extends Component {
                             <label htmlFor="ID">ID</label>
                             <input id="ID" name="ID" type="text" defaultValue={this.state.project._id} />
                             <label htmlFor="Name">Name</label>
-                            <input id="Name" name="Name" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Name} />
+                            <input id="Name" name="Name" type="text" placeholder="Name" onChange={this.handleUpdate} value={this.state.project.Name} />
                             <label htmlFor="Base">Base</label>
-                            <input id="Base" name="Base" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Base} />
+                            <input id="Base" name="Base" type="text" placeholder="Base" onChange={this.handleUpdate} value={this.state.project.Base} />
                             <label htmlFor="Unit">Unit</label>
-                            <input id="Unit" name="Unit" type="text" placeholder="Not Defined" onChange={this.handleUpdate} value={this.state.project.Unit} />
+                            <input id="Unit" name="Unit" type="text" placeholder="Unit" onChange={this.handleUpdate} value={this.state.project.Unit} />
 								{/*<label htmlFor="Type">Type</label>
 							<input id="Type" name="Type" type="text" placeholder="Not Defined" value={this.state.project.DataCollection.Type || ""} /> */}
                         </div>

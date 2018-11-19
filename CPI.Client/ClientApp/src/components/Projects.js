@@ -15,7 +15,8 @@ export class Projects extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { projects: [], loading: true };
+		this.state = { projects: [], loading: true };
+		this.handleDelete = this.handleDelete.bind(this);
 	}
 
     async componentDidMount() {
@@ -29,7 +30,21 @@ export class Projects extends Component {
             alert('error');
         }
 	}
-    
+
+	async handleDelete(event) {
+		var index  = event.target.name
+		let dHandler = new DataHandler();
+		let response = await dHandler.deleteProject(event.target.id);
+
+		if (response.successful) {
+			let Projects = this.state.projects;
+			Projects.splice(index, 1);
+			this.setState({ projects: Projects });
+		} else {
+			alert('there was an error deleting this project')
+		}
+	}
+
     render() {
 
         if (this.state.loading) {
@@ -53,12 +68,14 @@ export class Projects extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.projects.map(x => (
-                                    <tr key={x.ID} onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + x.ID)}>
+                                {this.state.projects.map((x, i) => (
+                                    <tr key={x.ID}>
                                         <th scope="row">{x.ID}</th>
                                         <td>{x.Name}</td>
                                         <td>{x.Creator}</td>
-                                        <td>{x.Unit}</td>
+										<td>{x.Unit}</td>
+									<td><button onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + x.ID)}>Select</button></td>
+									<td><button id={x.ID} name={i} onClick={this.handleDelete}>Delete</button></td>
                                     </tr>
                                 ))}
                             </tbody>
