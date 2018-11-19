@@ -1,0 +1,278 @@
+﻿swagger: "2.0"
+info:
+  description: "This is the API specification for the CPI project."
+  version: "0.0.1"
+  title: "CPI API"
+
+host: "cpi.595scsdevelopment.com"
+basePath: "/v1"
+tags:
+- name: "projects"
+  description: "Everything about CPI projects"
+schemes:
+- "https"
+- "http"
+paths:
+  /projects:
+    post:
+      tags:
+      - "projects"
+      summary: "Add a new project to the database"
+      operationId: "addProject"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        400:
+          description: "Bad format"
+        200:
+          description: "Successful operation"
+          schema:
+            type: string
+            description: "Project Id"
+    get:
+      tags:
+      - "projects"
+      summary: "Get all projects from the database"
+      operationId: "getProjects"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Project"
+            type: array
+  /projects/{projectId}:
+    get:
+      tags:
+      - "projects"
+      summary: "Get a project by Id from the database"
+      operationId: "getProject"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project that needs to be fetched"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Project"
+    patch:
+      tags:
+      - "projects"
+      summary: "Modify an existing Project"
+      description: ""
+      operationId: "modifyProject"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object to be modify with"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      - name: "projectId"
+        in: "path"
+        description: "ID of project to be modified"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Bad ID or body format"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "projects"
+      summary: "Replace an existing Project"
+      description: ""
+      operationId: "replaceProject"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object that to replace with"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      - name: "projectId"
+        in: "path"
+        description: "ID of project to be replaced"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Bad ID or body format"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "projects"
+      summary: "Delete an existing Project"
+      description: ""
+      operationId: "deleteProject"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project to be deleted"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Project not found"
+definitions:
+  Project:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      majCom:
+        type: "string"
+      base:
+        type: "string"
+      creator:
+        type: "string"
+      unit: 
+        type: "string"
+      wingDirectorate:
+        type: "string"
+      evaluators:
+        type: "array"
+        items:
+          type: "string"
+      teamLeads:
+        type: "array"
+        items:
+          type: "string"
+      facilitators:
+        type: "array"
+        items: 
+          type: "string"
+      performanceGap:
+        type: "string"
+      improvementTarget: 
+        type: "string"
+      processOwner:  
+        type: "string"
+      mentor:
+        type: "string"
+      elements: 
+        type: "array"
+        items:
+          type: "object"
+      champion:
+        $ref: "#/definitions/champion"
+      teamLeadMeeting:
+        $ref: "#/definitions/teamLeadMeeting"
+      rootCauses:
+        type: "array"
+        items:
+          $ref: "#/definitions/rootCause"
+      desiredEffects:
+        $ref: "#/definitions/desiredEffects"
+      dateRange:
+        $ref: "#/definitions/dateRange"
+      problemStatement:
+        type: "string"
+  champion:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      deficiency:
+        type: "string"
+      expectation:
+        type: "string"
+      recommendation:
+        type: "string"
+      goal: 
+        type: "string"
+      response:
+        type: "string"
+  rootCause:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+      countermeasures:
+        type: "array"
+        items: 
+          $ref: "#/definitions/countermeasure"
+  teamLeadMeeting:
+    type: "object"
+    properties:
+      members:
+        type: "array"
+        items:
+          type: "string"
+      sipocRows:
+        type: "array"
+        items: 
+          $ref: "#/definitions/sipocRow"
+  dateRange:
+    type: "object"
+    properties:
+      begin:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+  sipocRow:
+    type: object
+    properties:
+      supplier:
+        type: string
+      input:
+        type: string
+      process:
+        type: string
+      output:
+        type: string
+      customer:
+        type: string
+  desiredEffects:
+    type: object
+    properties:
+      productivity:
+        type: string
+      equipAvail:
+        type: string
+      agility:
+        type: string
+      safeOps:
+        type: string
+      efficiency:
+        type: string
+  countermeasure:
+    type: object
+    properties:
+      description: 
+        type: string
+      actionOfficer:
+        type: string
+      date:
+        type: string
+        format: date-time
+      status:
+        type: string

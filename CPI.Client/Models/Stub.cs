@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using Newtonsoft.Json;
 
-namespace CPI.Client.Models
+namespace CpiApi
 {
     public class Stub
     {
-
         [JsonProperty("ID")]
         public string ID { get; set; } = "";
 
