@@ -1,9 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
-import querystring from 'query-string';
 import '../css/HallMartino.css';
 import { NavButtons } from '../NavButtons';
-import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import DataHandler from '../js/DataHandler';

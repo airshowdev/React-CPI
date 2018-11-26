@@ -1,14 +1,11 @@
 ﻿import React, { Component } from 'react';
 import '../css/uswds.css';
-import querystring from 'query-string';
-import PropTypes from 'prop-types';
 import { NavButtons } from '../NavButtons';
 import { DataCollectionStatus } from '../DataCollectionStatus';
 import { BarChart } from './BarChart';
 import { PieChart } from './PieChart';
 import { PieChartLegend } from './PieChartLegend';
 import '../css/HallMartino.css';
-import { loadingSpinner } from '../loadingSpinner';
 import DataHandler from '../js/DataHandler';
 
 
