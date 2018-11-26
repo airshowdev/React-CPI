@@ -7,7 +7,7 @@ import DataHandler from './js/DataHandler';
 
 
 
-export class Projects extends Component {  
+export default class Projects extends Component {  
     static contextTypes = {
         router: PropTypes.object
     }
