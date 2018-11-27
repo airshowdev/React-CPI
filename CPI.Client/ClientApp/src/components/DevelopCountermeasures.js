@@ -27,7 +27,7 @@ export class DevelopCountermeasures extends Component {
 
         if (response.successful) {
             let tempNewCountermeasures = [];
-            response.data.RootCauses ? response.data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : null;
+            response.data.RootCauses ? response.data.RootCauses.map(x => tempNewCountermeasures.push({ Description: "" })) : tempNewCountermeasures = [];
             this.setState({ loading: false, rootCauses: response.data.RootCauses ? response.data.RootCauses : [], newCountermeasures: tempNewCountermeasures });
         } else {
             alert("Error pulling data");

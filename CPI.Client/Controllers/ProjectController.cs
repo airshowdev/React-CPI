@@ -97,11 +97,13 @@ namespace CpiApi
             //TODO: Handle for project not found
             //TODO: Validate body
 
-            var source = Projects.Find(x => x.ID == projectId).First();
+            var source = Projects.Find(x => x.id == new ObjectId(projectId)).First();
 
             source.MergeValues(body);
 
-            Projects.ReplaceOne(x => x.ID == projectId, source);
+            source.id = new ObjectId(projectId);
+
+            Projects.ReplaceOne(x => x.id == new ObjectId(projectId), source);
 
             return StatusCode(StatusCodes.Status200OK);
         }
@@ -124,7 +126,7 @@ namespace CpiApi
             //TODO: Handle for project not found
             //TODO: Validate body
 
-            Projects.ReplaceOne(x => x.ID == projectId, body);
+            Projects.ReplaceOne(x => x.id == new ObjectId(projectId), body);
 
             return StatusCode(StatusCodes.Status200OK);
         }

@@ -36,7 +36,7 @@ namespace CpiApi
                         //    SslProtocols = System.Security.Authentication.SslProtocols.Tls,
                         //    ServerCertificate = GetServiceCertificate("52195E38942C516306FE8AE8186D02211CD69F36")
                         //};
-                        listenOptions.UseHttps(@".\bin\Debug\netcoreapp2.1\clientcertificatemiddlewaredemo.pfx", "password", x => x.ClientCertificateMode = ClientCertificateMode.RequireCertificate);
+                        //listenOptions.UseHttps(@".\bin\Debug\netcoreapp2.1\clientcertificatemiddlewaredemo.pfx", "password", x => x.ClientCertificateMode = ClientCertificateMode.RequireCertificate);
                     });
                 }).
                 Build().

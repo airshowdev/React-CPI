@@ -52,7 +52,7 @@ export class DataCollection extends Component {
 		if (this.state.loading) {
 			return <span>Loading</span>
 		} else {
-			this.state.project.Elements ? this.redirectPage(this.state.project.Elements.length > 0 ? this.state.project.Elements[0].Type : "") : null;
+			this.state.project.Elements ? this.redirectPage(this.state.project.Elements.length > 0 ? this.state.project.Elements[0].Type : "") : this.setState();
 			return (
 				<div>
 					<h3> Please Select a project type</h3>

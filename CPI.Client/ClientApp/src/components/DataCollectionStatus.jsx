@@ -85,7 +85,7 @@ export class DataCollectionStatus extends Component {
 				return this.NVAPercentage(totalNVA, totalVA);
 			case "OnTime":
 				var unsats = 0;
-				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
+				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats = unsats });
 				return (unsats / this.state.Elements.length) * 100;
 		}
 	}
@@ -97,7 +97,7 @@ export class DataCollectionStatus extends Component {
                 this.state.Elements.map(x => this.NVAGoal(x.Goal, x.NVA, x.VA) ? unsats = unsats : unsats++);
 				break;
 			case "OnTime":
-				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats });
+				this.state.Elements.map((x) => { Date.parse(x.Goal) < Date.parse(x.Actual) ? unsats++ : unsats = unsats });
 				break;
 		}
 		return unsats;

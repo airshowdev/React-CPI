@@ -107,7 +107,7 @@ export class NVADataCollection extends Component {
     calculateUnsat(){
         var unsats = 0;
         this.state.Elements.forEach(
-            (x) => { (!(parseFloat(x.NVA) / (parseFloat(x.VA) + parseFloat(x.NVA)) > x.Goal) ? unsats++ : unsats) });
+            (x) => { (!(parseFloat(x.NVA) / (parseFloat(x.VA) + parseFloat(x.NVA)) > x.Goal) ? unsats++ : unsats = unsats) });
        
         return unsats;
     }

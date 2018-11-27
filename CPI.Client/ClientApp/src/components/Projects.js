@@ -5,19 +5,21 @@ import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 import DataHandler from './js/DataHandler';
 
+const contextTypes = {
+    router: PropTypes.object
+}
 
-
-export default class Projects extends Component {  
-    static contextTypes = {
-        router: PropTypes.object
-    }
-    displayName = Projects.name
-
+export class Projects extends Component {  
+    
     constructor(props, context) {
         super(props, context);
-		this.state = { projects: [], loading: true };
-		this.handleDelete = this.handleDelete.bind(this);
-	}
+        this.state = { projects: [], loading: true };
+        
+        this.handleDelete = this.handleDelete.bind(this);
+        this.onSelectClick = this.onSelectClick.bind(this);
+    }
+    
+
 
     async componentDidMount() {
         var dataHandler = new DataHandler();
@@ -43,7 +45,11 @@ export default class Projects extends Component {
 		} else {
 			alert('there was an error deleting this project')
 		}
-	}
+    }
+    
+    onSelectClick(event){   
+        this.context.router.history.push('/Project/ProjectInfo/' + event.target.ID);
+    }
 
     render() {
 
@@ -74,7 +80,7 @@ export default class Projects extends Component {
                                         <td>{x.Name}</td>
                                         <td>{x.Creator}</td>
 										<td>{x.Unit}</td>
-									<td><button onClick={() => this.context.router.history.push('/Project/ProjectInfo/' + x.ID)}>Select</button></td>
+									<td><button id={x.ID} onClick={this.onSelectClick}>Select</button></td>
 									<td><button id={x.ID} name={i} onClick={this.handleDelete}>Delete</button></td>
                                     </tr>
                                 ))}
