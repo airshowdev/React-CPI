@@ -26,7 +26,6 @@ export class Projects extends Component {
         let response = await dataHandler.getProjects();
 
         if (response.successful) {
-            console.log(response);
             this.setState({ projects: response.data, loading: false });
         } else {
             alert('error');

@@ -95,17 +95,10 @@ export default class mockDataHandler {
     //GET
     //Returns [Project]
     async getProjects() {
-        if(id){
             return {
                 successful: true,
-                data: fakeProject
-            }} else {
-                return {
-                    successful: false,
-                    data: []
-                }
+                data: fakeProjects
             }
-        
     }
 
     //PUT
