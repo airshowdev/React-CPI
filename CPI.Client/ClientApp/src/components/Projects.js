@@ -21,14 +21,22 @@ export class Projects extends Component {
     
 
 
-    async componentDidMount() {
-        var dataHandler = new DataHandler();
-        let response = await dataHandler.getProjects();
+    async componentDidMount(testData) {
+        if(!testData){
+            var dataHandler = new DataHandler();
+            let response = await dataHandler.getProjects();
 
-        if (response.successful) {
-            this.setState({ projects: response.data, loading: false });
+            if (response.successful) {
+                this.setState({ projects: response.data, loading: false });
+            } else {
+               this.alertBad();
+            }
         } else {
-            alert('error');
+            if(testData.successful){
+                this.setState({ projects: testData.data, loading: false });
+            } else {
+                this.alertBad();
+            }
         }
 	}
 
@@ -48,6 +56,10 @@ export class Projects extends Component {
     
     onSelectClick(event){   
         this.context.router.history.push('/Project/ProjectInfo/' + event.target.ID);
+    }
+
+    alertBad(){ 
+        alert('error'); 
     }
 
     render() {
@@ -74,7 +86,7 @@ export class Projects extends Component {
                             </thead>
                             <tbody>
                                 {this.state.projects.map((x, i) => (
-                                    <tr key={x.ID}>
+                                    <tr className="projectRow" key={x.ID}>
                                         <th scope="row">{x.ID}</th>
                                         <td>{x.Name}</td>
                                         <td>{x.Creator}</td>
