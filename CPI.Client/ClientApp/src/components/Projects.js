@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 import DataHandler from './js/DataHandler';
 
-const contextTypes = {
-    router: PropTypes.object
-}
+
 
 export class Projects extends Component {  
     
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = { projects: [], loading: true };
@@ -22,14 +24,14 @@ export class Projects extends Component {
 
 
     async componentDidMount() {
-        var dataHandler = new DataHandler();
-        let response = await dataHandler.getProjects();
+            var dataHandler = new DataHandler();
+            let response = await dataHandler.getProjects();
 
-        if (response.successful) {
-            this.setState({ projects: response.data, loading: false });
-        } else {
-            alert('error');
-        }
+            if (response.successful) {
+                this.setState({ projects: response.data, loading: false });
+            } else {
+               this.alertBad();
+            }
 	}
 
 	async handleDelete(event) {
@@ -47,7 +49,11 @@ export class Projects extends Component {
     }
     
     onSelectClick(event){   
-        this.context.router.history.push('/Project/ProjectInfo/' + event.target.ID);
+        this.context.router.history.push('/Project/ProjectInfo/' + event.target.id);
+    }
+
+    alertBad(){ 
+        alert('error'); 
     }
 
     render() {
@@ -74,7 +80,7 @@ export class Projects extends Component {
                             </thead>
                             <tbody>
                                 {this.state.projects.map((x, i) => (
-                                    <tr key={x.ID}>
+                                    <tr className="projectRow" key={x.ID}>
                                         <th scope="row">{x.ID}</th>
                                         <td>{x.Name}</td>
                                         <td>{x.Creator}</td>

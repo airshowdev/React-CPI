@@ -1,4 +1,4 @@
-﻿var address = '/v1';
+﻿var address = 'v1';
 
 export default class DataHandler {
 

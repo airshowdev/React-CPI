@@ -3,51 +3,63 @@ import React from 'react';
 import {Projects} from '../components/Projects';
 import {configure, shallow, mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { MemoryRouter } from 'react-router-dom';
+import mockDataHandler from '../__mocks__/mockDataHandler';
 
-jest.setTimeout(5000);
+
 configure({adapter: new Adapter()})
 
-const checkAgainst = <span>Loading...</span>;
-const checkAgainstButBad = <span>This ain't even loading, buddy</span>;
-
-var component;
+const checkAgainstForLoad = <span>Loading...</span>;
+const checkLoadedData = <button id="5bf2ddc27507820c30274604">Projects</button>
 
 describe('Display Behavior', () => {
 
     beforeEach(()=> {
-       });
+       
+    });
 
-    it('test fails while renders as a whole component', ()=>{
-        const wrapper = shallow(<Projects/>);
-        let result = wrapper.contains(checkAgainstButBad)
-        expect(result).toEqual(false);
-    })
 
-    it('renders as a whole component', ()=>{
+    it('shows the loading indicator when data is being pulled', ()=>{
+        //Arrange
         const wrapper = shallow(<Projects/>);
-        let result = wrapper.contains(checkAgainst)
+
+        //Act
+        let result = wrapper.contains(checkAgainstForLoad)
+
+        //Assert
         expect(result).toEqual(true);
     })
 
-    it('The onSelectClick function is run once', async () => {
+    it('displays data when the data has been pulled', async () => {
+
+        //Arrange
         const wrapper = shallow(<Projects/>);
-        wrapper.instance().onSelectClick = jest.fn();
-        expect(wrapper.contains(checkAgainst)).toBe(true);
+        wrapper.instance().alertBad = jest.fn();
 
-        let {onSelectClick} = wrapper.instance();
-        expect(onSelectClick).toHaveBeenCalledTimes(0);
-
-        console.log(wrapper.debug());
-
+        //Act
         await wrapper.instance().componentDidMount();
+        console.log(wrapper.debug())
+        wrapper.update();
 
-        console.log(wrapper.debug());
-        
-        expect(wrapper.contains(checkAgainst)).toBe(false);
-        expect(wrapper.contains("#5bf2ddc27507820c30274604>")).toBe(true)
-        wrapper.find("#bf2ddc27507820c30274604").simulate('click');
-        expect(onSelectClick).toHaveBeenCalledTimes(1);
+        //Assert
+        expect(wrapper.instance().alertBad).toHaveBeenCalledTimes(0);
+        expect(wrapper.state().projects).toEqual(new mockDataHandler().projectsData());
+        expect(wrapper.find('.projectRow').exists()).toEqual(true);
+    })
+
+    it('alerts the user when there is an error pulling data', async () => {
+
+        //Arrange
+        const wrapper = shallow(<Projects/>);
+        wrapper.instance().alertBad = jest.fn();
+
+        //Act
+        wrapper.instance().componentDidMount({
+            successful: false,
+            data: []
+        });
+
+        //Assert
+        expect(wrapper.instance().alertBad).toHaveBeenCalledTimes(1);
     })
 }
 )

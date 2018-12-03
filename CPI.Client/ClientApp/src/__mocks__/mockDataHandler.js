@@ -75,6 +75,7 @@ const fakeProject = {
     ProblemStatement:null
  }
 
+
 export default class mockDataHandler {
 
     //GET
@@ -123,5 +124,8 @@ export default class mockDataHandler {
     async addProject(project) {
         return {successful: Boolean(Object(project) === project)}
     }
-
+    
+    projectsData() {
+        return fakeProjects;
+    }
 }
