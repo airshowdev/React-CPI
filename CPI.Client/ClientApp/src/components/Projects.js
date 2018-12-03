@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import { LinkContainer } from 'react-router-bootstrap';
 import DataHandler from './js/DataHandler';
 
-const contextTypes = {
-    router: PropTypes.object
-}
+
 
 export class Projects extends Component {  
     
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = { projects: [], loading: true };
@@ -21,8 +23,7 @@ export class Projects extends Component {
     
 
 
-    async componentDidMount(testData) {
-        if(!testData){
+    async componentDidMount() {
             var dataHandler = new DataHandler();
             let response = await dataHandler.getProjects();
 
@@ -31,13 +32,6 @@ export class Projects extends Component {
             } else {
                this.alertBad();
             }
-        } else {
-            if(testData.successful){
-                this.setState({ projects: testData.data, loading: false });
-            } else {
-                this.alertBad();
-            }
-        }
 	}
 
 	async handleDelete(event) {
@@ -55,7 +49,7 @@ export class Projects extends Component {
     }
     
     onSelectClick(event){   
-        this.context.router.history.push('/Project/ProjectInfo/' + event.target.ID);
+        this.context.router.history.push('/Project/ProjectInfo/' + event.target.id);
     }
 
     alertBad(){ 
